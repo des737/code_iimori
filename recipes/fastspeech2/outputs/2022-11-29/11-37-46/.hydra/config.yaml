@@ -1,0 +1,21 @@
+verbose: 100
+tqdm: tqdm
+device: cuda
+utt_list: ./data/eval.list
+in_dir: dump/LINE_3_sr22050/norm/eval/in_fastspeech2
+in_mel_dir: dump/LINE_3_sr22050/norm/eval/out_fastspeech2/mel
+in_duration_dir: dump/LINE_3_sr22050/norm/eval/out_fastspeech2/duration
+out_dir: exp/LINE_3_sr22050_LINE_79_JSUT_NICT_LINE_wo_Teacher_finetuning_FS_GMM_num_gaussians_11/synthesis_fastspeech2wGMM_hifigan/eval
+reverse: false
+num_eval_utts: -1
+sample_rate: 22050
+acoustic:
+  checkpoint: exp/LINE_3_sr22050_LINE_79_JSUT_NICT_LINE_wo_Teacher_finetuning_FS_GMM_num_gaussians_11/fastspeech2wGMM/best_loss.pth
+  in_scaler_path: null
+  out_scaler_path: dump/LINE_3_sr22050/norm/out_fastspeech2_mel_scaler.joblib
+  model_yaml: exp/LINE_3_sr22050_LINE_79_JSUT_NICT_LINE_wo_Teacher_finetuning_FS_GMM_num_gaussians_11/fastspeech2wGMM/model.yaml
+vocoder:
+  checkpoint: exp/LINE_3_sr22050_LINE_79_JSUT_NICT_LINE_wo_Teacher_finetuning_FS_GMM_num_gaussians_11/hifigan/best_loss.pth
+  in_scaler_path: null
+  out_scaler_path: null
+  model_yaml: conf/train_hifigan/model/hifigan.yaml

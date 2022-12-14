@@ -1,0 +1,284 @@
+[2022-11-28 22:51:44,014][vc_tts_template][INFO] - PyTorch version: 1.12.0+cu116
+[2022-11-28 22:51:44,014][vc_tts_template][INFO] - cudnn.deterministic: False
+[2022-11-28 22:51:44,014][vc_tts_template][INFO] - cudnn.benchmark: False
+[2022-11-28 22:51:44,014][vc_tts_template][INFO] - cuDNN version: 8302
+[2022-11-28 22:51:44,014][vc_tts_template][INFO] - Random seed: 773
+[2022-11-28 22:51:44,015][vc_tts_template][INFO] - Fine-tuning! Loading a checkpoint: ../../vc_tts_template/vocoder/hifigan/weights/universal.pth
+[2022-11-28 22:51:45,165][vc_tts_template][INFO] - Generator(
+  (conv_pre): Conv1d(80, 512, kernel_size=(7,), stride=(1,), padding=(3,))
+  (ups): ModuleList(
+    (0): ConvTranspose1d(512, 256, kernel_size=(16,), stride=(8,), padding=(4,))
+    (1): ConvTranspose1d(256, 128, kernel_size=(16,), stride=(8,), padding=(4,))
+    (2): ConvTranspose1d(128, 64, kernel_size=(4,), stride=(2,), padding=(1,))
+    (3): ConvTranspose1d(64, 32, kernel_size=(4,), stride=(2,), padding=(1,))
+  )
+  (resblocks): ModuleList(
+    (0): ResBlock1(
+      (convs1): ModuleList(
+        (0): Conv1d(256, 256, kernel_size=(3,), stride=(1,), padding=(1,))
+        (1): Conv1d(256, 256, kernel_size=(3,), stride=(1,), padding=(3,), dilation=(3,))
+        (2): Conv1d(256, 256, kernel_size=(3,), stride=(1,), padding=(5,), dilation=(5,))
+      )
+      (convs2): ModuleList(
+        (0): Conv1d(256, 256, kernel_size=(3,), stride=(1,), padding=(1,))
+        (1): Conv1d(256, 256, kernel_size=(3,), stride=(1,), padding=(1,))
+        (2): Conv1d(256, 256, kernel_size=(3,), stride=(1,), padding=(1,))
+      )
+    )
+    (1): ResBlock1(
+      (convs1): ModuleList(
+        (0): Conv1d(256, 256, kernel_size=(7,), stride=(1,), padding=(3,))
+        (1): Conv1d(256, 256, kernel_size=(7,), stride=(1,), padding=(9,), dilation=(3,))
+        (2): Conv1d(256, 256, kernel_size=(7,), stride=(1,), padding=(15,), dilation=(5,))
+      )
+      (convs2): ModuleList(
+        (0): Conv1d(256, 256, kernel_size=(7,), stride=(1,), padding=(3,))
+        (1): Conv1d(256, 256, kernel_size=(7,), stride=(1,), padding=(3,))
+        (2): Conv1d(256, 256, kernel_size=(7,), stride=(1,), padding=(3,))
+      )
+    )
+    (2): ResBlock1(
+      (convs1): ModuleList(
+        (0): Conv1d(256, 256, kernel_size=(11,), stride=(1,), padding=(5,))
+        (1): Conv1d(256, 256, kernel_size=(11,), stride=(1,), padding=(15,), dilation=(3,))
+        (2): Conv1d(256, 256, kernel_size=(11,), stride=(1,), padding=(25,), dilation=(5,))
+      )
+      (convs2): ModuleList(
+        (0): Conv1d(256, 256, kernel_size=(11,), stride=(1,), padding=(5,))
+        (1): Conv1d(256, 256, kernel_size=(11,), stride=(1,), padding=(5,))
+        (2): Conv1d(256, 256, kernel_size=(11,), stride=(1,), padding=(5,))
+      )
+    )
+    (3): ResBlock1(
+      (convs1): ModuleList(
+        (0): Conv1d(128, 128, kernel_size=(3,), stride=(1,), padding=(1,))
+        (1): Conv1d(128, 128, kernel_size=(3,), stride=(1,), padding=(3,), dilation=(3,))
+        (2): Conv1d(128, 128, kernel_size=(3,), stride=(1,), padding=(5,), dilation=(5,))
+      )
+      (convs2): ModuleList(
+        (0): Conv1d(128, 128, kernel_size=(3,), stride=(1,), padding=(1,))
+        (1): Conv1d(128, 128, kernel_size=(3,), stride=(1,), padding=(1,))
+        (2): Conv1d(128, 128, kernel_size=(3,), stride=(1,), padding=(1,))
+      )
+    )
+    (4): ResBlock1(
+      (convs1): ModuleList(
+        (0): Conv1d(128, 128, kernel_size=(7,), stride=(1,), padding=(3,))
+        (1): Conv1d(128, 128, kernel_size=(7,), stride=(1,), padding=(9,), dilation=(3,))
+        (2): Conv1d(128, 128, kernel_size=(7,), stride=(1,), padding=(15,), dilation=(5,))
+      )
+      (convs2): ModuleList(
+        (0): Conv1d(128, 128, kernel_size=(7,), stride=(1,), padding=(3,))
+        (1): Conv1d(128, 128, kernel_size=(7,), stride=(1,), padding=(3,))
+        (2): Conv1d(128, 128, kernel_size=(7,), stride=(1,), padding=(3,))
+      )
+    )
+    (5): ResBlock1(
+      (convs1): ModuleList(
+        (0): Conv1d(128, 128, kernel_size=(11,), stride=(1,), padding=(5,))
+        (1): Conv1d(128, 128, kernel_size=(11,), stride=(1,), padding=(15,), dilation=(3,))
+        (2): Conv1d(128, 128, kernel_size=(11,), stride=(1,), padding=(25,), dilation=(5,))
+      )
+      (convs2): ModuleList(
+        (0): Conv1d(128, 128, kernel_size=(11,), stride=(1,), padding=(5,))
+        (1): Conv1d(128, 128, kernel_size=(11,), stride=(1,), padding=(5,))
+        (2): Conv1d(128, 128, kernel_size=(11,), stride=(1,), padding=(5,))
+      )
+    )
+    (6): ResBlock1(
+      (convs1): ModuleList(
+        (0): Conv1d(64, 64, kernel_size=(3,), stride=(1,), padding=(1,))
+        (1): Conv1d(64, 64, kernel_size=(3,), stride=(1,), padding=(3,), dilation=(3,))
+        (2): Conv1d(64, 64, kernel_size=(3,), stride=(1,), padding=(5,), dilation=(5,))
+      )
+      (convs2): ModuleList(
+        (0): Conv1d(64, 64, kernel_size=(3,), stride=(1,), padding=(1,))
+        (1): Conv1d(64, 64, kernel_size=(3,), stride=(1,), padding=(1,))
+        (2): Conv1d(64, 64, kernel_size=(3,), stride=(1,), padding=(1,))
+      )
+    )
+    (7): ResBlock1(
+      (convs1): ModuleList(
+        (0): Conv1d(64, 64, kernel_size=(7,), stride=(1,), padding=(3,))
+        (1): Conv1d(64, 64, kernel_size=(7,), stride=(1,), padding=(9,), dilation=(3,))
+        (2): Conv1d(64, 64, kernel_size=(7,), stride=(1,), padding=(15,), dilation=(5,))
+      )
+      (convs2): ModuleList(
+        (0): Conv1d(64, 64, kernel_size=(7,), stride=(1,), padding=(3,))
+        (1): Conv1d(64, 64, kernel_size=(7,), stride=(1,), padding=(3,))
+        (2): Conv1d(64, 64, kernel_size=(7,), stride=(1,), padding=(3,))
+      )
+    )
+    (8): ResBlock1(
+      (convs1): ModuleList(
+        (0): Conv1d(64, 64, kernel_size=(11,), stride=(1,), padding=(5,))
+        (1): Conv1d(64, 64, kernel_size=(11,), stride=(1,), padding=(15,), dilation=(3,))
+        (2): Conv1d(64, 64, kernel_size=(11,), stride=(1,), padding=(25,), dilation=(5,))
+      )
+      (convs2): ModuleList(
+        (0): Conv1d(64, 64, kernel_size=(11,), stride=(1,), padding=(5,))
+        (1): Conv1d(64, 64, kernel_size=(11,), stride=(1,), padding=(5,))
+        (2): Conv1d(64, 64, kernel_size=(11,), stride=(1,), padding=(5,))
+      )
+    )
+    (9): ResBlock1(
+      (convs1): ModuleList(
+        (0): Conv1d(32, 32, kernel_size=(3,), stride=(1,), padding=(1,))
+        (1): Conv1d(32, 32, kernel_size=(3,), stride=(1,), padding=(3,), dilation=(3,))
+        (2): Conv1d(32, 32, kernel_size=(3,), stride=(1,), padding=(5,), dilation=(5,))
+      )
+      (convs2): ModuleList(
+        (0): Conv1d(32, 32, kernel_size=(3,), stride=(1,), padding=(1,))
+        (1): Conv1d(32, 32, kernel_size=(3,), stride=(1,), padding=(1,))
+        (2): Conv1d(32, 32, kernel_size=(3,), stride=(1,), padding=(1,))
+      )
+    )
+    (10): ResBlock1(
+      (convs1): ModuleList(
+        (0): Conv1d(32, 32, kernel_size=(7,), stride=(1,), padding=(3,))
+        (1): Conv1d(32, 32, kernel_size=(7,), stride=(1,), padding=(9,), dilation=(3,))
+        (2): Conv1d(32, 32, kernel_size=(7,), stride=(1,), padding=(15,), dilation=(5,))
+      )
+      (convs2): ModuleList(
+        (0): Conv1d(32, 32, kernel_size=(7,), stride=(1,), padding=(3,))
+        (1): Conv1d(32, 32, kernel_size=(7,), stride=(1,), padding=(3,))
+        (2): Conv1d(32, 32, kernel_size=(7,), stride=(1,), padding=(3,))
+      )
+    )
+    (11): ResBlock1(
+      (convs1): ModuleList(
+        (0): Conv1d(32, 32, kernel_size=(11,), stride=(1,), padding=(5,))
+        (1): Conv1d(32, 32, kernel_size=(11,), stride=(1,), padding=(15,), dilation=(3,))
+        (2): Conv1d(32, 32, kernel_size=(11,), stride=(1,), padding=(25,), dilation=(5,))
+      )
+      (convs2): ModuleList(
+        (0): Conv1d(32, 32, kernel_size=(11,), stride=(1,), padding=(5,))
+        (1): Conv1d(32, 32, kernel_size=(11,), stride=(1,), padding=(5,))
+        (2): Conv1d(32, 32, kernel_size=(11,), stride=(1,), padding=(5,))
+      )
+    )
+  )
+  (conv_post): Conv1d(32, 1, kernel_size=(7,), stride=(1,), padding=(3,))
+)
+[2022-11-28 22:51:45,167][vc_tts_template][INFO] - Number of trainable params of netG: 13.936 million
+[2022-11-28 22:51:45,357][vc_tts_template][INFO] - MultiPeriodDiscriminator(
+  (discriminators): ModuleList(
+    (0): DiscriminatorP(
+      (convs): ModuleList(
+        (0): Conv2d(1, 32, kernel_size=(5, 1), stride=(3, 1), padding=(2, 0))
+        (1): Conv2d(32, 128, kernel_size=(5, 1), stride=(3, 1), padding=(2, 0))
+        (2): Conv2d(128, 512, kernel_size=(5, 1), stride=(3, 1), padding=(2, 0))
+        (3): Conv2d(512, 1024, kernel_size=(5, 1), stride=(3, 1), padding=(2, 0))
+        (4): Conv2d(1024, 1024, kernel_size=(5, 1), stride=(1, 1), padding=(2, 0))
+      )
+      (conv_post): Conv2d(1024, 1, kernel_size=(3, 1), stride=(1, 1), padding=(1, 0))
+    )
+    (1): DiscriminatorP(
+      (convs): ModuleList(
+        (0): Conv2d(1, 32, kernel_size=(5, 1), stride=(3, 1), padding=(2, 0))
+        (1): Conv2d(32, 128, kernel_size=(5, 1), stride=(3, 1), padding=(2, 0))
+        (2): Conv2d(128, 512, kernel_size=(5, 1), stride=(3, 1), padding=(2, 0))
+        (3): Conv2d(512, 1024, kernel_size=(5, 1), stride=(3, 1), padding=(2, 0))
+        (4): Conv2d(1024, 1024, kernel_size=(5, 1), stride=(1, 1), padding=(2, 0))
+      )
+      (conv_post): Conv2d(1024, 1, kernel_size=(3, 1), stride=(1, 1), padding=(1, 0))
+    )
+    (2): DiscriminatorP(
+      (convs): ModuleList(
+        (0): Conv2d(1, 32, kernel_size=(5, 1), stride=(3, 1), padding=(2, 0))
+        (1): Conv2d(32, 128, kernel_size=(5, 1), stride=(3, 1), padding=(2, 0))
+        (2): Conv2d(128, 512, kernel_size=(5, 1), stride=(3, 1), padding=(2, 0))
+        (3): Conv2d(512, 1024, kernel_size=(5, 1), stride=(3, 1), padding=(2, 0))
+        (4): Conv2d(1024, 1024, kernel_size=(5, 1), stride=(1, 1), padding=(2, 0))
+      )
+      (conv_post): Conv2d(1024, 1, kernel_size=(3, 1), stride=(1, 1), padding=(1, 0))
+    )
+    (3): DiscriminatorP(
+      (convs): ModuleList(
+        (0): Conv2d(1, 32, kernel_size=(5, 1), stride=(3, 1), padding=(2, 0))
+        (1): Conv2d(32, 128, kernel_size=(5, 1), stride=(3, 1), padding=(2, 0))
+        (2): Conv2d(128, 512, kernel_size=(5, 1), stride=(3, 1), padding=(2, 0))
+        (3): Conv2d(512, 1024, kernel_size=(5, 1), stride=(3, 1), padding=(2, 0))
+        (4): Conv2d(1024, 1024, kernel_size=(5, 1), stride=(1, 1), padding=(2, 0))
+      )
+      (conv_post): Conv2d(1024, 1, kernel_size=(3, 1), stride=(1, 1), padding=(1, 0))
+    )
+    (4): DiscriminatorP(
+      (convs): ModuleList(
+        (0): Conv2d(1, 32, kernel_size=(5, 1), stride=(3, 1), padding=(2, 0))
+        (1): Conv2d(32, 128, kernel_size=(5, 1), stride=(3, 1), padding=(2, 0))
+        (2): Conv2d(128, 512, kernel_size=(5, 1), stride=(3, 1), padding=(2, 0))
+        (3): Conv2d(512, 1024, kernel_size=(5, 1), stride=(3, 1), padding=(2, 0))
+        (4): Conv2d(1024, 1024, kernel_size=(5, 1), stride=(1, 1), padding=(2, 0))
+      )
+      (conv_post): Conv2d(1024, 1, kernel_size=(3, 1), stride=(1, 1), padding=(1, 0))
+    )
+  )
+)
+[2022-11-28 22:51:45,357][vc_tts_template][INFO] - Number of trainable params of netMPD: 41.106 million
+[2022-11-28 22:51:45,478][vc_tts_template][INFO] - MultiScaleDiscriminator(
+  (discriminators): ModuleList(
+    (0): DiscriminatorS(
+      (convs): ModuleList(
+        (0): Conv1d(1, 128, kernel_size=(15,), stride=(1,), padding=(7,))
+        (1): Conv1d(128, 128, kernel_size=(41,), stride=(2,), padding=(20,), groups=4)
+        (2): Conv1d(128, 256, kernel_size=(41,), stride=(2,), padding=(20,), groups=16)
+        (3): Conv1d(256, 512, kernel_size=(41,), stride=(4,), padding=(20,), groups=16)
+        (4): Conv1d(512, 1024, kernel_size=(41,), stride=(4,), padding=(20,), groups=16)
+        (5): Conv1d(1024, 1024, kernel_size=(41,), stride=(1,), padding=(20,), groups=16)
+        (6): Conv1d(1024, 1024, kernel_size=(5,), stride=(1,), padding=(2,))
+      )
+      (conv_post): Conv1d(1024, 1, kernel_size=(3,), stride=(1,), padding=(1,))
+    )
+    (1): DiscriminatorS(
+      (convs): ModuleList(
+        (0): Conv1d(1, 128, kernel_size=(15,), stride=(1,), padding=(7,))
+        (1): Conv1d(128, 128, kernel_size=(41,), stride=(2,), padding=(20,), groups=4)
+        (2): Conv1d(128, 256, kernel_size=(41,), stride=(2,), padding=(20,), groups=16)
+        (3): Conv1d(256, 512, kernel_size=(41,), stride=(4,), padding=(20,), groups=16)
+        (4): Conv1d(512, 1024, kernel_size=(41,), stride=(4,), padding=(20,), groups=16)
+        (5): Conv1d(1024, 1024, kernel_size=(41,), stride=(1,), padding=(20,), groups=16)
+        (6): Conv1d(1024, 1024, kernel_size=(5,), stride=(1,), padding=(2,))
+      )
+      (conv_post): Conv1d(1024, 1, kernel_size=(3,), stride=(1,), padding=(1,))
+    )
+    (2): DiscriminatorS(
+      (convs): ModuleList(
+        (0): Conv1d(1, 128, kernel_size=(15,), stride=(1,), padding=(7,))
+        (1): Conv1d(128, 128, kernel_size=(41,), stride=(2,), padding=(20,), groups=4)
+        (2): Conv1d(128, 256, kernel_size=(41,), stride=(2,), padding=(20,), groups=16)
+        (3): Conv1d(256, 512, kernel_size=(41,), stride=(4,), padding=(20,), groups=16)
+        (4): Conv1d(512, 1024, kernel_size=(41,), stride=(4,), padding=(20,), groups=16)
+        (5): Conv1d(1024, 1024, kernel_size=(41,), stride=(1,), padding=(20,), groups=16)
+        (6): Conv1d(1024, 1024, kernel_size=(5,), stride=(1,), padding=(2,))
+      )
+      (conv_post): Conv1d(1024, 1, kernel_size=(3,), stride=(1,), padding=(1,))
+    )
+  )
+  (meanpools): ModuleList(
+    (0): AvgPool1d(kernel_size=(4,), stride=(2,), padding=(2,))
+    (1): AvgPool1d(kernel_size=(4,), stride=(2,), padding=(2,))
+  )
+)
+[2022-11-28 22:51:45,479][vc_tts_template][INFO] - Number of trainable params of netMSD: 29.619 million
+[2022-11-28 22:51:45,481][vc_tts_template][INFO] - skipping loading optimizer and lr_scheduler's states!
+[2022-11-28 22:51:45,487][vc_tts_template][INFO] - Number of iterations per epoch: 200
+[2022-11-28 22:51:45,487][vc_tts_template][INFO] - Number of max_train_steps is set based on nepochs: 40000
+[2022-11-28 22:51:45,487][vc_tts_template][INFO] - Number of epochs: 200
+[2022-11-28 22:51:45,487][vc_tts_template][INFO] - Number of iterations: 40000
+[2022-11-28 22:53:03,068][vc_tts_template][INFO] - Saved checkpoint at /home/sarulab/eiji_iimori/documents/nishimura_copy/recipes/fastspeech2/exp/LINE_3_sr22050_LINE_79_JSUT_NICT_LINE_wo_Teacher_finetuning_FS_GMM_num_gaussians_11/hifigan/best_loss.pth
+[2022-11-28 22:54:15,261][vc_tts_template][INFO] - Saved checkpoint at /home/sarulab/eiji_iimori/documents/nishimura_copy/recipes/fastspeech2/exp/LINE_3_sr22050_LINE_79_JSUT_NICT_LINE_wo_Teacher_finetuning_FS_GMM_num_gaussians_11/hifigan/best_loss.pth
+[2022-11-28 22:55:27,158][vc_tts_template][INFO] - Saved checkpoint at /home/sarulab/eiji_iimori/documents/nishimura_copy/recipes/fastspeech2/exp/LINE_3_sr22050_LINE_79_JSUT_NICT_LINE_wo_Teacher_finetuning_FS_GMM_num_gaussians_11/hifigan/best_loss.pth
+[2022-11-28 22:56:38,771][vc_tts_template][INFO] - Saved checkpoint at /home/sarulab/eiji_iimori/documents/nishimura_copy/recipes/fastspeech2/exp/LINE_3_sr22050_LINE_79_JSUT_NICT_LINE_wo_Teacher_finetuning_FS_GMM_num_gaussians_11/hifigan/best_loss.pth
+[2022-11-28 23:02:39,741][vc_tts_template][INFO] - Saved checkpoint at /home/sarulab/eiji_iimori/documents/nishimura_copy/recipes/fastspeech2/exp/LINE_3_sr22050_LINE_79_JSUT_NICT_LINE_wo_Teacher_finetuning_FS_GMM_num_gaussians_11/hifigan/best_loss.pth
+[2022-11-28 23:06:14,134][vc_tts_template][INFO] - Saved checkpoint at /home/sarulab/eiji_iimori/documents/nishimura_copy/recipes/fastspeech2/exp/LINE_3_sr22050_LINE_79_JSUT_NICT_LINE_wo_Teacher_finetuning_FS_GMM_num_gaussians_11/hifigan/best_loss.pth
+[2022-11-28 23:08:37,287][vc_tts_template][INFO] - Saved checkpoint at /home/sarulab/eiji_iimori/documents/nishimura_copy/recipes/fastspeech2/exp/LINE_3_sr22050_LINE_79_JSUT_NICT_LINE_wo_Teacher_finetuning_FS_GMM_num_gaussians_11/hifigan/best_loss.pth
+[2022-11-28 23:12:12,167][vc_tts_template][INFO] - Saved checkpoint at /home/sarulab/eiji_iimori/documents/nishimura_copy/recipes/fastspeech2/exp/LINE_3_sr22050_LINE_79_JSUT_NICT_LINE_wo_Teacher_finetuning_FS_GMM_num_gaussians_11/hifigan/best_loss.pth
+[2022-11-28 23:13:23,671][vc_tts_template][INFO] - Saved checkpoint at /home/sarulab/eiji_iimori/documents/nishimura_copy/recipes/fastspeech2/exp/LINE_3_sr22050_LINE_79_JSUT_NICT_LINE_wo_Teacher_finetuning_FS_GMM_num_gaussians_11/hifigan/best_loss.pth
+[2022-11-28 23:14:35,393][vc_tts_template][INFO] - Saved checkpoint at /home/sarulab/eiji_iimori/documents/nishimura_copy/recipes/fastspeech2/exp/LINE_3_sr22050_LINE_79_JSUT_NICT_LINE_wo_Teacher_finetuning_FS_GMM_num_gaussians_11/hifigan/best_loss.pth
+[2022-11-28 23:34:44,515][vc_tts_template][INFO] - Saved checkpoint at /home/sarulab/eiji_iimori/documents/nishimura_copy/recipes/fastspeech2/exp/LINE_3_sr22050_LINE_79_JSUT_NICT_LINE_wo_Teacher_finetuning_FS_GMM_num_gaussians_11/hifigan/best_loss.pth
+[2022-11-28 23:38:19,326][vc_tts_template][INFO] - Saved checkpoint at /home/sarulab/eiji_iimori/documents/nishimura_copy/recipes/fastspeech2/exp/LINE_3_sr22050_LINE_79_JSUT_NICT_LINE_wo_Teacher_finetuning_FS_GMM_num_gaussians_11/hifigan/best_loss.pth
+[2022-11-28 23:48:58,875][vc_tts_template][INFO] - Saved checkpoint at /home/sarulab/eiji_iimori/documents/nishimura_copy/recipes/fastspeech2/exp/LINE_3_sr22050_LINE_79_JSUT_NICT_LINE_wo_Teacher_finetuning_FS_GMM_num_gaussians_11/hifigan/best_loss.pth
+[2022-11-28 23:51:22,191][vc_tts_template][INFO] - Saved checkpoint at /home/sarulab/eiji_iimori/documents/nishimura_copy/recipes/fastspeech2/exp/LINE_3_sr22050_LINE_79_JSUT_NICT_LINE_wo_Teacher_finetuning_FS_GMM_num_gaussians_11/hifigan/epoch0050.pth
+[2022-11-29 00:03:11,068][vc_tts_template][INFO] - Saved checkpoint at /home/sarulab/eiji_iimori/documents/nishimura_copy/recipes/fastspeech2/exp/LINE_3_sr22050_LINE_79_JSUT_NICT_LINE_wo_Teacher_finetuning_FS_GMM_num_gaussians_11/hifigan/best_loss.pth
+[2022-11-29 00:11:29,724][vc_tts_template][INFO] - Saved checkpoint at /home/sarulab/eiji_iimori/documents/nishimura_copy/recipes/fastspeech2/exp/LINE_3_sr22050_LINE_79_JSUT_NICT_LINE_wo_Teacher_finetuning_FS_GMM_num_gaussians_11/hifigan/best_loss.pth

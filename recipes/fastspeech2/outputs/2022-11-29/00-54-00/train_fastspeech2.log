@@ -1,0 +1,492 @@
+[2022-11-29 00:54:00,659][vc_tts_template][INFO] - PyTorch version: 1.12.0+cu116
+[2022-11-29 00:54:00,659][vc_tts_template][INFO] - cudnn.deterministic: False
+[2022-11-29 00:54:00,659][vc_tts_template][INFO] - cudnn.benchmark: False
+[2022-11-29 00:54:00,660][vc_tts_template][INFO] - cuDNN version: 8302
+[2022-11-29 00:54:00,660][vc_tts_template][INFO] - Random seed: 773
+[2022-11-29 00:54:03,607][vc_tts_template][INFO] - FastSpeech2wGMM(
+  (encoder): Encoder(
+    (src_word_emb): WordEncoder(
+      (src_word_emb): Embedding(53, 256, padding_idx=0)
+    )
+    (layer_stack): ModuleList(
+      (0): FFTBlock(
+        (slf_attn): MultiHeadAttention(
+          (w_qs): Linear(in_features=256, out_features=256, bias=True)
+          (w_ks): Linear(in_features=256, out_features=256, bias=True)
+          (w_vs): Linear(in_features=256, out_features=256, bias=True)
+          (attention): ScaledDotProductAttention(
+            (softmax): Softmax(dim=2)
+          )
+          (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (fc): Linear(in_features=256, out_features=256, bias=True)
+          (dropout): Dropout(p=0.2, inplace=False)
+        )
+        (pos_ffn): PositionwiseFeedForward(
+          (w_1): Conv1d(256, 1024, kernel_size=(9,), stride=(1,), padding=(4,))
+          (w_2): Conv1d(1024, 256, kernel_size=(1,), stride=(1,))
+          (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (dropout): Dropout(p=0.2, inplace=False)
+        )
+      )
+      (1): FFTBlock(
+        (slf_attn): MultiHeadAttention(
+          (w_qs): Linear(in_features=256, out_features=256, bias=True)
+          (w_ks): Linear(in_features=256, out_features=256, bias=True)
+          (w_vs): Linear(in_features=256, out_features=256, bias=True)
+          (attention): ScaledDotProductAttention(
+            (softmax): Softmax(dim=2)
+          )
+          (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (fc): Linear(in_features=256, out_features=256, bias=True)
+          (dropout): Dropout(p=0.2, inplace=False)
+        )
+        (pos_ffn): PositionwiseFeedForward(
+          (w_1): Conv1d(256, 1024, kernel_size=(9,), stride=(1,), padding=(4,))
+          (w_2): Conv1d(1024, 256, kernel_size=(1,), stride=(1,))
+          (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (dropout): Dropout(p=0.2, inplace=False)
+        )
+      )
+      (2): FFTBlock(
+        (slf_attn): MultiHeadAttention(
+          (w_qs): Linear(in_features=256, out_features=256, bias=True)
+          (w_ks): Linear(in_features=256, out_features=256, bias=True)
+          (w_vs): Linear(in_features=256, out_features=256, bias=True)
+          (attention): ScaledDotProductAttention(
+            (softmax): Softmax(dim=2)
+          )
+          (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (fc): Linear(in_features=256, out_features=256, bias=True)
+          (dropout): Dropout(p=0.2, inplace=False)
+        )
+        (pos_ffn): PositionwiseFeedForward(
+          (w_1): Conv1d(256, 1024, kernel_size=(9,), stride=(1,), padding=(4,))
+          (w_2): Conv1d(1024, 256, kernel_size=(1,), stride=(1,))
+          (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (dropout): Dropout(p=0.2, inplace=False)
+        )
+      )
+      (3): FFTBlock(
+        (slf_attn): MultiHeadAttention(
+          (w_qs): Linear(in_features=256, out_features=256, bias=True)
+          (w_ks): Linear(in_features=256, out_features=256, bias=True)
+          (w_vs): Linear(in_features=256, out_features=256, bias=True)
+          (attention): ScaledDotProductAttention(
+            (softmax): Softmax(dim=2)
+          )
+          (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (fc): Linear(in_features=256, out_features=256, bias=True)
+          (dropout): Dropout(p=0.2, inplace=False)
+        )
+        (pos_ffn): PositionwiseFeedForward(
+          (w_1): Conv1d(256, 1024, kernel_size=(9,), stride=(1,), padding=(4,))
+          (w_2): Conv1d(1024, 256, kernel_size=(1,), stride=(1,))
+          (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (dropout): Dropout(p=0.2, inplace=False)
+        )
+      )
+    )
+  )
+  (variance_adaptor): VarianceAdaptor(
+    (duration_predictor): VariancePredictor(
+      (conv_layer): Sequential(
+        (conv1d_1): Conv(
+          (conv): Conv1d(256, 256, kernel_size=(3,), stride=(1,), padding=(1,))
+        )
+        (relu_1): ReLU()
+        (layer_norm_1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (dropout_1): Dropout(p=0.5, inplace=False)
+        (conv1d_2): Conv(
+          (conv): Conv1d(256, 256, kernel_size=(3,), stride=(1,), padding=(1,))
+        )
+        (relu_2): ReLU()
+        (layer_norm_2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (dropout_2): Dropout(p=0.5, inplace=False)
+      )
+      (linear_layer): Linear(in_features=256, out_features=1, bias=True)
+    )
+    (length_regulator): LengthRegulator()
+    (pitch_predictor): VariancePredictor(
+      (conv_layer): Sequential(
+        (conv1d_1): Conv(
+          (conv): Conv1d(256, 256, kernel_size=(3,), stride=(1,), padding=(1,))
+        )
+        (relu_1): ReLU()
+        (layer_norm_1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (dropout_1): Dropout(p=0.5, inplace=False)
+        (conv1d_2): Conv(
+          (conv): Conv1d(256, 256, kernel_size=(3,), stride=(1,), padding=(1,))
+        )
+        (relu_2): ReLU()
+        (layer_norm_2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (dropout_2): Dropout(p=0.5, inplace=False)
+      )
+      (linear_layer): Linear(in_features=256, out_features=1, bias=True)
+    )
+    (energy_predictor): VariancePredictor(
+      (conv_layer): Sequential(
+        (conv1d_1): Conv(
+          (conv): Conv1d(256, 256, kernel_size=(3,), stride=(1,), padding=(1,))
+        )
+        (relu_1): ReLU()
+        (layer_norm_1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (dropout_1): Dropout(p=0.5, inplace=False)
+        (conv1d_2): Conv(
+          (conv): Conv1d(256, 256, kernel_size=(3,), stride=(1,), padding=(1,))
+        )
+        (relu_2): ReLU()
+        (layer_norm_2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (dropout_2): Dropout(p=0.5, inplace=False)
+      )
+      (linear_layer): Linear(in_features=256, out_features=1, bias=True)
+    )
+    (pitch_embedding): Embedding(256, 256)
+    (energy_embedding): Embedding(256, 256)
+  )
+  (decoder): Decoder(
+    (layer_stack): ModuleList(
+      (0): FFTBlock(
+        (slf_attn): MultiHeadAttention(
+          (w_qs): Linear(in_features=256, out_features=256, bias=True)
+          (w_ks): Linear(in_features=256, out_features=256, bias=True)
+          (w_vs): Linear(in_features=256, out_features=256, bias=True)
+          (attention): ScaledDotProductAttention(
+            (softmax): Softmax(dim=2)
+          )
+          (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (fc): Linear(in_features=256, out_features=256, bias=True)
+          (dropout): Dropout(p=0.2, inplace=False)
+        )
+        (pos_ffn): PositionwiseFeedForward(
+          (w_1): Conv1d(256, 1024, kernel_size=(9,), stride=(1,), padding=(4,))
+          (w_2): Conv1d(1024, 256, kernel_size=(1,), stride=(1,))
+          (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (dropout): Dropout(p=0.2, inplace=False)
+        )
+      )
+      (1): FFTBlock(
+        (slf_attn): MultiHeadAttention(
+          (w_qs): Linear(in_features=256, out_features=256, bias=True)
+          (w_ks): Linear(in_features=256, out_features=256, bias=True)
+          (w_vs): Linear(in_features=256, out_features=256, bias=True)
+          (attention): ScaledDotProductAttention(
+            (softmax): Softmax(dim=2)
+          )
+          (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (fc): Linear(in_features=256, out_features=256, bias=True)
+          (dropout): Dropout(p=0.2, inplace=False)
+        )
+        (pos_ffn): PositionwiseFeedForward(
+          (w_1): Conv1d(256, 1024, kernel_size=(9,), stride=(1,), padding=(4,))
+          (w_2): Conv1d(1024, 256, kernel_size=(1,), stride=(1,))
+          (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (dropout): Dropout(p=0.2, inplace=False)
+        )
+      )
+      (2): FFTBlock(
+        (slf_attn): MultiHeadAttention(
+          (w_qs): Linear(in_features=256, out_features=256, bias=True)
+          (w_ks): Linear(in_features=256, out_features=256, bias=True)
+          (w_vs): Linear(in_features=256, out_features=256, bias=True)
+          (attention): ScaledDotProductAttention(
+            (softmax): Softmax(dim=2)
+          )
+          (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (fc): Linear(in_features=256, out_features=256, bias=True)
+          (dropout): Dropout(p=0.2, inplace=False)
+        )
+        (pos_ffn): PositionwiseFeedForward(
+          (w_1): Conv1d(256, 1024, kernel_size=(9,), stride=(1,), padding=(4,))
+          (w_2): Conv1d(1024, 256, kernel_size=(1,), stride=(1,))
+          (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (dropout): Dropout(p=0.2, inplace=False)
+        )
+      )
+      (3): FFTBlock(
+        (slf_attn): MultiHeadAttention(
+          (w_qs): Linear(in_features=256, out_features=256, bias=True)
+          (w_ks): Linear(in_features=256, out_features=256, bias=True)
+          (w_vs): Linear(in_features=256, out_features=256, bias=True)
+          (attention): ScaledDotProductAttention(
+            (softmax): Softmax(dim=2)
+          )
+          (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (fc): Linear(in_features=256, out_features=256, bias=True)
+          (dropout): Dropout(p=0.2, inplace=False)
+        )
+        (pos_ffn): PositionwiseFeedForward(
+          (w_1): Conv1d(256, 1024, kernel_size=(9,), stride=(1,), padding=(4,))
+          (w_2): Conv1d(1024, 256, kernel_size=(1,), stride=(1,))
+          (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (dropout): Dropout(p=0.2, inplace=False)
+        )
+      )
+      (4): FFTBlock(
+        (slf_attn): MultiHeadAttention(
+          (w_qs): Linear(in_features=256, out_features=256, bias=True)
+          (w_ks): Linear(in_features=256, out_features=256, bias=True)
+          (w_vs): Linear(in_features=256, out_features=256, bias=True)
+          (attention): ScaledDotProductAttention(
+            (softmax): Softmax(dim=2)
+          )
+          (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (fc): Linear(in_features=256, out_features=256, bias=True)
+          (dropout): Dropout(p=0.2, inplace=False)
+        )
+        (pos_ffn): PositionwiseFeedForward(
+          (w_1): Conv1d(256, 1024, kernel_size=(9,), stride=(1,), padding=(4,))
+          (w_2): Conv1d(1024, 256, kernel_size=(1,), stride=(1,))
+          (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (dropout): Dropout(p=0.2, inplace=False)
+        )
+      )
+      (5): FFTBlock(
+        (slf_attn): MultiHeadAttention(
+          (w_qs): Linear(in_features=256, out_features=256, bias=True)
+          (w_ks): Linear(in_features=256, out_features=256, bias=True)
+          (w_vs): Linear(in_features=256, out_features=256, bias=True)
+          (attention): ScaledDotProductAttention(
+            (softmax): Softmax(dim=2)
+          )
+          (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (fc): Linear(in_features=256, out_features=256, bias=True)
+          (dropout): Dropout(p=0.2, inplace=False)
+        )
+        (pos_ffn): PositionwiseFeedForward(
+          (w_1): Conv1d(256, 1024, kernel_size=(9,), stride=(1,), padding=(4,))
+          (w_2): Conv1d(1024, 256, kernel_size=(1,), stride=(1,))
+          (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (dropout): Dropout(p=0.2, inplace=False)
+        )
+      )
+    )
+  )
+  (decoder_linear): Linear(in_features=256, out_features=256, bias=True)
+  (mel_linear): Linear(in_features=256, out_features=80, bias=True)
+  (postnet): PostNet(
+    (convolutions): ModuleList(
+      (0): Sequential(
+        (0): ConvNorm(
+          (conv): Conv1d(80, 512, kernel_size=(5,), stride=(1,), padding=(2,))
+        )
+        (1): BatchNorm1d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (1): Sequential(
+        (0): ConvNorm(
+          (conv): Conv1d(512, 512, kernel_size=(5,), stride=(1,), padding=(2,))
+        )
+        (1): BatchNorm1d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (2): Sequential(
+        (0): ConvNorm(
+          (conv): Conv1d(512, 512, kernel_size=(5,), stride=(1,), padding=(2,))
+        )
+        (1): BatchNorm1d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (3): Sequential(
+        (0): ConvNorm(
+          (conv): Conv1d(512, 512, kernel_size=(5,), stride=(1,), padding=(2,))
+        )
+        (1): BatchNorm1d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (4): Sequential(
+        (0): ConvNorm(
+          (conv): Conv1d(512, 80, kernel_size=(5,), stride=(1,), padding=(2,))
+        )
+        (1): BatchNorm1d(80, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+  )
+  (speaker_emb): Embedding(5, 256)
+  (prosody_extractor): ProsodyExtractor(
+    (convnorms): ConvBNorms2d(
+      (convolutions): Sequential(
+        (0): Conv2d(1, 1, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        (1): BatchNorm2d(1, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): ReLU()
+        (3): Conv2d(1, 1, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        (4): BatchNorm2d(1, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU()
+      )
+    )
+    (bi_gru): GRUwSort(
+      (gru): GRU(80, 32, num_layers=2, batch_first=True, bidirectional=True)
+      (length_regulator): LengthRegulator()
+    )
+  )
+  (prosody_predictor): ProsodyPredictor(
+    (convnorms): ConvLNorms1d(
+      (convolutions): Sequential(
+        (0): Transpose()
+        (1): Conv1d(256, 256, kernel_size=(3,), stride=(1,), padding=(1,))
+        (2): ReLU()
+        (3): Transpose()
+        (4): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (5): Dropout(p=0.2, inplace=False)
+        (6): Transpose()
+        (7): Conv1d(256, 256, kernel_size=(3,), stride=(1,), padding=(1,))
+        (8): ReLU()
+        (9): Transpose()
+        (10): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (11): Dropout(p=0.2, inplace=False)
+      )
+    )
+    (gru): ModuleList(
+      (0): ZoneOutCell(
+        (cell): GRUCell(320, 512)
+      )
+      (1): ZoneOutCell(
+        (cell): GRUCell(512, 512)
+      )
+    )
+    (prenet): Linear(in_features=64, out_features=64, bias=True)
+    (pi_linear): Sequential(
+      (0): Linear(in_features=768, out_features=11, bias=True)
+      (1): Div()
+      (2): Softmax(dim=1)
+    )
+    (sigma_linear): Sequential(
+      (0): Linear(in_features=768, out_features=704, bias=True)
+      (1): ELU(alpha=1.0, inplace=True)
+    )
+    (mu_linear): Linear(in_features=768, out_features=704, bias=True)
+  )
+  (prosody_linear): Linear(in_features=64, out_features=256, bias=True)
+)
+[2022-11-29 00:54:03,610][vc_tts_template][INFO] - Number of trainable params: 39.039 million
+[2022-11-29 00:54:03,727][vc_tts_template][INFO] - Number of iterations per epoch: 400
+[2022-11-29 00:54:03,727][vc_tts_template][INFO] - Number of max_train_steps is set based on nepochs: 80000
+[2022-11-29 00:54:03,727][vc_tts_template][INFO] - Number of epochs: 200
+[2022-11-29 00:54:03,727][vc_tts_template][INFO] - Number of iterations: 80000
+[2022-11-29 00:54:08,837][vc_tts_template][DEBUG] - mel_loss: 0.9645455479621887
+[2022-11-29 00:54:08,837][vc_tts_template][DEBUG] - postnet_mel_loss: 1.4532338380813599
+[2022-11-29 00:54:08,837][vc_tts_template][DEBUG] - pitch_loss: 1.5736799240112305
+[2022-11-29 00:54:08,837][vc_tts_template][DEBUG] - energy_loss: 1.4395010471343994
+[2022-11-29 00:54:08,837][vc_tts_template][DEBUG] - duration_loss: 7.166595458984375
+[2022-11-29 00:54:08,837][vc_tts_template][DEBUG] - prosody_loss: 62.85655975341797
+[2022-11-29 00:54:08,837][vc_tts_template][DEBUG] - total_loss: 13.854687690734863
+[2022-11-29 00:54:08,837][vc_tts_template][DEBUG] - steps: 1, param_name: variance_adaptor.duration_predictor.conv_layer.conv1d_1.conv.weight: inf
+[2022-11-29 00:54:08,837][vc_tts_template][DEBUG] - steps: 1, param_name: variance_adaptor.duration_predictor.conv_layer.conv1d_2.conv.weight: inf
+[2022-11-29 00:54:08,837][vc_tts_template][DEBUG] - steps: 1, param_name: variance_adaptor.duration_predictor.linear_layer.weight: inf
+[2022-11-29 00:54:08,837][vc_tts_template][DEBUG] - steps: 1, param_name: variance_adaptor.duration_predictor.linear_layer.bias: inf
+[2022-11-29 00:54:08,837][vc_tts_template][INFO] - grad norm is NaN. Will Skip updating
+[2022-11-29 00:54:09,096][vc_tts_template][DEBUG] - mel_loss: 0.9507468938827515
+[2022-11-29 00:54:09,096][vc_tts_template][DEBUG] - postnet_mel_loss: 1.410500168800354
+[2022-11-29 00:54:09,096][vc_tts_template][DEBUG] - pitch_loss: 1.465800404548645
+[2022-11-29 00:54:09,096][vc_tts_template][DEBUG] - energy_loss: 1.609980583190918
+[2022-11-29 00:54:09,096][vc_tts_template][DEBUG] - duration_loss: 6.769512176513672
+[2022-11-29 00:54:09,096][vc_tts_template][DEBUG] - prosody_loss: 62.837074279785156
+[2022-11-29 00:54:09,096][vc_tts_template][DEBUG] - total_loss: 13.463281631469727
+[2022-11-29 00:54:09,096][vc_tts_template][DEBUG] - steps: 2, param_name: variance_adaptor.duration_predictor.linear_layer.weight: inf
+[2022-11-29 00:54:09,096][vc_tts_template][DEBUG] - steps: 2, param_name: variance_adaptor.duration_predictor.linear_layer.bias: inf
+[2022-11-29 00:54:09,096][vc_tts_template][INFO] - grad norm is NaN. Will Skip updating
+[2022-11-29 00:54:09,291][vc_tts_template][DEBUG] - mel_loss: 0.9415386915206909
+[2022-11-29 00:54:09,291][vc_tts_template][DEBUG] - postnet_mel_loss: 1.402698040008545
+[2022-11-29 00:54:09,291][vc_tts_template][DEBUG] - pitch_loss: 1.5252699851989746
+[2022-11-29 00:54:09,292][vc_tts_template][DEBUG] - energy_loss: 1.5583158731460571
+[2022-11-29 00:54:09,292][vc_tts_template][DEBUG] - duration_loss: 5.3581132888793945
+[2022-11-29 00:54:09,292][vc_tts_template][DEBUG] - prosody_loss: 62.97040939331055
+[2022-11-29 00:54:09,292][vc_tts_template][DEBUG] - total_loss: 12.045344352722168
+[2022-11-29 00:54:09,292][vc_tts_template][DEBUG] - steps: 3, param_name: variance_adaptor.duration_predictor.linear_layer.weight: inf
+[2022-11-29 00:54:09,292][vc_tts_template][DEBUG] - steps: 3, param_name: variance_adaptor.duration_predictor.linear_layer.bias: inf
+[2022-11-29 00:54:09,292][vc_tts_template][INFO] - grad norm is NaN. Will Skip updating
+[2022-11-29 00:54:09,462][vc_tts_template][DEBUG] - mel_loss: 0.9162445664405823
+[2022-11-29 00:54:09,462][vc_tts_template][DEBUG] - postnet_mel_loss: 1.3845926523208618
+[2022-11-29 00:54:09,462][vc_tts_template][DEBUG] - pitch_loss: 1.3276574611663818
+[2022-11-29 00:54:09,462][vc_tts_template][DEBUG] - energy_loss: 1.526697039604187
+[2022-11-29 00:54:09,462][vc_tts_template][DEBUG] - duration_loss: 6.72750186920166
+[2022-11-29 00:54:09,462][vc_tts_template][DEBUG] - prosody_loss: 63.04072570800781
+[2022-11-29 00:54:09,462][vc_tts_template][DEBUG] - total_loss: 13.143508911132812
+[2022-11-29 00:54:09,462][vc_tts_template][DEBUG] - steps: 4, param_name: variance_adaptor.duration_predictor.linear_layer.weight: inf
+[2022-11-29 00:54:09,462][vc_tts_template][INFO] - grad norm is NaN. Will Skip updating
+[2022-11-29 00:55:25,052][vc_tts_template][INFO] - Saved checkpoint at /home/sarulab/eiji_iimori/documents/nishimura_copy/recipes/fastspeech2/exp/LINE_3_sr22050_LINE_79_JSUT_NICT_LINE_wo_Teacher_finetuning_FS_GMM_num_gaussians_11/fastspeech2wGMM/best_loss.pth
+[2022-11-29 01:17:43,201][vc_tts_template][DEBUG] - mel_loss: 0.28977134823799133
+[2022-11-29 01:17:43,201][vc_tts_template][DEBUG] - postnet_mel_loss: 0.2898089587688446
+[2022-11-29 01:17:43,201][vc_tts_template][DEBUG] - pitch_loss: 0.4779251217842102
+[2022-11-29 01:17:43,201][vc_tts_template][DEBUG] - energy_loss: 0.18833482265472412
+[2022-11-29 01:17:43,201][vc_tts_template][DEBUG] - duration_loss: 0.014159056358039379
+[2022-11-29 01:17:43,201][vc_tts_template][DEBUG] - prosody_loss: -29.554353713989258
+[2022-11-29 01:17:43,201][vc_tts_template][DEBUG] - total_loss: 0.6689123511314392
+[2022-11-29 01:17:43,201][vc_tts_template][DEBUG] - steps: 6432, param_name: prosody_extractor.convnorms.convolutions.3.weight: inf
+[2022-11-29 01:17:43,201][vc_tts_template][INFO] - grad norm is NaN. Will Skip updating
+[2022-11-29 01:27:22,742][vc_tts_template][DEBUG] - mel_loss: 0.26485589146614075
+[2022-11-29 01:27:22,743][vc_tts_template][DEBUG] - postnet_mel_loss: 0.264910489320755
+[2022-11-29 01:27:22,743][vc_tts_template][DEBUG] - pitch_loss: 0.8933709263801575
+[2022-11-29 01:27:22,743][vc_tts_template][DEBUG] - energy_loss: 0.035130344331264496
+[2022-11-29 01:27:22,743][vc_tts_template][DEBUG] - duration_loss: 0.010680465027689934
+[2022-11-29 01:27:22,743][vc_tts_template][DEBUG] - prosody_loss: -28.65677833557129
+[2022-11-29 01:27:22,743][vc_tts_template][DEBUG] - total_loss: 0.8958125710487366
+[2022-11-29 01:27:22,743][vc_tts_template][DEBUG] - steps: 9184, param_name: prosody_extractor.convnorms.convolutions.3.weight: inf
+[2022-11-29 01:27:22,743][vc_tts_template][INFO] - grad norm is NaN. Will Skip updating
+[2022-11-29 01:34:50,238][vc_tts_template][DEBUG] - mel_loss: 0.255661278963089
+[2022-11-29 01:34:50,238][vc_tts_template][DEBUG] - postnet_mel_loss: 0.255810022354126
+[2022-11-29 01:34:50,238][vc_tts_template][DEBUG] - pitch_loss: 0.5370036363601685
+[2022-11-29 01:34:50,238][vc_tts_template][DEBUG] - energy_loss: 0.07314170897006989
+[2022-11-29 01:34:50,238][vc_tts_template][DEBUG] - duration_loss: 0.010864014737308025
+[2022-11-29 01:34:50,238][vc_tts_template][DEBUG] - prosody_loss: -31.035694122314453
+[2022-11-29 01:34:50,238][vc_tts_template][DEBUG] - total_loss: 0.5117667317390442
+[2022-11-29 01:34:50,238][vc_tts_template][DEBUG] - steps: 11232, param_name: prosody_extractor.convnorms.convolutions.3.weight: inf
+[2022-11-29 01:34:50,238][vc_tts_template][INFO] - grad norm is NaN. Will Skip updating
+[2022-11-29 01:43:15,559][vc_tts_template][DEBUG] - mel_loss: 0.2451571524143219
+[2022-11-29 01:43:15,560][vc_tts_template][DEBUG] - postnet_mel_loss: 0.24516867101192474
+[2022-11-29 01:43:15,564][vc_tts_template][DEBUG] - pitch_loss: 0.8599419593811035
+[2022-11-29 01:43:15,564][vc_tts_template][DEBUG] - energy_loss: 0.07641440629959106
+[2022-11-29 01:43:15,564][vc_tts_template][DEBUG] - duration_loss: 0.007218367885798216
+[2022-11-29 01:43:15,564][vc_tts_template][DEBUG] - prosody_loss: -26.307783126831055
+[2022-11-29 01:43:15,564][vc_tts_template][DEBUG] - total_loss: 0.9077449440956116
+[2022-11-29 01:43:15,564][vc_tts_template][DEBUG] - steps: 13488, param_name: prosody_extractor.convnorms.convolutions.3.weight: inf
+[2022-11-29 01:43:15,564][vc_tts_template][INFO] - grad norm is NaN. Will Skip updating
+[2022-11-29 01:51:24,593][vc_tts_template][DEBUG] - mel_loss: 0.2415168583393097
+[2022-11-29 01:51:24,593][vc_tts_template][DEBUG] - postnet_mel_loss: 0.24153947830200195
+[2022-11-29 01:51:24,593][vc_tts_template][DEBUG] - pitch_loss: 0.32351213693618774
+[2022-11-29 01:51:24,593][vc_tts_template][DEBUG] - energy_loss: 0.111337810754776
+[2022-11-29 01:51:24,593][vc_tts_template][DEBUG] - duration_loss: 0.00975165143609047
+[2022-11-29 01:51:24,593][vc_tts_template][DEBUG] - prosody_loss: -26.536067962646484
+[2022-11-29 01:51:24,593][vc_tts_template][DEBUG] - total_loss: 0.3969365954399109
+[2022-11-29 01:51:24,593][vc_tts_template][DEBUG] - steps: 15696, param_name: prosody_extractor.convnorms.convolutions.3.weight: inf
+[2022-11-29 01:51:24,594][vc_tts_template][INFO] - grad norm is NaN. Will Skip updating
+[2022-11-29 02:06:25,731][vc_tts_template][DEBUG] - mel_loss: 0.22688990831375122
+[2022-11-29 02:06:25,731][vc_tts_template][DEBUG] - postnet_mel_loss: 0.22681286931037903
+[2022-11-29 02:06:25,731][vc_tts_template][DEBUG] - pitch_loss: 0.299795001745224
+[2022-11-29 02:06:25,731][vc_tts_template][DEBUG] - energy_loss: 0.05227813497185707
+[2022-11-29 02:06:25,731][vc_tts_template][DEBUG] - duration_loss: 0.005435505416244268
+[2022-11-29 02:06:25,731][vc_tts_template][DEBUG] - prosody_loss: -40.49633026123047
+[2022-11-29 02:06:25,731][vc_tts_template][DEBUG] - total_loss: 0.0012848973274230957
+[2022-11-29 02:06:25,731][vc_tts_template][DEBUG] - steps: 19728, param_name: prosody_extractor.convnorms.convolutions.3.weight: inf
+[2022-11-29 02:06:25,731][vc_tts_template][INFO] - grad norm is NaN. Will Skip updating
+[2022-11-29 02:06:50,191][vc_tts_template][DEBUG] - mel_loss: 0.21880359947681427
+[2022-11-29 02:06:50,191][vc_tts_template][DEBUG] - postnet_mel_loss: 0.21874889731407166
+[2022-11-29 02:06:50,191][vc_tts_template][DEBUG] - pitch_loss: 0.12351057678461075
+[2022-11-29 02:06:50,191][vc_tts_template][DEBUG] - energy_loss: 0.031483765691518784
+[2022-11-29 02:06:50,191][vc_tts_template][DEBUG] - duration_loss: 0.014693750068545341
+[2022-11-29 02:06:50,191][vc_tts_template][DEBUG] - prosody_loss: -25.095090866088867
+[2022-11-29 02:06:50,191][vc_tts_template][DEBUG] - total_loss: 0.10533881187438965
+[2022-11-29 02:06:50,191][vc_tts_template][DEBUG] - steps: 19840, param_name: prosody_extractor.convnorms.convolutions.3.weight: inf
+[2022-11-29 02:06:50,191][vc_tts_template][INFO] - grad norm is NaN. Will Skip updating
+[2022-11-29 02:21:58,883][vc_tts_template][DEBUG] - mel_loss: 0.2051306962966919
+[2022-11-29 02:21:58,883][vc_tts_template][DEBUG] - postnet_mel_loss: 0.20511488616466522
+[2022-11-29 02:21:58,883][vc_tts_template][DEBUG] - pitch_loss: 0.4771595001220703
+[2022-11-29 02:21:58,883][vc_tts_template][DEBUG] - energy_loss: 0.057346343994140625
+[2022-11-29 02:21:58,883][vc_tts_template][DEBUG] - duration_loss: 0.0038719940930604935
+[2022-11-29 02:21:58,883][vc_tts_template][DEBUG] - prosody_loss: -39.70610809326172
+[2022-11-29 02:21:58,883][vc_tts_template][DEBUG] - total_loss: 0.15450125932693481
+[2022-11-29 02:21:58,883][vc_tts_template][DEBUG] - steps: 23935, param_name: prosody_extractor.convnorms.convolutions.3.weight: inf
+[2022-11-29 02:21:58,883][vc_tts_template][INFO] - grad norm is NaN. Will Skip updating
+[2022-11-29 02:24:52,918][vc_tts_template][DEBUG] - mel_loss: 0.22274120151996613
+[2022-11-29 02:24:52,918][vc_tts_template][DEBUG] - postnet_mel_loss: 0.2226845771074295
+[2022-11-29 02:24:52,918][vc_tts_template][DEBUG] - pitch_loss: 0.1501026153564453
+[2022-11-29 02:24:52,918][vc_tts_template][DEBUG] - energy_loss: 0.059086255729198456
+[2022-11-29 02:24:52,918][vc_tts_template][DEBUG] - duration_loss: 0.006210410967469215
+[2022-11-29 02:24:52,918][vc_tts_template][DEBUG] - prosody_loss: -32.17310333251953
+[2022-11-29 02:24:52,918][vc_tts_template][DEBUG] - total_loss: 0.017363011837005615
+[2022-11-29 02:24:52,918][vc_tts_template][DEBUG] - steps: 24704, param_name: prosody_extractor.convnorms.convolutions.3.weight: inf
+[2022-11-29 02:24:52,918][vc_tts_template][INFO] - grad norm is NaN. Will Skip updating
+[2022-11-29 02:32:51,185][vc_tts_template][DEBUG] - mel_loss: 0.2124900072813034
+[2022-11-29 02:32:51,186][vc_tts_template][DEBUG] - postnet_mel_loss: 0.21230269968509674
+[2022-11-29 02:32:51,186][vc_tts_template][DEBUG] - pitch_loss: 0.2911266088485718
+[2022-11-29 02:32:51,186][vc_tts_template][DEBUG] - energy_loss: 0.02553279884159565
+[2022-11-29 02:32:51,186][vc_tts_template][DEBUG] - duration_loss: 0.005870124325156212
+[2022-11-29 02:32:51,186][vc_tts_template][DEBUG] - prosody_loss: -38.167930603027344
+[2022-11-29 02:32:51,186][vc_tts_template][DEBUG] - total_loss: -0.01603633165359497
+[2022-11-29 02:32:51,186][vc_tts_template][DEBUG] - steps: 26864, param_name: prosody_extractor.convnorms.convolutions.3.weight: inf
+[2022-11-29 02:32:51,186][vc_tts_template][INFO] - grad norm is NaN. Will Skip updating

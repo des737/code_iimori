@@ -1,0 +1,78 @@
+netG:
+  _target_: vc_tts_template.fastspeech2wContexts.Fastspeech2wGMMwPEProsody
+  max_seq_len: 4000
+  num_vocab: 53
+  # encoder
+  encoder_hidden_dim: 256
+  encoder_num_layer: 4
+  encoder_num_head: 2
+  conv_filter_size: 1024
+  conv_kernel_size_1: 9
+  conv_kernel_size_2: 1
+  encoder_dropout: 0.2
+  # context encoder
+  context_encoder_hidden_dim: 512
+  context_num_layer: 4
+  context_encoder_dropout: 0.2
+  peprosody_encoder_gru_dim: 256
+  peprosody_encoder_gru_num_layer: 2
+  shere_embedding: False
+  mel_embedding_mode:
+  mel_emb_dim: 256
+  mel_emb_kernel: 31
+  mel_emb_dropout: 0.5
+  # prosody extractor
+  prosody_emb_dim: 64
+  extra_conv_kernel_size: 3
+  extra_conv_n_layers: 2
+  extra_gru_n_layers: 2
+  extra_global_gru_n_layers: 2
+  # prosody predictor
+  gru_hidden_dim: 512
+  gru_n_layers: 2
+  pp_conv_out_channels: 256
+  pp_conv_kernel_size: 3
+  pp_conv_n_layers: 2
+  pp_conv_dropout: 0.2
+  pp_zoneout: 0.1
+  num_gaussians: 3
+  softmax_temperature: 1.0
+  global_gru_n_layers: 2
+  global_d_gru: 512
+  global_num_gaussians: 10
+  global_softmax_temperature: 1.0
+  prosody_emb_size: 64
+  attention_hidden_dim: 128
+  attention_conv_channels: 32
+  attention_conv_kernel_size: 31
+  # variance predictor
+  variance_predictor_filter_size: 256
+  variance_predictor_kernel_size: 3
+  variance_predictor_dropout: 0.5
+  pitch_feature_level:
+  energy_feature_level:
+  pitch_quantization: "linear"
+  energy_quantization: "linear"
+  pitch_embed_kernel_size: 9
+  pitch_embed_dropout: 0.5
+  energy_embed_kernel_size: 9
+  energy_embed_dropout: 0.5
+  n_bins: 256
+  # decoder
+  decoder_hidden_dim: 256
+  decoder_num_layer: 6
+  decoder_num_head: 2
+  decoder_dropout: 0.2
+  n_mel_channel:
+  # other
+  encoder_fix: False
+  prosody_spk_independence: True
+  local_prosody: True
+  global_prosody: False
+  prosody_attention: False
+  stats:
+  # stats: {"pitch_min": -0.7024055490777836, "pitch_max": 0.5050794978252391, "energy_min": -0.8127368539571762, "energy_max": 0.5676259696483612}
+  speakers: {"PAD": 0, "Teacher": 1, "MStudent": 2, "FStudent": 3}
+  emotions:
+  # emotions: {"PAD": 0, "Normal": 1, "Happy": 2, "Sad": 3, "Angry": 4}
+  accent_info:

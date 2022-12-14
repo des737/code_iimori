@@ -1,0 +1,29 @@
+netG:
+  _target_: vc_tts_template.fastspeech2.FastSpeech2
+  max_seq_len: 4000
+  num_vocab: 53
+  encoder_hidden_dim: 256
+  encoder_num_layer: 4
+  encoder_num_head: 2
+  conv_filter_size: 1024
+  conv_kernel_size_1: 9
+  conv_kernel_size_2: 1
+  encoder_dropout: 0.2
+  variance_predictor_filter_size: 256
+  variance_predictor_kernel_size: 3
+  variance_predictor_dropout: 0.5
+  pitch_feature_level:
+  energy_feature_level:
+  pitch_quantization: "linear"
+  energy_quantization: "linear"
+  n_bins: 256
+  decoder_hidden_dim: 256
+  decoder_num_layer: 6
+  decoder_num_head: 2
+  decoder_dropout: 0.2
+  n_mel_channel:
+  encoder_fix: False
+  stats: {"pitch_min": -0.7024055490777836, "pitch_max": 0.5050794978252391, "energy_min": -0.8127368539571762, "energy_max": 0.5676259696483612}
+  speakers:
+  emotions: {"Normal": 0, "Happy": 1, "Sad": 2, "Angry": 3}
+  accent_info:

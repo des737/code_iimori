@@ -1,0 +1,89 @@
+model:
+  netG:
+    _target_: vc_tts_template.vocoder.hifigan.Generator
+    upsample_rates:
+    - 8
+    - 8
+    - 2
+    - 2
+    upsample_kernel_sizes:
+    - 16
+    - 16
+    - 4
+    - 4
+    upsample_initial_channel: 512
+    resblock_kernel_sizes:
+    - 3
+    - 7
+    - 11
+    resblock_dilation_sizes:
+    - - 1
+      - 3
+      - 5
+    - - 1
+      - 3
+      - 5
+    - - 1
+      - 3
+      - 5
+    resblock: '1'
+  netMPD:
+    _target_: vc_tts_template.vocoder.hifigan.MultiPeriodDiscriminator
+    discriminator_periods:
+    - 2
+    - 3
+    - 5
+    - 7
+    - 11
+  netMSD:
+    _target_: vc_tts_template.vocoder.hifigan.MultiScaleDiscriminator
+verbose: 100
+seed: 773
+tqdm: tqdm
+cudnn:
+  benchmark: false
+  deterministic: false
+data_parallel: false
+data:
+  train:
+    utt_list: data/train.list
+    in_dir: /home/sarulab/eiji_iimori/documents/dataset/dataset/out_JSUT_NICT_LINE/JSUT_NICT_LINE/wav/22050
+    out_dir: null
+  dev:
+    utt_list: data/dev.list
+    in_dir: /home/sarulab/eiji_iimori/documents/dataset/dataset/out_JSUT_NICT_LINE/JSUT_NICT_LINE/wav/22050
+    out_dir: null
+  num_workers: 20
+  batch_size: 128
+  group_size: 1
+  sampling_rate: 22050
+  n_cache_reuse: 1
+  segment_size: 8192
+  n_fft: 1024
+  num_mels: 80
+  hop_size: 256
+  win_size: 1024
+  fmin: 0
+  fmax: 8000
+  fmax_loss: null
+train:
+  out_dir: exp/LINE_3_sr22050_LINE_79_JSUT_NICT_LINE_wo_Teacher_finetuning_FS_GMM_num_gaussians_11/hifigan
+  log_dir: tensorboard/LINE_3_sr22050_LINE_79_JSUT_NICT_LINE_wo_Teacher_finetuning_FS_GMM_num_gaussians_11_hifigan
+  max_train_steps: -1
+  nepochs: 200
+  checkpoint_epoch_interval: 50
+  eval_epoch_interval: 10
+  optim:
+    optimizer:
+      _target_: vc_tts_template.vocoder.hifigan.optimizer.hifigan_optim
+      learning_rate: 0.0002
+      adam_b1: 0.8
+      adam_b2: 0.99
+    lr_scheduler:
+      _target_: vc_tts_template.vocoder.hifigan.optimizer.hifigan_lr_scheduler
+      lr_decay: 0.999
+  criterion:
+    _target_: vc_tts_template.vocoder.hifigan.loss.hifiganloss
+  pretrained:
+    checkpoint: ../../vc_tts_template/vocoder/hifigan/weights/universal.pth
+    optimizer_reset: true

@@ -1,0 +1,80 @@
+# @package _global_
+
+defaults:
+  - model:
+
+verbose: 100
+seed: 773
+
+# 1) none 2) tqdm
+tqdm:
+
+cudnn:
+  benchmark:
+  deterministic:
+
+# Multi-gpu
+data_parallel: false
+
+###########################################################
+#                DATA SETTING                             #
+###########################################################
+data:
+  # training set
+  train:
+    utt_list:
+    in_dir:
+    out_dir:
+
+  # development set
+  dev:
+    utt_list:
+    in_dir:
+    out_dir:
+
+  # data loader
+  num_workers: 20
+  batch_size:
+  group_size: 1
+  sampling_rate:
+  n_cache_reuse: 1
+  segment_size: 8192
+  n_fft:
+  num_mels:
+  hop_size:
+  win_size:
+  fmin:
+  fmax:
+  fmax_loss: null
+
+###########################################################
+#                TRAIN SETTING                            #
+###########################################################
+train:
+  out_dir:
+  log_dir:
+
+  # steps can either be specified by steps or epochs
+  max_train_steps: -1
+  nepochs:
+  checkpoint_epoch_interval: 50
+  eval_epoch_interval: 10
+
+  optim:
+    optimizer:
+      _target_: vc_tts_template.vocoder.hifigan.optimizer.hifigan_optim
+      learning_rate: 0.0002
+      adam_b1: 0.8
+      adam_b2: 0.99
+    lr_scheduler:
+      _target_: vc_tts_template.vocoder.hifigan.optimizer.hifigan_lr_scheduler
+      lr_decay: 0.999
+
+  criterion:
+    _target_: vc_tts_template.vocoder.hifigan.loss.hifiganloss
+
+  pretrained:
+    # 注意: ./run.shのいるディレクトリがcwdです.
+    # 例: "exp/jsut_sr22050/fastspeech2/latest.pth"
+    checkpoint: ../../vc_tts_template/vocoder/hifigan/weights/universal.pth
+    optimizer_reset: True

@@ -1,0 +1,37 @@
+netG:
+  _target_: vc_tts_template.fastspeech2VC.fastspeech2VC
+  n_mel_channel:
+  # encoder_decoder
+  attention_dim: 384
+  encoder_hidden_dim: 256
+  encoder_num_layer: 4
+  encoder_num_head: 2
+  decoder_hidden_dim: 256
+  decoder_num_layer: 4
+  decoder_num_head: 2
+  conv_kernel_size: 7
+  ff_expansion_factor: 4
+  conv_expansion_factor: 2
+  ff_dropout: 0.2
+  attention_dropout: 0.2
+  conv_dropout: 0.2
+  # varianceadaptor
+  variance_predictor_filter_size: 256
+  variance_predictor_kernel_size_d: 3
+  variance_predictor_layer_num_d: 2
+  variance_predictor_kernel_size_p: 5
+  variance_predictor_layer_num_p: 5
+  variance_predictor_kernel_size_e: 3
+  variance_predictor_layer_num_e: 2
+  variance_predictor_dropout: 0.5
+  stop_gradient_flow_d: False
+  stop_gradient_flow_p: True
+  stop_gradient_flow_e: False
+  reduction_factor:
+
+  encoder_fix: False
+  pitch_AR: True
+  pitch_ARNAR: False
+  lstm_layers: 2
+  speakers:
+  emotions:

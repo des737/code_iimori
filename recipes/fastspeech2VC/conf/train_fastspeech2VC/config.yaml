@@ -1,0 +1,86 @@
+# @package _global_
+
+defaults:
+  - model:
+  - tuning:
+
+verbose: 100
+seed: 773
+
+# 1) none 2) tqdm
+tqdm:
+
+cudnn:
+  benchmark:
+  deterministic:
+
+# Multi-gpu
+data_parallel: false
+
+###########################################################
+#                DATA SETTING                             #
+###########################################################
+data:
+  # training set
+  train:
+    utt_list:
+    in_dir:
+    out_dir:
+
+  # development set
+  dev:
+    utt_list:
+    in_dir:
+    out_dir:
+
+  # data loader
+  num_workers: 5
+  batch_size:
+  group_size: 8
+  sentence_duration:
+
+###########################################################
+#                TRAIN SETTING                            #
+###########################################################
+train:
+  out_dir:
+  log_dir:
+
+  # steps can either be specified by steps or epochs
+  max_train_steps: -1
+  nepochs:
+  checkpoint_epoch_interval: 25
+  eval_epoch_interval: 10
+
+  vocoder_name:
+  vocoder_config:
+  vocoder_weight_path:
+  sampling_rate:
+  mel_scaler_path:
+  max_wav_value: 32768.0
+
+  optim:
+    optimizer:
+      name: Adam
+      params:
+        lr: 0.0625  # encoder_hidden ** (-0.5)
+        betas: [0.9, 0.98]
+        eps: 0.000000001
+        weight_decay: 0.0
+    lr_scheduler:
+      _target_: vc_tts_template.fastspeech2VC.optimizer.ScheduledOptim
+      warm_up_step: 4000  # if batch: 8, groupsize:4, 4000. if your batch: 32, 1000 is recomended
+      anneal_steps: [300000, 400000, 500000]
+      anneal_rate: 0.3
+      max_lr_scale: 0.016  # max_lr = 0.001 / base_lr = 0.0625 = 0.016
+  
+  criterion:
+    _target_: vc_tts_template.fastspeech2VCwGMM.loss.FastSpeech2VCwGMMLoss
+    beta: 0.02
+    g_beta: 0.02
+
+  pretrained:
+    # 注意: ./run.shのいるディレクトリがcwdです.
+    # 例: "exp/jsut_sr22050/fastspeech2/latest.pth"
+    checkpoint: ../fastspeech2/exp/JSUT_NICT_LINE_2_sr22050_JSUT_NICT_LINE_2/fastspeech2forVC/latest.pth
+    optimizer_reset: True

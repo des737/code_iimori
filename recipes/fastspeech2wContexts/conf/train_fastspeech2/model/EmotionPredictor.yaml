@@ -1,0 +1,35 @@
+netG:
+  _target_: vc_tts_template.fastspeech2wContexts.EmotionPredictor
+  encoder_hidden_dim: 256
+  # context encoder
+  context_encoder_hidden_dim: 512
+  context_num_layer: 4
+  context_encoder_dropout: 0.2
+  text_emb_dim: 768
+  peprosody_encoder_gru_dim: 256
+  peprosody_encoder_gru_num_layer: 2
+  gru_bidirectional: False
+  # variance predictor
+  pitch_embed_kernel_size: 9
+  pitch_embed_dropout: 0.5
+  energy_embed_kernel_size: 9
+  energy_embed_dropout: 0.5
+  # other
+  speakers: {"PAD": 0, "Teacher": 1, "MStudent": 2, "FStudent": 3}
+  emotions: {"PAD": 0, "Normal": 1, "Happy": 2, "Sad": 3, "Angry": 4}
+  linear_hidden_dim: 512
+  use_context_encoder: True
+  use_prosody_encoder: False
+  use_peprosody_encoder: False
+  use_melprosody_encoder: False
+  mel_emb_dim: 256
+  mel_emb_kernel: 31
+  mel_emb_dropout: 0.5
+  current_attention: True
+
+  # 以下, 不要な変数. 実装を簡単にするため無駄だけどおいている.
+  pitch_feature_level:
+  energy_feature_level:
+  n_mel_channel:
+  accent_info:
+  mel_embedding_mode:

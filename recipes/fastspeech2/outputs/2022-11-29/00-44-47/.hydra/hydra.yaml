@@ -1,0 +1,182 @@
+hydra:
+  run:
+    dir: outputs/${now:%Y-%m-%d}/${now:%H-%M-%S}
+  sweep:
+    dir: multirun/${now:%Y-%m-%d}/${now:%H-%M-%S}
+    subdir: ${hydra.job.num}
+  launcher:
+    _target_: hydra._internal.core_plugins.basic_launcher.BasicLauncher
+  sweeper:
+    _target_: hydra._internal.core_plugins.basic_sweeper.BasicSweeper
+    max_batch_size: null
+    params: null
+  help:
+    app_name: ${hydra.job.name}
+    header: '${hydra.help.app_name} is powered by Hydra.
+
+      '
+    footer: 'Powered by Hydra (https://hydra.cc)
+
+      Use --hydra-help to view Hydra specific help
+
+      '
+    template: '${hydra.help.header}
+
+      == Configuration groups ==
+
+      Compose your configuration from those groups (group=option)
+
+
+      $APP_CONFIG_GROUPS
+
+
+      == Config ==
+
+      Override anything in the config (foo.bar=value)
+
+
+      $CONFIG
+
+
+      ${hydra.help.footer}
+
+      '
+  hydra_help:
+    template: 'Hydra (${hydra.runtime.version})
+
+      See https://hydra.cc for more info.
+
+
+      == Flags ==
+
+      $FLAGS_HELP
+
+
+      == Configuration groups ==
+
+      Compose your configuration from those groups (For example, append hydra/job_logging=disabled
+      to command line)
+
+
+      $HYDRA_CONFIG_GROUPS
+
+
+      Use ''--cfg hydra'' to Show the Hydra config.
+
+      '
+    hydra_help: ???
+  hydra_logging:
+    version: 1
+    formatters:
+      simple:
+        format: '[%(asctime)s][HYDRA] %(message)s'
+    handlers:
+      console:
+        class: logging.StreamHandler
+        formatter: simple
+        stream: ext://sys.stdout
+    root:
+      level: INFO
+      handlers:
+      - console
+    loggers:
+      logging_example:
+        level: DEBUG
+    disable_existing_loggers: false
+  job_logging:
+    version: 1
+    formatters:
+      simple:
+        format: '[%(asctime)s][%(name)s][%(levelname)s] - %(message)s'
+    handlers:
+      console:
+        class: logging.StreamHandler
+        formatter: simple
+        stream: ext://sys.stdout
+      file:
+        class: logging.FileHandler
+        formatter: simple
+        filename: ${hydra.runtime.output_dir}/${hydra.job.name}.log
+    root:
+      level: INFO
+      handlers:
+      - console
+      - file
+    disable_existing_loggers: false
+  env: {}
+  mode: RUN
+  searchpath: []
+  callbacks: {}
+  output_subdir: .hydra
+  overrides:
+    hydra:
+    - hydra.mode=RUN
+    task:
+    - model=fastspeech2wGMM
+    - tqdm=tqdm
+    - cudnn.benchmark=false
+    - cudnn.deterministic=false
+    - data.train.utt_list=data/train.list
+    - data.train.in_dir=dump/LINE_3_sr22050/norm/train/in_fastspeech2/
+    - data.train.out_dir=dump/LINE_3_sr22050/norm/train/out_fastspeech2/
+    - data.dev.utt_list=data/dev.list
+    - data.dev.in_dir=dump/LINE_3_sr22050/norm/dev/in_fastspeech2/
+    - data.dev.out_dir=dump/LINE_3_sr22050/norm/dev/out_fastspeech2/
+    - data.batch_size=16
+    - data.accent_info=0
+    - train.out_dir=exp/LINE_3_sr22050_LINE_79_JSUT_NICT_LINE_wo_Teacher_finetuning_FS_GMM_num_gaussians_11/fastspeech2wGMM
+    - train.log_dir=tensorboard/LINE_3_sr22050_LINE_79_JSUT_NICT_LINE_wo_Teacher_finetuning_FS_GMM_num_gaussians_11_fastspeech2wGMM
+    - train.nepochs=500
+    - train.sampling_rate=22050
+    - train.mel_scaler_path=dump/LINE_3_sr22050/norm/out_fastspeech2_mel_scaler.joblib
+    - train.vocoder_name=hifigan
+    - train.vocoder_config=conf/train_hifigan/model/hifigan.yaml
+    - train.vocoder_weight_path=exp/LINE_3_sr22050_LINE_6/hifigan/latest.pth
+    - train.criterion.pitch_feature_level=1
+    - train.criterion.energy_feature_level=1
+    - model.netG.pitch_feature_level=1
+    - model.netG.energy_feature_level=1
+    - model.netG.n_mel_channel=80
+    - model.netG.accent_info=0
+  job:
+    name: train_fastspeech2
+    chdir: null
+    override_dirname: cudnn.benchmark=false,cudnn.deterministic=false,data.accent_info=0,data.batch_size=16,data.dev.in_dir=dump/LINE_3_sr22050/norm/dev/in_fastspeech2/,data.dev.out_dir=dump/LINE_3_sr22050/norm/dev/out_fastspeech2/,data.dev.utt_list=data/dev.list,data.train.in_dir=dump/LINE_3_sr22050/norm/train/in_fastspeech2/,data.train.out_dir=dump/LINE_3_sr22050/norm/train/out_fastspeech2/,data.train.utt_list=data/train.list,model.netG.accent_info=0,model.netG.energy_feature_level=1,model.netG.n_mel_channel=80,model.netG.pitch_feature_level=1,model=fastspeech2wGMM,tqdm=tqdm,train.criterion.energy_feature_level=1,train.criterion.pitch_feature_level=1,train.log_dir=tensorboard/LINE_3_sr22050_LINE_79_JSUT_NICT_LINE_wo_Teacher_finetuning_FS_GMM_num_gaussians_11_fastspeech2wGMM,train.mel_scaler_path=dump/LINE_3_sr22050/norm/out_fastspeech2_mel_scaler.joblib,train.nepochs=500,train.out_dir=exp/LINE_3_sr22050_LINE_79_JSUT_NICT_LINE_wo_Teacher_finetuning_FS_GMM_num_gaussians_11/fastspeech2wGMM,train.sampling_rate=22050,train.vocoder_config=conf/train_hifigan/model/hifigan.yaml,train.vocoder_name=hifigan,train.vocoder_weight_path=exp/LINE_3_sr22050_LINE_6/hifigan/latest.pth
+    id: ???
+    num: ???
+    config_name: config
+    env_set: {}
+    env_copy: []
+    config:
+      override_dirname:
+        kv_sep: '='
+        item_sep: ','
+        exclude_keys: []
+  runtime:
+    version: 1.2.0
+    version_base: '1.1'
+    cwd: /home/sarulab/eiji_iimori/documents/nishimura_copy/recipes/fastspeech2
+    config_sources:
+    - path: hydra.conf
+      schema: pkg
+      provider: hydra
+    - path: /home/sarulab/eiji_iimori/documents/nishimura_copy/recipes/fastspeech2/conf/train_fastspeech2
+      schema: file
+      provider: main
+    - path: ''
+      schema: structured
+      provider: schema
+    output_dir: /home/sarulab/eiji_iimori/documents/nishimura_copy/recipes/fastspeech2/outputs/2022-11-29/00-44-47
+    choices:
+      tuning: null
+      model: fastspeech2wGMM
+      hydra/env: default
+      hydra/callbacks: null
+      hydra/job_logging: default
+      hydra/hydra_logging: default
+      hydra/hydra_help: default
+      hydra/help: default
+      hydra/sweeper: basic
+      hydra/launcher: basic
+      hydra/output: default
+  verbose: false

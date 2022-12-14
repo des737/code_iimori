@@ -1,0 +1,121 @@
+# General settings.
+spk: "LINE_wContextwPEProsody_7"
+
+# exp tag(for managing experiments)
+tag: "LINE_wContextwPEProsody_192_SM_woSSL_seg_Attn_Meltarget_beta_0_01"
+
+sample_rate: 22050
+
+# 1) none 2) tqdm
+# NOTE: Jupyterノートブックからrun.shを実行する場合は、none推奨
+tqdm: tqdm
+
+# NOTE: benchmarkをtrueにすると、高速化が期待できる分、より多くの
+# GPUリソースを必要とする場合があります。
+# GPUリソースに余裕がある場合は、true にしてください。
+cudnn_benchmark: false
+cudnn_deterministic: false
+
+###########################################################
+#                DATA PREPARATION SETTING                 #
+###########################################################
+
+# PLEASE CHANGE THE PATH BASED ON YOUR ENVIRONMENT
+wav_root: "/home/sarulab/eiji_iimori/documents/dataset/dataset/out_JSUT_NICT_LINE/JSUT_NICT_LINE/wav/22050"
+lab_root: "/home/sarulab/eiji_iimori/documents/dataset/dataset/out_JSUT_NICT_LINE/textgrid"
+dialogue_info: "/home/sarulab/eiji_iimori/documents/dataset/dataset/out_JSUT_NICT_LINE_wo_Teacher/dialogue_info.txt"
+
+n_jobs: 8
+
+train_num: 24500
+deveval_num: 515
+dev_num: 415
+eval_num: 100
+
+###########################################################
+#                FEATURE EXTRACTION SETTING               #
+###########################################################
+filter_length: 1024
+hop_length: 256
+win_length: 1024
+n_mel_channels: 80
+mel_fmin: 0
+mel_fmax: 8000
+clip: 0.00001
+log_base: "natural"
+pitch_phoneme_averaging: 1
+energy_phoneme_averaging: 1
+accent_info: 1
+# if you want to use multi-speaker, fill below.
+# example: "JSUT,NICT"
+speakers:
+
+# for with Contexts
+BERT_weight: "colorfulscoop/sbert-base-ja"
+use_hist_num: 10
+use_prosody_hist_num:
+use_situation_text: 0
+# for with Prosody
+# if 0, the latest one is used. if -1, data will not be loaded.
+use_local_prosody_hist_idx: -1
+# plase replace train/dev/eval to {} for emb_preprocess.py
+## もし, GMMを学習して作成するembを利用したい場合は以下を埋める
+input_duration_paths:
+output_mel_file_paths:
+model_config_paths:
+pretrained_checkpoints:
+## そうではなく, pitch, energy or mel を利用したい場合は以下を埋める
+## pitch, energy: mel_mode=0, mel: mel_mode=1
+## labかtextgridは片方を埋めればよい
+input_wav_paths: "../../../dataset/out_LINE_woITAKO/LINE/wav/22050,../../../dataset/out_LINE_MStudent/LINE_MStudent/wav/22050,../../../dataset/out_LINE_FStudent/LINE_FStudent/wav/22050"
+input_lab_paths: "../../../dataset/out_LINE_woITAKO/fullcontext,../../../dataset/out_LINE_MStudent/fullcontext,../../../dataset/out_LINE_FStudent/fullcontext"
+input_textgrid_paths:
+# emb_speakers:
+# SSL_name: "wav2vec2"
+# SSL_weight: "jonatasgrosman/wav2vec2-large-xlsr-53-japanese"
+# SSL_sample_rate: 16000
+emb_speakers: "Teacher,MStudent,FStudent"
+SSL_name:
+SSL_weight:
+SSL_sample_rate:
+mel_mode: 1
+pau_split: 1
+
+###########################################################
+#                TRAINING SETTING                         #
+###########################################################
+
+# acoustic_model: fastspeech2wContextswPEProsody
+acoustic_model: fastspeech2wContextswPEProsodywCurrentMel
+vocoder_model: hifigan
+# acoustic_modelで利用したいvocoderのconfigやweightへのpathを指定してください.
+# 具体的に利用する重みは,vocoder_eval_checkpointになります.
+vocoder_config: "conf/train_hifigan/model/hifigan.yaml"
+vocoder_weight_base_path: "../fastspeech2/exp/LINE_3_sr22050_LINE_6/hifigan"
+
+### fastspeech2  ###
+# max_train_steps: 200000 → nepochs: 256 s.t. batch_size*group_size = 32, JSUT.
+fastspeech2_train_nepochs: 500
+fastspeech2_data_batch_size: 16
+
+### hifigan ###
+hifigan_train_nepochs: 50
+hifigan_data_batch_size: 32
+
+### (optional) Optuna Tuning ###
+tuning_config: tuning_fastspeech2wContexts
+
+###########################################################
+#                SYNTHESIS SETTING                        #
+###########################################################
+
+# リストの逆順で発話を処理する
+reverse: false
+
+# 生成する発話の数
+# -1 の場合、評価の発話をすべて処理する
+# 音声生成にかかる時間を短縮する場合、小さな値（5など）に設定してください
+num_eval_utts: -1
+
+acoustic_eval_checkpoint: latest.pth
+vocoder_eval_checkpoint: latest.pth

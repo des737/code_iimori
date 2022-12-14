@@ -1,0 +1,183 @@
+# for tuning using optuna
+# suggest list: https://optuna.readthedocs.io/en/stable/reference/generated/optuna.trial.Trial.html#optuna.trial.Trial.suggest_loguniform
+
+# general setting
+study_name:
+storage:
+n_trials: 500
+sampler:
+  name: TPESampler
+  params:
+pruner:
+  name: HyperbandPruner
+  params:
+
+target_loss: postnet_mel_loss
+
+# optimizer
+optimizer:
+  lr:
+    suggest: suggest_loguniform
+    params:
+      low: 0.0001
+      high: 1.0
+# lr_scheduler
+lr_scheduler:
+  warm_up_step:
+    suggest: suggest_int
+    params:
+      low: 1000
+      high: 10000
+      step: 1000
+# loss
+criterion:
+  beta:
+    suggest: suggest_loguniform
+    params:
+      low: 0.0001
+      high: 10.0
+  g_beta:
+    suggest: suggest_loguniform
+    params:
+      low: 0.0001
+      high: 10.0
+
+# model
+model:
+  netG:
+    # encoder
+    encoder_hidden_dim:
+      suggest: suggest_categorical
+      params:
+        choices: [64, 128, 256, 512, 1024]
+    encoder_num_layer:
+      suggest: suggest_int
+      params:
+        low: 1
+        high: 6
+    conv_filter_size:
+      suggest: suggest_categorical
+      params:
+        choices: [64, 128, 256, 512, 1024]
+    conv_kernel_size_1:
+      suggest: suggest_categorical
+      params:
+        choices: [1, 3, 5, 7, 9]
+    conv_kernel_size_2:
+      suggest: suggest_categorical
+      params:
+        choices: [1, 3, 5, 7, 9]
+    encoder_dropout:
+      suggest: suggest_uniform
+      params:
+        low: 0.1
+        high: 1.0
+    # prosody extractor
+    prosody_emb_dim:
+      suggest: suggest_categorical
+      params:
+        choices: [32, 64, 128, 256, 512, 1024]
+    extra_conv_kernel_size:
+      suggest: suggest_categorical
+      params:
+        choices: [1, 3, 5, 7, 9]
+    extra_conv_n_layers:
+      suggest: suggest_int
+      params:
+        low: 1
+        high: 6
+    extra_gru_n_layers:
+      suggest: suggest_int
+      params:
+        low: 1
+        high: 6
+    extra_global_gru_n_layers:
+      suggest: suggest_int
+      params:
+        low: 1
+        high: 6
+    # prosody predictor
+    gru_hidden_dim:
+      suggest: suggest_categorical
+      params:
+        choices: [64, 128, 256, 512, 1024]
+    gru_n_layers:
+      suggest: suggest_int
+      params:
+        low: 1
+        high: 6
+    pp_conv_out_channels:
+      suggest: suggest_categorical
+      params:
+        choices: [64, 128, 256, 512, 1024]
+    pp_conv_kernel_size:
+      suggest: suggest_categorical
+      params:
+        choices: [1, 3, 5, 7, 9]
+    pp_conv_n_layers:
+      suggest: suggest_int
+      params:
+        low: 1
+        high: 6
+    pp_conv_dropout:
+      suggest: suggest_uniform
+      params:
+        low: 0.1
+        high: 1.0
+    pp_zoneout:
+      suggest: suggest_uniform
+      params:
+        low: 0.1
+        high: 1.0
+    num_gaussians:
+      suggest: suggest_int
+      params:
+        low: 1
+        high: 25
+    global_gru_n_layers:
+      suggest: suggest_int
+      params:
+        low: 1
+        high: 6
+    global_d_gru:
+      suggest: suggest_categorical
+      params:
+        choices: [64, 128, 256, 512, 1024]
+    global_num_gaussians:
+      suggest: suggest_int
+      params:
+        low: 1
+        high: 25
+    # variance predictor
+    variance_predictor_filter_size:
+      suggest: suggest_categorical
+      params:
+        choices: [64, 128, 256, 512, 1024]
+    variance_predictor_kernel_size:
+      suggest: suggest_categorical
+      params:
+        choices: [1, 3, 5, 7, 9]
+    variance_predictor_dropout:
+      suggest: suggest_uniform
+      params:
+        low: 0.1
+        high: 1.0
+    n_bins:
+      suggest: suggest_categorical
+      params:
+        choices: [64, 128, 256, 512, 1024]
+    # decoder
+    decoder_hidden_dim:
+      suggest: suggest_categorical
+      params:
+        choices: [64, 128, 256, 512, 1024]
+    decoder_num_layer:
+      suggest: suggest_int
+      params:
+        low: 1
+        high: 6
+    decoder_dropout:
+      suggest: suggest_uniform
+      params:
+        low: 0.1
+        high: 1.0

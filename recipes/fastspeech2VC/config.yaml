@@ -1,0 +1,101 @@
+# General settings.
+spk: "JSUT_NICT_LINE_4"
+
+# exp tag(for managing experiments)
+tag: "JSUT_NICT_LINE_4"
+
+sample_rate: 22050
+
+# ttsを共有するためにtar.gzにするときに利用したい名前
+export_model_name:
+
+# 1) none 2) tqdm
+# NOTE: Jupyterノートブックからrun.shを実行する場合は、none推奨
+tqdm: tqdm
+
+# NOTE: benchmarkをtrueにすると、高速化が期待できる分、より多くの
+# GPUリソースを必要とする場合があります。
+# GPUリソースに余裕がある場合は、true にしてください。
+cudnn_benchmark: true
+cudnn_deterministic: false
+
+###########################################################
+#                DATA PREPARATION SETTING                 #
+###########################################################
+
+# PLEASE CHANGE THE PATH BASED ON YOUR ENVIRONMENT
+src_wav_root: "/home/sarulab/eiji_iimori/documents/dataset/dataset/out_JSUT_NICT_LINE/JSUT_NICT_LINE/wav/22050"
+tgt_wav_root: "/home/sarulab/eiji_iimori/documents/dataset/dataset/out_JSUT_NICT_LINE/JSUT_NICT_LINE/wav/22050"
+
+n_jobs: 16
+
+train_num: 24500
+deveval_num: 515
+dev_num: 415
+eval_num: 100
+
+###########################################################
+#                FEATURE EXTRACTION SETTING               #
+###########################################################
+# 一般的に, head > tailの方がよいです.
+silence_thresh_h: -50
+silence_thresh_t: -100
+chunk_size: 50
+filter_length: 1024
+hop_length: 256
+win_length: 1024
+n_mel_channels: 80
+mel_fmin: 0
+mel_fmax: 8000
+clip: 0.00001
+log_base: "natural"
+is_continuous_pitch: 1
+reduction_factor: 1
+# ↓set 0 if you do not need sentence_duration
+sentence_duration: 1
+# ↓use if sentence_duration > 0
+min_silence_len: 200
+
+# ↓if you set this, duration is calc by AR model
+model_config_path:
+pretrained_checkpoint:
+in_scaler_path:
+out_scaler_path:
+length_thresh:
+###########################################################
+#                TRAINING SETTING                         #
+###########################################################
+
+acoustic_model: fastspeech2VCwGMMforPre
+vocoder_model: hifigan
+# acoustic_modelで利用したいvocoderのconfigやweightへのpathを指定してください.
+# 具体的に利用する重みは,vocoder_eval_checkpointになります.
+vocoder_config: "conf/train_hifigan/model/hifigan.yaml"
+vocoder_weight_base_path: "../fastspeech2/exp/LINE_3_sr22050_LINE_6/hifigan"
+
+### fastspeech2  ###
+# max_train_steps: 200000 → nepochs: 256 s.t. batch_size*group_size = 32, JSUT.
+fastspeech2_train_nepochs: 200
+fastspeech2_data_batch_size: 8
+
+### hifigan ###
+hifigan_train_nepochs: 50
+hifigan_data_batch_size: 32
+
+### (optional) Optuna Tuning ###
+tuning_config: tuning_fastspeech2VCwGMM
+
+###########################################################
+#                SYNTHESIS SETTING                        #
+###########################################################
+
+# リストの逆順で発話を処理する
+reverse: false
+
+# 生成する発話の数
+# -1 の場合、評価の発話をすべて処理する
+# 音声生成にかかる時間を短縮する場合、小さな値（5など）に設定してください
+num_eval_utts: -1
+
+acoustic_eval_checkpoint: latest.pth
+vocoder_eval_checkpoint: latest.pth

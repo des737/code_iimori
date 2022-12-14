@@ -1,0 +1,401 @@
+[2022-11-29 00:53:28,881][vc_tts_template][INFO] - PyTorch version: 1.12.0+cu116
+[2022-11-29 00:53:28,881][vc_tts_template][INFO] - cudnn.deterministic: False
+[2022-11-29 00:53:28,881][vc_tts_template][INFO] - cudnn.benchmark: False
+[2022-11-29 00:53:28,881][vc_tts_template][INFO] - cuDNN version: 8302
+[2022-11-29 00:53:28,881][vc_tts_template][INFO] - Random seed: 773
+[2022-11-29 00:53:31,741][vc_tts_template][INFO] - FastSpeech2wGMM(
+  (encoder): Encoder(
+    (src_word_emb): WordEncoder(
+      (src_word_emb): Embedding(53, 256, padding_idx=0)
+    )
+    (layer_stack): ModuleList(
+      (0): FFTBlock(
+        (slf_attn): MultiHeadAttention(
+          (w_qs): Linear(in_features=256, out_features=256, bias=True)
+          (w_ks): Linear(in_features=256, out_features=256, bias=True)
+          (w_vs): Linear(in_features=256, out_features=256, bias=True)
+          (attention): ScaledDotProductAttention(
+            (softmax): Softmax(dim=2)
+          )
+          (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (fc): Linear(in_features=256, out_features=256, bias=True)
+          (dropout): Dropout(p=0.2, inplace=False)
+        )
+        (pos_ffn): PositionwiseFeedForward(
+          (w_1): Conv1d(256, 1024, kernel_size=(9,), stride=(1,), padding=(4,))
+          (w_2): Conv1d(1024, 256, kernel_size=(1,), stride=(1,))
+          (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (dropout): Dropout(p=0.2, inplace=False)
+        )
+      )
+      (1): FFTBlock(
+        (slf_attn): MultiHeadAttention(
+          (w_qs): Linear(in_features=256, out_features=256, bias=True)
+          (w_ks): Linear(in_features=256, out_features=256, bias=True)
+          (w_vs): Linear(in_features=256, out_features=256, bias=True)
+          (attention): ScaledDotProductAttention(
+            (softmax): Softmax(dim=2)
+          )
+          (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (fc): Linear(in_features=256, out_features=256, bias=True)
+          (dropout): Dropout(p=0.2, inplace=False)
+        )
+        (pos_ffn): PositionwiseFeedForward(
+          (w_1): Conv1d(256, 1024, kernel_size=(9,), stride=(1,), padding=(4,))
+          (w_2): Conv1d(1024, 256, kernel_size=(1,), stride=(1,))
+          (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (dropout): Dropout(p=0.2, inplace=False)
+        )
+      )
+      (2): FFTBlock(
+        (slf_attn): MultiHeadAttention(
+          (w_qs): Linear(in_features=256, out_features=256, bias=True)
+          (w_ks): Linear(in_features=256, out_features=256, bias=True)
+          (w_vs): Linear(in_features=256, out_features=256, bias=True)
+          (attention): ScaledDotProductAttention(
+            (softmax): Softmax(dim=2)
+          )
+          (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (fc): Linear(in_features=256, out_features=256, bias=True)
+          (dropout): Dropout(p=0.2, inplace=False)
+        )
+        (pos_ffn): PositionwiseFeedForward(
+          (w_1): Conv1d(256, 1024, kernel_size=(9,), stride=(1,), padding=(4,))
+          (w_2): Conv1d(1024, 256, kernel_size=(1,), stride=(1,))
+          (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (dropout): Dropout(p=0.2, inplace=False)
+        )
+      )
+      (3): FFTBlock(
+        (slf_attn): MultiHeadAttention(
+          (w_qs): Linear(in_features=256, out_features=256, bias=True)
+          (w_ks): Linear(in_features=256, out_features=256, bias=True)
+          (w_vs): Linear(in_features=256, out_features=256, bias=True)
+          (attention): ScaledDotProductAttention(
+            (softmax): Softmax(dim=2)
+          )
+          (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (fc): Linear(in_features=256, out_features=256, bias=True)
+          (dropout): Dropout(p=0.2, inplace=False)
+        )
+        (pos_ffn): PositionwiseFeedForward(
+          (w_1): Conv1d(256, 1024, kernel_size=(9,), stride=(1,), padding=(4,))
+          (w_2): Conv1d(1024, 256, kernel_size=(1,), stride=(1,))
+          (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (dropout): Dropout(p=0.2, inplace=False)
+        )
+      )
+    )
+  )
+  (variance_adaptor): VarianceAdaptor(
+    (duration_predictor): VariancePredictor(
+      (conv_layer): Sequential(
+        (conv1d_1): Conv(
+          (conv): Conv1d(256, 256, kernel_size=(3,), stride=(1,), padding=(1,))
+        )
+        (relu_1): ReLU()
+        (layer_norm_1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (dropout_1): Dropout(p=0.5, inplace=False)
+        (conv1d_2): Conv(
+          (conv): Conv1d(256, 256, kernel_size=(3,), stride=(1,), padding=(1,))
+        )
+        (relu_2): ReLU()
+        (layer_norm_2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (dropout_2): Dropout(p=0.5, inplace=False)
+      )
+      (linear_layer): Linear(in_features=256, out_features=1, bias=True)
+    )
+    (length_regulator): LengthRegulator()
+    (pitch_predictor): VariancePredictor(
+      (conv_layer): Sequential(
+        (conv1d_1): Conv(
+          (conv): Conv1d(256, 256, kernel_size=(3,), stride=(1,), padding=(1,))
+        )
+        (relu_1): ReLU()
+        (layer_norm_1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (dropout_1): Dropout(p=0.5, inplace=False)
+        (conv1d_2): Conv(
+          (conv): Conv1d(256, 256, kernel_size=(3,), stride=(1,), padding=(1,))
+        )
+        (relu_2): ReLU()
+        (layer_norm_2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (dropout_2): Dropout(p=0.5, inplace=False)
+      )
+      (linear_layer): Linear(in_features=256, out_features=1, bias=True)
+    )
+    (energy_predictor): VariancePredictor(
+      (conv_layer): Sequential(
+        (conv1d_1): Conv(
+          (conv): Conv1d(256, 256, kernel_size=(3,), stride=(1,), padding=(1,))
+        )
+        (relu_1): ReLU()
+        (layer_norm_1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (dropout_1): Dropout(p=0.5, inplace=False)
+        (conv1d_2): Conv(
+          (conv): Conv1d(256, 256, kernel_size=(3,), stride=(1,), padding=(1,))
+        )
+        (relu_2): ReLU()
+        (layer_norm_2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (dropout_2): Dropout(p=0.5, inplace=False)
+      )
+      (linear_layer): Linear(in_features=256, out_features=1, bias=True)
+    )
+    (pitch_embedding): Embedding(256, 256)
+    (energy_embedding): Embedding(256, 256)
+  )
+  (decoder): Decoder(
+    (layer_stack): ModuleList(
+      (0): FFTBlock(
+        (slf_attn): MultiHeadAttention(
+          (w_qs): Linear(in_features=256, out_features=256, bias=True)
+          (w_ks): Linear(in_features=256, out_features=256, bias=True)
+          (w_vs): Linear(in_features=256, out_features=256, bias=True)
+          (attention): ScaledDotProductAttention(
+            (softmax): Softmax(dim=2)
+          )
+          (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (fc): Linear(in_features=256, out_features=256, bias=True)
+          (dropout): Dropout(p=0.2, inplace=False)
+        )
+        (pos_ffn): PositionwiseFeedForward(
+          (w_1): Conv1d(256, 1024, kernel_size=(9,), stride=(1,), padding=(4,))
+          (w_2): Conv1d(1024, 256, kernel_size=(1,), stride=(1,))
+          (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (dropout): Dropout(p=0.2, inplace=False)
+        )
+      )
+      (1): FFTBlock(
+        (slf_attn): MultiHeadAttention(
+          (w_qs): Linear(in_features=256, out_features=256, bias=True)
+          (w_ks): Linear(in_features=256, out_features=256, bias=True)
+          (w_vs): Linear(in_features=256, out_features=256, bias=True)
+          (attention): ScaledDotProductAttention(
+            (softmax): Softmax(dim=2)
+          )
+          (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (fc): Linear(in_features=256, out_features=256, bias=True)
+          (dropout): Dropout(p=0.2, inplace=False)
+        )
+        (pos_ffn): PositionwiseFeedForward(
+          (w_1): Conv1d(256, 1024, kernel_size=(9,), stride=(1,), padding=(4,))
+          (w_2): Conv1d(1024, 256, kernel_size=(1,), stride=(1,))
+          (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (dropout): Dropout(p=0.2, inplace=False)
+        )
+      )
+      (2): FFTBlock(
+        (slf_attn): MultiHeadAttention(
+          (w_qs): Linear(in_features=256, out_features=256, bias=True)
+          (w_ks): Linear(in_features=256, out_features=256, bias=True)
+          (w_vs): Linear(in_features=256, out_features=256, bias=True)
+          (attention): ScaledDotProductAttention(
+            (softmax): Softmax(dim=2)
+          )
+          (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (fc): Linear(in_features=256, out_features=256, bias=True)
+          (dropout): Dropout(p=0.2, inplace=False)
+        )
+        (pos_ffn): PositionwiseFeedForward(
+          (w_1): Conv1d(256, 1024, kernel_size=(9,), stride=(1,), padding=(4,))
+          (w_2): Conv1d(1024, 256, kernel_size=(1,), stride=(1,))
+          (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (dropout): Dropout(p=0.2, inplace=False)
+        )
+      )
+      (3): FFTBlock(
+        (slf_attn): MultiHeadAttention(
+          (w_qs): Linear(in_features=256, out_features=256, bias=True)
+          (w_ks): Linear(in_features=256, out_features=256, bias=True)
+          (w_vs): Linear(in_features=256, out_features=256, bias=True)
+          (attention): ScaledDotProductAttention(
+            (softmax): Softmax(dim=2)
+          )
+          (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (fc): Linear(in_features=256, out_features=256, bias=True)
+          (dropout): Dropout(p=0.2, inplace=False)
+        )
+        (pos_ffn): PositionwiseFeedForward(
+          (w_1): Conv1d(256, 1024, kernel_size=(9,), stride=(1,), padding=(4,))
+          (w_2): Conv1d(1024, 256, kernel_size=(1,), stride=(1,))
+          (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (dropout): Dropout(p=0.2, inplace=False)
+        )
+      )
+      (4): FFTBlock(
+        (slf_attn): MultiHeadAttention(
+          (w_qs): Linear(in_features=256, out_features=256, bias=True)
+          (w_ks): Linear(in_features=256, out_features=256, bias=True)
+          (w_vs): Linear(in_features=256, out_features=256, bias=True)
+          (attention): ScaledDotProductAttention(
+            (softmax): Softmax(dim=2)
+          )
+          (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (fc): Linear(in_features=256, out_features=256, bias=True)
+          (dropout): Dropout(p=0.2, inplace=False)
+        )
+        (pos_ffn): PositionwiseFeedForward(
+          (w_1): Conv1d(256, 1024, kernel_size=(9,), stride=(1,), padding=(4,))
+          (w_2): Conv1d(1024, 256, kernel_size=(1,), stride=(1,))
+          (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (dropout): Dropout(p=0.2, inplace=False)
+        )
+      )
+      (5): FFTBlock(
+        (slf_attn): MultiHeadAttention(
+          (w_qs): Linear(in_features=256, out_features=256, bias=True)
+          (w_ks): Linear(in_features=256, out_features=256, bias=True)
+          (w_vs): Linear(in_features=256, out_features=256, bias=True)
+          (attention): ScaledDotProductAttention(
+            (softmax): Softmax(dim=2)
+          )
+          (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (fc): Linear(in_features=256, out_features=256, bias=True)
+          (dropout): Dropout(p=0.2, inplace=False)
+        )
+        (pos_ffn): PositionwiseFeedForward(
+          (w_1): Conv1d(256, 1024, kernel_size=(9,), stride=(1,), padding=(4,))
+          (w_2): Conv1d(1024, 256, kernel_size=(1,), stride=(1,))
+          (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (dropout): Dropout(p=0.2, inplace=False)
+        )
+      )
+    )
+  )
+  (decoder_linear): Linear(in_features=256, out_features=256, bias=True)
+  (mel_linear): Linear(in_features=256, out_features=80, bias=True)
+  (postnet): PostNet(
+    (convolutions): ModuleList(
+      (0): Sequential(
+        (0): ConvNorm(
+          (conv): Conv1d(80, 512, kernel_size=(5,), stride=(1,), padding=(2,))
+        )
+        (1): BatchNorm1d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (1): Sequential(
+        (0): ConvNorm(
+          (conv): Conv1d(512, 512, kernel_size=(5,), stride=(1,), padding=(2,))
+        )
+        (1): BatchNorm1d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (2): Sequential(
+        (0): ConvNorm(
+          (conv): Conv1d(512, 512, kernel_size=(5,), stride=(1,), padding=(2,))
+        )
+        (1): BatchNorm1d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (3): Sequential(
+        (0): ConvNorm(
+          (conv): Conv1d(512, 512, kernel_size=(5,), stride=(1,), padding=(2,))
+        )
+        (1): BatchNorm1d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (4): Sequential(
+        (0): ConvNorm(
+          (conv): Conv1d(512, 80, kernel_size=(5,), stride=(1,), padding=(2,))
+        )
+        (1): BatchNorm1d(80, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+  )
+  (speaker_emb): Embedding(5, 256)
+  (prosody_extractor): ProsodyExtractor(
+    (convnorms): ConvBNorms2d(
+      (convolutions): Sequential(
+        (0): Conv2d(1, 1, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        (1): BatchNorm2d(1, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): ReLU()
+        (3): Conv2d(1, 1, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        (4): BatchNorm2d(1, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU()
+      )
+    )
+    (bi_gru): GRUwSort(
+      (gru): GRU(80, 32, num_layers=2, batch_first=True, bidirectional=True)
+      (length_regulator): LengthRegulator()
+    )
+  )
+  (prosody_predictor): ProsodyPredictor(
+    (convnorms): ConvLNorms1d(
+      (convolutions): Sequential(
+        (0): Transpose()
+        (1): Conv1d(256, 256, kernel_size=(3,), stride=(1,), padding=(1,))
+        (2): ReLU()
+        (3): Transpose()
+        (4): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (5): Dropout(p=0.2, inplace=False)
+        (6): Transpose()
+        (7): Conv1d(256, 256, kernel_size=(3,), stride=(1,), padding=(1,))
+        (8): ReLU()
+        (9): Transpose()
+        (10): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (11): Dropout(p=0.2, inplace=False)
+      )
+    )
+    (gru): ModuleList(
+      (0): ZoneOutCell(
+        (cell): GRUCell(320, 512)
+      )
+      (1): ZoneOutCell(
+        (cell): GRUCell(512, 512)
+      )
+    )
+    (prenet): Linear(in_features=64, out_features=64, bias=True)
+    (pi_linear): Sequential(
+      (0): Linear(in_features=768, out_features=11, bias=True)
+      (1): Div()
+      (2): Softmax(dim=1)
+    )
+    (sigma_linear): Sequential(
+      (0): Linear(in_features=768, out_features=704, bias=True)
+      (1): ELU(alpha=1.0, inplace=True)
+    )
+    (mu_linear): Linear(in_features=768, out_features=704, bias=True)
+  )
+  (prosody_linear): Linear(in_features=64, out_features=256, bias=True)
+)
+[2022-11-29 00:53:31,744][vc_tts_template][INFO] - Number of trainable params: 39.039 million
+[2022-11-29 00:53:31,875][vc_tts_template][INFO] - Number of iterations per epoch: 208
+[2022-11-29 00:53:31,875][vc_tts_template][INFO] - Number of max_train_steps is set based on nepochs: 41600
+[2022-11-29 00:53:31,875][vc_tts_template][INFO] - Number of epochs: 200
+[2022-11-29 00:53:31,875][vc_tts_template][INFO] - Number of iterations: 41600
+[2022-11-29 00:53:37,509][vc_tts_template][DEBUG] - mel_loss: 0.9523338079452515
+[2022-11-29 00:53:37,509][vc_tts_template][DEBUG] - postnet_mel_loss: 1.438319444656372
+[2022-11-29 00:53:37,509][vc_tts_template][DEBUG] - pitch_loss: 1.384574055671692
+[2022-11-29 00:53:37,509][vc_tts_template][DEBUG] - energy_loss: 1.4220083951950073
+[2022-11-29 00:53:37,509][vc_tts_template][DEBUG] - duration_loss: 6.619363307952881
+[2022-11-29 00:53:37,509][vc_tts_template][DEBUG] - prosody_loss: 62.914363861083984
+[2022-11-29 00:53:37,509][vc_tts_template][DEBUG] - total_loss: 13.074886322021484
+[2022-11-29 00:53:37,509][vc_tts_template][DEBUG] - steps: 1, param_name: variance_adaptor.duration_predictor.conv_layer.conv1d_1.conv.weight: inf
+[2022-11-29 00:53:37,509][vc_tts_template][DEBUG] - steps: 1, param_name: variance_adaptor.duration_predictor.conv_layer.conv1d_2.conv.weight: inf
+[2022-11-29 00:53:37,509][vc_tts_template][DEBUG] - steps: 1, param_name: variance_adaptor.duration_predictor.linear_layer.weight: inf
+[2022-11-29 00:53:37,509][vc_tts_template][DEBUG] - steps: 1, param_name: variance_adaptor.duration_predictor.linear_layer.bias: inf
+[2022-11-29 00:53:37,509][vc_tts_template][INFO] - grad norm is NaN. Will Skip updating
+[2022-11-29 00:53:37,783][vc_tts_template][DEBUG] - mel_loss: 0.9484423398971558
+[2022-11-29 00:53:37,783][vc_tts_template][DEBUG] - postnet_mel_loss: 1.4044514894485474
+[2022-11-29 00:53:37,784][vc_tts_template][DEBUG] - pitch_loss: 1.4806172847747803
+[2022-11-29 00:53:37,784][vc_tts_template][DEBUG] - energy_loss: 1.6980366706848145
+[2022-11-29 00:53:37,784][vc_tts_template][DEBUG] - duration_loss: 6.9808197021484375
+[2022-11-29 00:53:37,784][vc_tts_template][DEBUG] - prosody_loss: 63.0118522644043
+[2022-11-29 00:53:37,784][vc_tts_template][DEBUG] - total_loss: 13.772603988647461
+[2022-11-29 00:53:37,784][vc_tts_template][DEBUG] - steps: 2, param_name: variance_adaptor.duration_predictor.linear_layer.weight: inf
+[2022-11-29 00:53:37,784][vc_tts_template][DEBUG] - steps: 2, param_name: variance_adaptor.duration_predictor.linear_layer.bias: inf
+[2022-11-29 00:53:37,784][vc_tts_template][INFO] - grad norm is NaN. Will Skip updating
+[2022-11-29 00:53:37,994][vc_tts_template][DEBUG] - mel_loss: 0.9228777885437012
+[2022-11-29 00:53:37,994][vc_tts_template][DEBUG] - postnet_mel_loss: 1.3910380601882935
+[2022-11-29 00:53:37,994][vc_tts_template][DEBUG] - pitch_loss: 1.3503217697143555
+[2022-11-29 00:53:37,994][vc_tts_template][DEBUG] - energy_loss: 1.453369379043579
+[2022-11-29 00:53:37,994][vc_tts_template][DEBUG] - duration_loss: 6.079205513000488
+[2022-11-29 00:53:37,994][vc_tts_template][DEBUG] - prosody_loss: 62.98569869995117
+[2022-11-29 00:53:37,994][vc_tts_template][DEBUG] - total_loss: 12.456526756286621
+[2022-11-29 00:53:37,994][vc_tts_template][DEBUG] - steps: 3, param_name: variance_adaptor.duration_predictor.linear_layer.weight: inf
+[2022-11-29 00:53:37,994][vc_tts_template][DEBUG] - steps: 3, param_name: variance_adaptor.duration_predictor.linear_layer.bias: inf
+[2022-11-29 00:53:37,994][vc_tts_template][INFO] - grad norm is NaN. Will Skip updating
+[2022-11-29 00:53:38,208][vc_tts_template][DEBUG] - mel_loss: 0.9230721592903137
+[2022-11-29 00:53:38,209][vc_tts_template][DEBUG] - postnet_mel_loss: 1.3938366174697876
+[2022-11-29 00:53:38,209][vc_tts_template][DEBUG] - pitch_loss: 1.4528495073318481
+[2022-11-29 00:53:38,209][vc_tts_template][DEBUG] - energy_loss: 1.4008400440216064
+[2022-11-29 00:53:38,209][vc_tts_template][DEBUG] - duration_loss: 6.556056976318359
+[2022-11-29 00:53:38,209][vc_tts_template][DEBUG] - prosody_loss: 63.06501770019531
+[2022-11-29 00:53:38,209][vc_tts_template][DEBUG] - total_loss: 12.987955093383789
+[2022-11-29 00:53:38,209][vc_tts_template][DEBUG] - steps: 4, param_name: variance_adaptor.duration_predictor.linear_layer.weight: inf
+[2022-11-29 00:53:38,209][vc_tts_template][INFO] - grad norm is NaN. Will Skip updating

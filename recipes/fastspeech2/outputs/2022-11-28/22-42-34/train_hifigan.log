@@ -1,0 +1,6 @@
+[2022-11-28 22:42:34,449][vc_tts_template][INFO] - PyTorch version: 1.12.0+cu116
+[2022-11-28 22:42:34,449][vc_tts_template][INFO] - cudnn.deterministic: False
+[2022-11-28 22:42:34,449][vc_tts_template][INFO] - cudnn.benchmark: False
+[2022-11-28 22:42:34,449][vc_tts_template][INFO] - cuDNN version: 8302
+[2022-11-28 22:42:34,449][vc_tts_template][INFO] - Random seed: 773
+[2022-11-28 22:42:34,450][vc_tts_template][INFO] - Fine-tuning! Loading a checkpoint: ../../vc_tts_template/vocoder/hifigan/weights/universal.pth

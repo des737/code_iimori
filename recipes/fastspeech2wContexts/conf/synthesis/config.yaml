@@ -1,0 +1,47 @@
+# @package _global_
+
+verbose: 100
+
+# 1) none 2) tqdm
+tqdm: tqdm
+
+device: cuda # or cpu
+
+utt_list:
+in_dir:
+
+# for reconstruct. normalized one is considered.
+in_mel_dir:
+out_dir:
+dialogue_info:
+emb_dir:
+use_hist_num:
+use_prosody_hist_num:
+prosody_emb_dir:
+g_prosody_emb_dir:
+use_local_prosody_hist_idx:
+SSL_name:
+SSL_weight:
+SSL_sample_rate:
+mel_mode:
+use_situation_text:
+# リストの逆順で発話を処理する
+reverse: false
+
+# 生成する発話の数
+# 指定がない場合、utt_list の発話をすべて処理する
+num_eval_utts:
+
+sample_rate:
+
+acoustic:
+  checkpoint:
+  in_scaler_path:
+  out_scaler_path:
+  model_yaml:
+
+vocoder:
+  checkpoint:
+  in_scaler_path:
+  out_scaler_path:
+  model_yaml:

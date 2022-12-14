@@ -1,0 +1,90 @@
+# @package _global_
+
+defaults:
+  - model:
+  - tuning:
+
+verbose: 100
+seed: 773
+
+# 1) none 2) tqdm
+tqdm: tqdm
+
+cudnn:
+  benchmark:
+  deterministic:
+
+# Multi-gpu
+data_parallel: false
+
+###########################################################
+#                DATA SETTING                             #
+###########################################################
+data:
+  # training set
+  train:
+    utt_list:
+    in_dir:
+    out_dir:
+
+  # development set
+  dev:
+    utt_list:
+    in_dir:
+    out_dir:
+
+  # data loader
+  num_workers: 5
+  batch_size:
+  group_size: 16
+  accent_info:
+
+###########################################################
+#                TRAIN SETTING                            #
+###########################################################
+train:
+  out_dir: /home/sarulab/eiji_iimori/documents/nishimura_copy/recipes/fastspeech2/exp/LINE_3_sr22050_LINE_79_JSUT_NICT_LINE_wo_Teacher_finetuning_FS_GMM_num_gaussians_11/out
+  log_dir: /home/sarulab/eiji_iimori/documents/nishimura_copy/recipes/fastspeech2/exp/LINE_3_sr22050_LINE_79_JSUT_NICT_LINE_wo_Teacher_finetuning_FS_GMM_num_gaussians_11/log
+
+  # steps can either be specified by steps or epochs
+  max_train_steps: -1
+  nepochs:
+  checkpoint_epoch_interval: 100
+  eval_epoch_interval: 50
+
+  vocoder_name:
+  vocoder_config:
+  vocoder_weight_path:
+  sampling_rate:
+  mel_scaler_path:
+  max_wav_value: 32768.0
+
+  optim:
+    optimizer:
+      name: Adam
+      params:
+        lr: 0.0625  # encoder_hidden ** (-0.5)
+        betas: [0.9, 0.98]
+        eps: 0.000000001
+        weight_decay: 0.0
+    lr_scheduler:
+      _target_: vc_tts_template.fastspeech2.optimizer.ScheduledOptim
+      warm_up_step: 2000
+      anneal_steps: [150000, 200000, 250000]
+      anneal_rate: 0.3
+      max_lr_scale: 0.016  # max_lr = 0.001 / base_lr = 0.0625 
+  
+  criterion:
+    # _target_: vc_tts_template.fastspeech2.loss.FastSpeech2Loss
+    _target_: vc_tts_template.fastspeech2wGMM.loss.FastSpeech2Loss
+    pitch_feature_level:
+    energy_feature_level:
+    beta: 0.02
+    g_beta: 0.02
+
+  pretrained:
+    # 注意: ./run.shのいるディレクトリがcwdです.
+    # 例: "exp/jsut_sr22050/fastspeech2/latest.pth"
+    checkpoint: "nishimura_copy/recipes/fastspeech2/exp/LINE_3_sr22050_LINE_79_JSUT_NICT_LINE_wo_Teacher_finetuning_FS_GMM_num_gaussians_11/fastspeech2wGMM/best_loss.pth" 
+    #exp/JSUT_NICT_LINE_wo_Teacher_2_sr22050_LINE_73_JSUT_NICT_LINE_wo_Teacher_FS_GMM_num_gaussians_11/fastspeech2wGMM/epoch0500.pth
+    optimizer_reset: True

@@ -1,0 +1,39 @@
+netG:
+  _target_: vc_tts_template.fastspeech2.FastSpeech2ForVC
+  max_seq_len: 1000
+  num_vocab: 53
+  # encoder
+  encoder_hidden_dim: 256
+  encoder_num_layer: 4
+  encoder_num_head: 2
+  conv_filter_size: 1024
+  conv_kernel_size_1: 9
+  conv_kernel_size_2: 1
+  encoder_dropout: 0.2
+  # variance_predictor
+  variance_predictor_filter_size: 256
+  variance_predictor_kernel_size: 3
+  variance_predictor_dropout: 0.5
+  pitch_feature_level:
+  energy_feature_level:
+  pitch_quantization: "linear"
+  energy_quantization: "linear"
+  n_bins: 256
+  # decoder
+  decoder_hidden_dim: 256
+  decoder_num_layer: 4
+  decoder_num_head: 2
+  attention_dim: 384
+  conv_kernel_size: 7
+  ff_expansion_factor: 4
+  conv_expansion_factor: 2
+  ff_dropout: 0.2
+  attention_dropout: 0.2
+  conv_dropout: 0.2
+  # other
+  n_mel_channel:
+  encoder_fix: False
+  stats: {"pitch_min": -0.8101340727883142, "pitch_max": 0.6807661116060764, "energy_min": -0.7406348586082458, "energy_max": 0.4284781515598297}
+  speakers: {"JSUT": 0, "NICT": 1, "Teacher": 2, "MStudent": 3, "FStudent": 4}
+  emotions:
+  accent_info:

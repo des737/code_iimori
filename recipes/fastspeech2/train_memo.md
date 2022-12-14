@@ -1,0 +1,779 @@
+# train_memo
+今まで同様に, trainの詳細をここに記載しておく.
+
+- spk
+    - jsut
+        - 先生にアライメントも二回目の修正をしてもらったきれいなやつ.
+    - Long_dialogue
+        - 先生にもらったもので, soxで22050にしたもの.
+    - JSUT_accent
+        - tacotronの実装にある, フルコンテキストラベルのアクセント情報を利用したデータセット
+    - LINE
+        - corpus評価用のwoITAKO.
+    - LINE_2
+        - corpus評価用のwoITAKO.
+        - statsの計算方法を変えたので, 一応作り直し.
+    - LINE_3
+        - corpus評価用のwoITAKO.
+        - accent info付き.
+    - LINE_4
+        - corpus評価用のwoITAKO_before_emotion.
+        - accent info付き.
+        - emotionを変えたのでdataをコピーしなおしていることに注意
+    
+    - JSUT_NICT_LINE
+        - VCのpretrain用の大規模TTS. textgrid.
+    - JSUT_NICT_LINE_2
+        - VCのpretrain用の大規模TTS. textgrid.
+        - ちゃんと、論文に使えるように, LINEのみtrain/dev/evalを守ったもの.
+    
+    - LINE_Teacher
+        - wContexts用に, ProsodyExtractorを学習するためのコーパス
+        - +accent info, +ITAKO
+    - LINE_MStudent
+        - 同様
+    - LINE_FStudent
+        - 同様
+    
+    - JSUT_NICT_LINE_wo_Teacher
+        - GMMのデータ不足説を立証するために, 持ちうるデータすべてを用いてpretrainする.
+        - こちらは論文には使えない, Studentの入っているデータ.
+    
+    - JSUT_NICT_LINE_wo_Teacher_2
+        - GMMのデータ不足説を立証するために, 持ちうるデータすべてを用いてpretrainする.
+        - こちらは論文には使えない, Studentの入っているデータ.
+        - multi-speaker用にStandardScalerを用意したのでそれに基づいて用意
+
+- exp
+    - jsut_1
+        - Long_dialogueのための, pretrain.
+    - Long_dialogue_1
+        - emotionを実装してからの初実行. 比較対象がないのが残念.
+    - Long_dialogue_2
+        - emotionを外して. Long_dialogue_1と全く同じtrain_set.
+        - さらに, hifiganも完全に使いまわし.
+    - Long_dialogue_3
+        - pretrainだけなしにして, それ以外は2と同じ.
+        - lossはほぼ同じだけど, 音質は若干悪い感じ.
+    - Long_dialogue_4
+        - spk: Long_dialogue
+        - pretrain: None
+        - wGMM初稼働. ミスって上書きしてしまった...。
+    - Long_dialogue_5
+        - spk: Long_dialogue
+        - pretrain: None
+        - wGMM実質初稼働. ミスって上書きしてしまった...。
+    - Long_dialogue_6
+        - spk: Long_dialogue
+        - pretrain: None
+        - wGMM+global prosody.
+    - Long_dialogue_7
+        - spk: Long_dialogue
+        - pretrain: None
+        - optunaでハイパラ探索を行う
+    - JSUT_accent_1(@myPC)
+        - spk: JSUT_accent
+        - pretrain: None
+        - アクセント付きFastSpeech2初実行
+    - Long_dialogue_8
+        - spk: Long_dialogue
+        - pretrain: None
+        - optunaでハイパラ探索を行う. 別パラメタ。アドバイスを受けて大分変数を減らした.
+    - Long_dialogue_9
+        - spk: Long_dialogue
+        - pretrain: None
+        - optunaでハイパラ探索を行う. 別パラメタ。
+            - prunerを変えてnum_gaussianをカテゴリ―にした.
+    
+    - ここで、VCの方にシフト. lr_scheduler周りで2つほどミスを見つけたりの修正が出来たので、ましになるかも.
+    - wGMMも他のも, アクセントを前提にしてみる.
+    - LINE_1
+        - spk: LINE
+        - pretrain: None
+        - ふっつーのfastspeech2.
+    - LINE_2
+        - spk: LINE_2
+        - pretrain: None
+        - 29min/50epoch
+        - batch_size: 8
+        - ふっつーのfastspeech2. LINE_1でstatsが正規化前のものになっているのに気づかず使っていた. そこを修正して実行しなおしたもの.
+    - LINE_3
+        - spk: LINE_3
+        - pretrain: None
+        - +accent info
+        - batch_size: 8
+        - loss上は微改善. 音声も劇的ではないが、改善.
+    - LINE_4
+        - spk: LINE_3
+        - pretrain: None
+        - +accent info + emotion
+        - batch_size: 8
+    - LINE_5
+        - spk: LINE_4
+        - pretrain: None
+        - +accent info + before_emotion
+        - batch_size: 8
+    
+    - LINE_Teacher_1
+        - spk: LINE_Teacher
+        - pretrain: None
+    
+    - 以下は趣味のVC用.
+    - JSUT_NICT_LINE_1
+        - spk: JSUT_NICT_LINE
+        - pretrain用.
+    
+    - 以下は自分の研究用
+    - LINE_6
+        - spk: LINE_3
+        - pretrain: None
+        - +accent info
+        - batch_size: 32
+        - 500epoch
+        - wGMM. baeslineとして、どの程度の精度が出るのかを確認するために回してみる。
+    - LINE_6(hifigan)
+        - spk: LINE_3
+        - pretrain: None
+        - batch_size: 128
+        - 1000epoch
+        - ちゃんと論文に出せるように、Universal重みからスタートして、train.listを使ってhifiganを訓練してみる.
+    - LINE_7
+        - spk: LINE_3
+        - pretrain: None
+        - +accent info
+        - batch_size: 16
+        - 500epoch
+        - wGMM. baeslineとして、どの程度の精度が出るのかを確認するために回してみる。
+        - 比較できるように, batchを16にして実行.
+    - LINE_8
+        - spk: LINE_3
+        - pretrain: None
+        - +accent info
+        - batch_size: 16
+        - 500epoch
+        - fastspeech2. 比較用としてbatch_size=16として再実行
+    - LINE_9
+        - spk: LINE_3
+        - pretrain: None
+        - +accent info
+        - batch_size: 16
+        - 500epoch
+        - fastspeech2wGMM. 
+        - global prosody: False, local prosody: True
+        - つまり、元論文の設定.
+        - job_ID: 8221619
+    - LINE_10
+        - spk: LINE_3
+        - pretrain: None
+        - +accent info
+        - batch_size: 16
+        - 500epoch
+        - fastspeech2wGMM. 
+        - global prosody: True, local prosody: False
+        - つまり、globalのみ使ってみよう作戦
+        - job_ID: 8221622
+    - LINE_11
+        - spk: LINE_3
+        - pretrain: None
+        - +accent info
+        - batch_size: 16
+        - 500epoch
+        - fastspeech2wGMM. 
+        - global prosody: True, local prosody: True, g_beta: 0.0
+        - つまり、globalのlossは計算しない.
+        - job_ID: 8221685
+    - LINE_12
+        - spk: LINE_3
+        - pretrain: LINE_10(250epochから)
+        - +accent info
+        - batch_size: 16
+        - 250epoch
+        - fastspeech2wGMM. 
+        - global prosody: True, local prosody: True, g_beta: 0.02, beta: 0.02
+        - まず最初にglobal prosodyのみ訓練して、途中からlocalも.
+        - 公平になるように250, 250でやる.
+        - job_ID: 8223475
+    - LINE_13
+        - spk: LINE_3
+        - pretrain: None
+        - +accent info
+        - batch_size: 16
+        - 500epoch
+        - fastspeech2wGMM. 
+        - global prosody: True, local prosody: True, g_beta: 0.02, beta: 0.02, max_seq_len: 4000
+        - 基本今までの設定、つまりLINE_7と同じだが、max_seq_lenを1000にしていたせいで、ろくにデータを使えていなかったことが発覚.
+        - 4倍に増やしてみる.
+        - job_ID: 8226280
+    - LINE_14
+        - spk: LINE_3
+        - pretrain: None
+        - +accent info
+        - batch_size: 16
+        - 500epoch
+        - fastspeech2wGMM. 
+        - global prosody: True, local prosody: False, g_beta: 0.02, beta: 0.02, max_seq_len: 4000
+        - LINE_10の, max_seq_len増やしたver. pretrain用.
+        - job_ID: 8226389
+    - LINE_15
+        - spk: LINE_3
+        - pretrain: LINE_14(250epoch)
+        - +accent info
+        - batch_size: 16
+        - 250epoch
+        - fastspeech2wGMM. 
+        - global prosody: True, local prosody: True, g_beta: 0.02, beta: 0.02, max_seq_len: 4000
+        - LINE_12のmax_seq_len増やしたver.
+        - job_ID: 8231151
+    # 以下、TTS→VC用の実験
+    - JSUT_NICT_LINE_2
+        - spk: JSUT_NICT_LINE_2
+        - pretrain用. train splitを守ってやり直し.
+    # 以下、元論文の正当性確かめる用の実験
+    - LINE_16
+        - spk: LINE_3
+        - pretrain: None
+        - +accent info
+        - batch_size: 16
+        - 500epoch
+        - fastspeech2wGMM. 
+        - global prosody: False, local prosody: True, num_gaussians: 7
+        - つまり、元論文の設定だが、混合数を変えてみた.
+        - job_ID: 8269269
+    - LINE_17
+        - spk: LINE_3
+        - pretrain: None
+        - +accent info
+        - batch_size: 16
+        - 500epoch
+        - fastspeech2wGMM. 
+        - global prosody: False, local prosody: True, num_gaussians: 5
+        - つまり、元論文の設定だが、混合数を変えてみた.
+        - job_ID: 8269303
+    - LINE_18
+        - spk: LINE_3
+        - pretrain: None
+        - +accent info
+        - batch_size: 16
+        - 500epoch
+        - fastspeech2wGMM. 
+        - global prosody: False, local prosody: True, num_gaussians: 3
+        - つまり、元論文の設定だが、混合数を変えてみた.
+        - job_ID: 8269367
+    - LINE_19
+        - spk: LINE_3
+        - pretrain: None
+        - +accent info
+        - batch_size: 16
+        - 500epoch
+        - fastspeech2wGMM. 
+        - global prosody: False, local prosody: True, num_gaussians: 1
+        - つまり、元論文の設定だが、混合数を変えてみた.
+        - job_ID: 8269393
+    - LINE_20
+        - spk: LINE_3
+        - pretrain: None
+        - +accent info
+        - batch_size: 8
+        - 500epoch
+        - fastspeech2wVAE
+        - 比較対象: LINE_4
+        - VAE実装. もちろん感情付き.
+    - LINE_21
+        - spk: LINE_3
+        - pretrain: None
+        - +accent info
+        - batch_size: 16
+        - 250epoch
+        - fastspeech2wGMM. 
+        - global prosody: True, local prosody: False
+        - globalの次元数修正後にpretrain用を作っていなかったので作る.
+        - job_ID: 8350817
+    - LINE_22
+        - spk: LINE_3
+        - pretrain: LINE_21
+        - +accent info
+        - batch_size: 16
+        - 500epoch
+        - fastspeech2wGMM. 
+        - global prosody: True, local prosody: True, num_gaussians: 1
+        - 混合数を変える実験. global prosodyもつけてみてどうなるかをみる.
+        - job_ID: 8360752
+    - LINE_23
+        - spk: LINE_3
+        - pretrain: LINE_21
+        - +accent info
+        - batch_size: 16
+        - 500epoch
+        - fastspeech2wGMM. 
+        - global prosody: True, local prosody: True, num_gaussians: 3
+        - 混合数を変える実験. global prosodyもつけてみてどうなるかをみる.
+        - job_ID: 8360757
+    - LINE_24
+        - spk: LINE_3
+        - pretrain: LINE_21
+        - +accent info
+        - batch_size: 16
+        - 500epoch
+        - fastspeech2wGMM. 
+        - global prosody: True, local prosody: True, num_gaussians: 5
+        - 混合数を変える実験. global prosodyもつけてみてどうなるかをみる.
+        - job_ID: 8360759
+    - LINE_25
+        - spk: LINE_3
+        - pretrain: LINE_21
+        - +accent info
+        - batch_size: 16
+        - 500epoch
+        - fastspeech2wGMM. 
+        - global prosody: True, local prosody: True, num_gaussians: 7
+        - 混合数を変える実験. global prosodyもつけてみてどうなるかをみる.
+        - job_ID: 8360764
+    - LINE_26
+        - spk: LINE_3
+        - pretrain: LINE_21
+        - +accent info
+        - batch_size: 16
+        - 500epoch
+        - fastspeech2wGMM. 
+        - global prosody: True, local prosody: True, num_gaussians: 10
+        - 混合数を変える実験. global prosodyもつけてみてどうなるかをみる.
+        - job_ID: 8360770
+    - LINE_27
+        - spk: LINE_3
+        - pretrain: None
+        - +accent info
+        - batch_size: 16
+        - 500epoch
+        - fastspeech2wGMM. emotion当該発話. pretrain.
+        - global prosody: True, local prosody: False, num_gaussians: 10
+        - 感情ラベル付きでどうなるかを見るための, global訓練
+        - job_ID: 8351153
+    - LINE_28
+        - spk: LINE_4
+        - pretrain: None
+        - +accent info
+        - batch_size: 16
+        - 500epoch
+        - fastspeech2wGMM. emotion1つ前. pretrain.
+        - global prosody: True, local prosody: False, num_gaussians: 10
+        - 感情ラベル付きでどうなるかを見るための, global訓練
+        - job_ID: 8351162
+    - LINE_29
+        - spk: LINE_3
+        - pretrain: LINE_27
+        - +accent info
+        - batch_size: 16
+        - 500epoch
+        - fastspeech2wGMM. emotion当該発話.
+        - global prosody: True, local prosody: True, num_gaussians: 10
+        - 感情ラベル付きでどうなるかを見るための実験
+        - job_ID: 8360779
+    - LINE_30
+        - spk: LINE_4
+        - pretrain: LINE_28
+        - +accent info
+        - batch_size: 16
+        - 500epoch
+        - fastspeech2wGMM. emotion1つ前.
+        - global prosody: True, local prosody: True, num_gaussians: 10
+        - 感情ラベル付きでどうなるかを見るための実験
+        - job_ID: 8360788
+    - LINE_31
+        - spk: LINE_4
+        - pretrain: LINE_28
+        - +accent info
+        - batch_size: 16
+        - 500epoch
+        - fastspeech2wGMM. emotion1つ前.
+        - global prosody: True, local prosody: True, num_gaussians: 3
+        - 感情ラベル付き+num_gaussian=3
+        - job_ID: 8459915
+
+    - JSUT_1
+        - spk: jsut
+        - pretrain: None
+        - batch_size: 16
+        - 500epoch
+        - fastspeech2.
+        - JSUTでpretrainする.
+        - job_ID: 8557331
+    - JSUT_2
+        - spk: jsut
+        - pretrain: None
+        - batch_size: 16
+        - 500epoch
+        - fastspeech2wGMM.
+        - JSUTでpretrainする.
+        - job_ID: 8557334
+    - JSUT_3
+        - spk: jsut
+        - pretrain: None
+        - batch_size: 16
+        - 500epoch
+        - fastspeech2wGMM.
+        - JSUTでpretrainする. global=False
+        - job_ID: 8557809
+    
+    - LINE_FStudent_2
+        - spk: LINE_FStudent       
+        - pretrain: JSUT_2
+        - batch_size: 16
+        - 500epoch
+        - fastspeech2wGMM.
+        - JSUTでpretrainする.
+        - job_ID: 8551522
+    - LINE_MStudent_2
+        - spk: LINE_MStudent       
+        - pretrain: JSUT_2
+        - batch_size: 16
+        - 500epoch
+        - fastspeech2wGMM.
+        - JSUTでpretrainする.
+        - job_ID: 8551536
+    - LINE_Teacher_2
+        - spk: LINE_Teacher
+        - pretrain: JSUT_2
+        - batch_size: 16
+        - 500epoch
+        - fastspeech2wGMM.
+        - JSUTでpretrainする.
+        - job_ID: 8556197
+    
+    ## 実行祭り開催
+    - 共通パラメタ
+        - accent_info: 1
+        - batch_size: 16
+        - 500epoch
+    - LINE_32_FS
+        - spk: LINE_3
+        - pretrain: JSUT_1
+        - job_ID: 8572772
+    - LINE_33_FS_EMO1
+        - spk: LINE_3
+        - pretrain: JSUT_1
+        - job_ID: 8572777
+    - LINE_34_FS_EMO2
+        - spk: LINE_4
+        - pretrain: JSUT_1
+        - job_ID: 8572779
+    - LINE_35_FS_GMM
+        - spk: LINE_3
+        - pretrain: JSUT_3
+        - job_ID: 8572788
+    - LINE_36_FS_GMM_EMO1
+        - spk: LINE_3
+        - pretrain: JSUT_3
+        - job_ID: 8572997
+    - LINE_37_FS_GMM_EMO2
+        - spk: LINE_4
+        - pretrain: JSUT_3
+        - job_ID: 8573020
+    - LINE_38_FS_GMM_g_p
+        - spk: LINE_3
+        - pretrain: JSUT_2
+        - job_ID: 8573049
+    - LINE_39_FS_GMM_g_p_EMO1
+        - spk: LINE_3
+        - pretrain: JSUT_2
+        - job_ID: 8573041
+    - LINE_40_FS_GMM_g_p_EMO2
+        - spk: LINE_4
+        - pretrain: JSUT_2
+        - job_ID: 8573030
+    
+    # GMMのためのデータ量増強
+    - LINE_41_JSUT_NICT_LINE_wo_Teacher_FS
+        - spk: JSUT_NICT_LINE_wo_Teacher
+        - pretrain: None
+        - 500epoch
+        - pretrain用. 公平性のため, FSもこれで訓練.
+    - LINE_42_JSUT_NICT_LINE_wo_Teacher_FS_GMM
+        - spk: JSUT_NICT_LINE_wo_Teacher
+        - pretrain: None
+        - 500epoch
+        - pretrain用. GMM.
+        - jobID: 8669910
+        - jobID: 8704811(2回目)
+    - LINE_43_JSUT_NICT_LINE_wo_Teacher_finetuning_FS
+        - spk: LINE_3
+        - pretrain: LINE_41_JSUT_NICT_LINE_wo_Teacher_FS
+        - 500epoch
+        - jobID: 8672807
+    - LINE_43_JSUT_NICT_LINE_wo_Teacher_finetuning_FS_GMM
+        - spk: LINE_3
+        - pretrain: LINE_42_JSUT_NICT_LINE_wo_Teacher_FS_GMM
+        - 500epoch
+        - jobID: 8723657
+    - LINE_44_JSUT_NICT_LINE_wo_Teacher_FS_GMM_spk_ind
+        - spk: JSUT_NICT_LINE_wo_Teacher
+        - pretrain: None
+        - 500epoch
+        - pretrain用. GMM. 話者性をpredictorの手前で抜いたもの.
+        - jobID: 8682264
+        - jobID: 8704818
+    - LINE_45_JSUT_NICT_LINE_wo_Teacher_finetuning_FS_GMM_spk_ind
+        - spk: LINE_3
+        - pretrain: LINE_44_JSUT_NICT_LINE_wo_Teacher_FS_GMM_spk_ind
+        - 500epoch
+        - GMM. 話者性をpredictorの手前で抜いたもの.
+        - jobID: 8723668
+    
+    # GMMgpの訓練
+    - JSUT_4
+        - spk: jsut
+        - pretrain: None
+        - batch_size: 16
+        - 500epoch
+        - fastspeech2wGMM.
+        - JSUTでpretrainする. gpのみTrue. GMMgpということ.
+        - job_ID: 8681720
+    - LINE_46_JSUT_NICT_LINE_wo_Teacher_FS_GMMgp
+        - spk: JSUT_NICT_LINE_wo_Teacher
+        - pretrain: None
+        - 500epoch
+        - pretrain用. GMMgp.
+        - jobID: 8682948
+    - LINE_47_JSUT_NICT_LINE_wo_Teacher_FS_GMMgp_spk_ind
+        - spk: JSUT_NICT_LINE_wo_Teacher
+        - pretrain: None
+        - 500epoch
+        - pretrain用. GMMgp. 話者性をpredictorの手前で抜いたもの.
+        - jobID: 8682940
+    - LINE_48_JSUT_FS_GMMgp
+        - spk: LINE_3
+        - pretrain: JSUT_4
+        - batch_size: 16
+        - 500epoch
+        - fastspeech2wGMM.
+        - JSUT pretrainのfinetuning
+        - job_ID: 8723669
+    - LINE_49_JSUT_NICT_LINE_wo_Teacher_finetuning_FS_GMMgp
+        - spk: LINE_3
+        - pretrain: LINE_46_JSUT_NICT_LINE_wo_Teacher_FS_GMMgp
+        - 500epoch
+        - GMMgp. finetuning
+        - jobID: 8723674
+    - LINE_50_JSUT_NICT_LINE_wo_Teacher_finetuning_FS_GMMgp_spk_ind
+        - spk: LINE_3
+        - pretrain: LINE_47_JSUT_NICT_LINE_wo_Teacher_FS_GMMgp_spk_ind
+        - 500epoch
+        - GMMgp_spk_ind. finetuning
+        - jobID: 8723713
+    - LINE_51_JSUT_FS_GMMgp
+        - spk: LINE_3
+        - pretrain: JSUT_1
+        - batch_size: 16
+        - 500epoch
+        - fastspeech2wGMM.
+        - JSUT pretrainのfinetuning. GMMは未学習のもので初期化してみる.
+        - job_ID: 8731061
+    
+    # pitch, energyの量子化をなくしてみた場合の訓練
+    - JSUT_5
+        - spk: jsut
+        - pretrain: None
+        - batch_size: 16
+        - 500epoch
+        - fastspeech2.
+        - JSUTでpretrainする. stats=None
+    - LINE_52_JSUT_FS_woBin
+        - spk: LINE_3
+        - pretrain: JSUT_5
+        - batch_size: 16
+        - 500epoch
+        - fastspeech2.
+        - JSUTでpretrainしたもの. stats=None
+        - jobID: 8780354
+
+    # GMMのためのデータ量増強, やり直し
+    - LINE_53_JSUT_NICT_LINE_wo_Teacher_FS
+        - spk: JSUT_NICT_LINE_wo_Teacher_2
+        - pretrain: None
+        - 500epoch
+        - pretrain用. 公平性のため, FSもこれで訓練.
+        - multi-speaker対応, binなし
+        - jobID: 8844285
+    - LINE_54_JSUT_NICT_LINE_wo_Teacher_FS_GMM
+        - spk: JSUT_NICT_LINE_wo_Teacher_2
+        - pretrain: None
+        - 500epoch
+        - pretrain用. GMM.
+        - jobID: 8822321
+    - LINE_55_JSUT_NICT_LINE_wo_Teacher_FS_GMM_spk_ind
+        - spk: JSUT_NICT_LINE_wo_Teacher_2
+        - pretrain: None
+        - 500epoch
+        - pretrain用. GMM. 話者性抜いたもの.
+        - jobID: 8822166
+    - LINE_56_JSUT_NICT_LINE_wo_Teacher_FS_wBins
+        - spk: JSUT_NICT_LINE_wo_Teacher_2
+        - pretrain: None
+        - 500epoch
+        - pretrain用. 公平性のため, FSもこれで訓練. binあり
+        - jobID: 8844290
+    - LINE_57_JSUT_NICT_LINE_wo_Teacher_finetuning_FS
+        - spk: LINE_3
+        - pretrain: LINE_53_JSUT_NICT_LINE_wo_Teacher_FS
+        - 500epoch
+        - pretrain用. 公平性のため, FSもこれで訓練.
+        - jobID: 8849516
+    - LINE_58_JSUT_NICT_LINE_wo_Teacher_finetuning_FS_wBins
+        - spk: LINE_3
+        - pretrain: LINE_56_JSUT_NICT_LINE_wo_Teacher_FS_wBins
+        - 500epoch
+        - pretrain用. 公平性のため, FSもこれで訓練.
+        - jobID: 8849514
+    - LINE_59_JSUT_NICT_LINE_wo_Teacher_finetuning_FS_GMM
+        - spk: LINE_3
+        - pretrain: LINE_54_JSUT_NICT_LINE_wo_Teacher_FS_GMM
+        - 500epoch
+        - pretrain用. GMM.
+        - jobID: 8849501
+    - LINE_60_JSUT_NICT_LINE_wo_Teacher_finetuning_FS_GMM_spk_ind
+        - spk: LINE_3
+        - pretrain: LINE_55_JSUT_NICT_LINE_wo_Teacher_FS_GMM_spk_ind
+        - 500epoch
+        - pretrain用. GMM. 話者性抜いたもの.
+        - jobID: 8849499
+    
+    # 「Emotion labelのPEPCEへの影響を調査する」の対照実験
+    - LINE_61_FS_EMO1_pretrain_JSUT_5
+        - spk: LINE_3
+        - pretrain: JSUT_5
+        - 500epoch
+        - jobID: 8858025
+    - LINE_62_FS_EMO1_pretrain_LINE_53
+        - spk: LINE_3
+        - pretrain: LINE_53_JSUT_NICT_LINE_wo_Teacher_FS
+        - 500epoch
+        - jobID: 8858029
+
+    # GRUの修正に伴ったFS+GMMの再実行
+    - JSUT_6
+        - spk: jsut
+        - pretrain: None
+        - 500epoch
+        - FS+GMM修正版, statsなし
+        - vs. JSUT_3. stats=Noneの違いもあるけど.
+        - jobID: 8942891
+    - LINE_63_FS_GMM_pretrain_JSUT_6
+        - spk: LINE_3
+        - pretrain: JSUT_6
+        - 500epoch
+        - jobID: 
+    
+    # GMMのためのデータ量増強, やり直し2. GRUdebug後
+    - LINE_64_JSUT_NICT_LINE_wo_Teacher_FS
+        - spk: JSUT_NICT_LINE_wo_Teacher_2
+        - pretrain: None
+        - 500epoch
+        - pretrain用. 公平性のため, FSもこれで訓練.
+        - multi-speaker対応, binなし.
+        - jobID: 8950959
+    - LINE_65_JSUT_NICT_LINE_wo_Teacher_FS_GMM
+        - spk: JSUT_NICT_LINE_wo_Teacher_2
+        - pretrain: None
+        - 500epoch
+        - pretrain用. GMM. 話者性抜いたもの.
+        - vs. LINE_55_JSUT_NICT_LINE_wo_Teacher_FS_GMM_spk_ind
+        - speaker ind = True
+        - jobID: 8950963
+    - LINE_66_JSUT_NICT_LINE_wo_Teacher_finetuning_FS
+        - spk: LINE_3
+        - pretrain: LINE_64_JSUT_NICT_LINE_wo_Teacher_FS
+        - 500epoch
+        - jobID: 8967409
+    - LINE_67_JSUT_NICT_LINE_wo_Teacher_finetuning_FS_GMM
+        - spk: LINE_3
+        - pretrain: LINE_65_JSUT_NICT_LINE_wo_Teacher_FS_GMM
+        - 500epoch
+        - jobID: 8969152
+    
+    # GMM debug後でもう一回混合数チューニング
+    - LINE_68_JSUT_NICT_LINE_wo_Teacher_FS_GMM_num_gaussians_1
+        - spk: JSUT_NICT_LINE_wo_Teacher_2
+        - pretrain: None
+        - 500epoch
+        - pretrain用. GMM. 
+        - speaker ind = True
+        - jobID: 8971446
+    - LINE_69_JSUT_NICT_LINE_wo_Teacher_FS_GMM_num_gaussians_3
+        - spk: JSUT_NICT_LINE_wo_Teacher_2
+        - pretrain: None
+        - 500epoch
+        - pretrain用. GMM. 
+        - speaker ind = True
+        - jobID: 8971452
+    - LINE_70_JSUT_NICT_LINE_wo_Teacher_FS_GMM_num_gaussians_5
+        - spk: JSUT_NICT_LINE_wo_Teacher_2
+        - pretrain: None
+        - 500epoch
+        - pretrain用. GMM. 
+        - speaker ind = True
+        - jobID: 8971458
+    - LINE_71_JSUT_NICT_LINE_wo_Teacher_FS_GMM_num_gaussians_7
+        - spk: JSUT_NICT_LINE_wo_Teacher_2
+        - pretrain: None
+        - 500epoch
+        - pretrain用. GMM. 
+        - speaker ind = True
+        - jobID: 8971462
+    - LINE_72_JSUT_NICT_LINE_wo_Teacher_FS_GMM_num_gaussians_9
+        - spk: JSUT_NICT_LINE_wo_Teacher_2
+        - pretrain: None
+        - 500epoch
+        - pretrain用. GMM. 
+        - speaker ind = True
+        - jobID: 8971467
+    - LINE_73_JSUT_NICT_LINE_wo_Teacher_FS_GMM_num_gaussians_11
+        - spk: JSUT_NICT_LINE_wo_Teacher_2
+        - pretrain: None
+        - 500epoch
+        - pretrain用. GMM. 
+        - speaker ind = True
+        - jobID: 8971477
+    - LINE_74_JSUT_NICT_LINE_wo_Teacher_finetuning_FS_GMM_num_gaussians_1
+        - spk: LINE_3
+        - pretrain: LINE_68_JSUT_NICT_LINE_wo_Teacher_FS_GMM_num_gaussians_1
+        - 500epoch
+        - pretrain用. GMM. 
+        - speaker ind = True
+        - jobID: 8998087
+    - LINE_75_JSUT_NICT_LINE_wo_Teacher_finetuning_FS_GMM_num_gaussians_3
+        - spk: LINE_3
+        - pretrain: LINE_69_JSUT_NICT_LINE_wo_Teacher_FS_GMM_num_gaussians_3
+        - 500epoch
+        - pretrain用. GMM. 
+        - speaker ind = True
+        - jobID: 8998092
+    - LINE_76_JSUT_NICT_LINE_wo_Teacher_finetuning_FS_GMM_num_gaussians_5
+        - spk: LINE_3
+        - pretrain: LINE_70_JSUT_NICT_LINE_wo_Teacher_FS_GMM_num_gaussians_5
+        - 500epoch
+        - pretrain用. GMM. 
+        - speaker ind = True
+        - jobID: 8998100
+    - LINE_77_JSUT_NICT_LINE_wo_Teacher_finetuning_FS_GMM_num_gaussians_7
+        - spk: LINE_3
+        - pretrain: LINE_71_JSUT_NICT_LINE_wo_Teacher_FS_GMM_num_gaussians_7
+        - 500epoch
+        - pretrain用. GMM. 
+        - speaker ind = True
+        - jobID: 8998101
+    - LINE_78_JSUT_NICT_LINE_wo_Teacher_finetuning_FS_GMM_num_gaussians_9
+        - spk: LINE_3
+        - pretrain: LINE_72_JSUT_NICT_LINE_wo_Teacher_FS_GMM_num_gaussians_9
+        - 500epoch
+        - pretrain用. GMM. 
+        - speaker ind = True
+        - jobID: 8998102
+    - LINE_79_JSUT_NICT_LINE_wo_Teacher_finetuning_FS_GMM_num_gaussians_11
+        - spk: LINE_3
+        - pretrain: LINE_73_JSUT_NICT_LINE_wo_Teacher_FS_GMM_num_gaussians_11
+        - 500epoch
+        - pretrain用. GMM. 
+        - speaker ind = True
+        - jobID: 8998115
+## 主要な実験
+
+## 知見

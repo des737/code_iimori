@@ -1,0 +1,1958 @@
+# train_memo
+
+- spk
+    - LINE_wContext
+        - out_LINE_woITAKOから作ったもの.
+        - dialogue_infoにTurn-00としてsituation情報を追加
+            - これがないと, 先頭のhistoryが0になって全部0でエラーとかが起きる.
+            - あとは今になって思えばこの情報はかなり重要そう
+    - LINE_wContext_2
+        - out_LINE_woITAKO_before_emotionから作ったもの.
+    - LINE_wContextwProsody
+        - out_LINE_woITAKOから作ったもの.
+    - LINE_wContextwProsody_2: dialogue_infoが間違っていた！要修正.
+        - LINE_wContext_2をcopyし, LINE_wContextwProsodyのprosodyの名前を一つ前の感情に書き換えてコピーしたもの.
+    - LINE_wContextwProsody_3
+        - out_LINE_woITAKOから作る. prosody embを作り直したので, こちらも作り直し.
+    - LINE_wContextwProsody_4
+        - out_LINE_woITAKO_before_emotionから作る. prosody embを作り直したので, こちらも作り直し.
+    - LINE_wContextwPEProsody_1
+        - out_LINE_woITAKOから作る. 
+        - prosody embとして, pitchとenergyを利用するもの. wavとtextgrid(or lab)を指定することで利用する.
+        - 今までのprosody embとしてpitch, energyを格納する.
+    - LINE_wContextwPEProsody_2
+        - out_LINE_woITAKOから作る. 
+        - prosody embとして, pitchとenergyを利用するもの. wavとtextgrid(or lab)を指定することで利用する.
+        - 今までのprosody embとしてpitch, energyを格納する.
+        - pitch, energyをちゃんと標準化して利用.
+    - LINE_wContextwPEProsody_3
+        - LINE_wContextwPEProsody_2のemotion1つ前version.
+        - 今まではStudentsはemotionを書き換えていなかった.
+        - これもそれに従う(どうせ使わないので)
+    - LINE_wContextwPEProsody_4
+        - out_LINE_woITAKOから作る. 
+        - prosody embとして, melを利用するもの. wavとtextgrid(or lab)を指定することで利用する.
+        - 今までのprosody embとしてmelを格納する.
+    - LINE_wContextwPEProsody_5
+        - LINE_wContextwPEProsody_4のbefore emo ver.
+
+    - JSUT_NICT_LINE_wo_Teacher_wContextwPEProsody_1
+        - fastspeech2/JSUT_NICT_LINE_wo_Teacher_2と同様の全部乗せデータを利用
+            - data/train.listは, すでにmelが一定以上に長いものをtextgridから除去したものになっている
+            - 一方で, wavからは除去できていなかったので、取り除いた.
+        - prosody embとしてmelを利用
+    - LINE_wContextwPEProsody_6
+        - out_LINE_woITAKOから作る. 
+        - utterance-levelを卒業して，pauで分割したtextでBERTを計算したり，pau毎のdurationを計算して蓄えたもの．
+    - LINE_wContextwPEProsody_7
+        - out_LINE_woITAKOから作る. 
+        - utterance-levelを卒業して，pauで分割したtextでBERTを計算したり，pau毎のdurationを計算して蓄えたもの．
+        - pauの分割がうまくいっていなかったのでやり直し
+    - LINE_wContextwPEProsody_8
+        - out_LINE_woITAKOから作る. 
+        - textと同様に，音声の方も事前に用意したprosodyを利用することに
+        - WavLM採用
+        - これはutterance ver
+    - LINE_wContextwPEProsody_9
+        - LINE_wContextwPEProsody_8のsegment ver
+    - LINE_wContextwPEProsody_10
+        - out_LINE_woITAKOから作る. 
+        - textと同様に，音声の方も事前に用意したprosodyを利用することに
+        - Wav2vec2.0を採用
+            - facebook/wav2vec2-large-xlsr-53
+        - これはutterance ver
+    - LINE_wContextwPEProsody_11
+        - out_LINE_woITAKOから作る. 
+        - textと同様に，音声の方も事前に用意したprosodyを利用することに
+        - Wav2vec2.0を採用
+            - jonatasgrosman/wav2vec2-large-xlsr-53-japanese
+        - これはutterance ver
+    - LINE_wContextwPEProsody_12
+        - out_LINE_woITAKOから作る. 
+        - textと同様に，音声の方も事前に用意したprosodyを利用することに
+        - Wav2vec2.0を採用
+            - NTQAI/wav2vec2-large-japanese
+        - これはutterance ver
+    - LINE_wContextwPEProsody_13
+        - out_LINE_woITAKOから作る. 
+        - textと同様に，音声の方も事前に用意したprosodyを利用することに
+        - Wav2vec2.0を採用
+            - Bagus/wav2vec2-xlsr-japanese-speech-emotion-recognition
+        - これはutterance ver
+    - LINE_wContextwPEProsody_14
+        - out_LINE_woITAKOから作る. 
+        - textと同様に，音声の方も事前に用意したprosodyを利用することに
+        - Wav2vec2.0を採用
+            - jonatasgrosman/wav2vec2-large-xlsr-53-japanese
+        - これはsegment ver
+
+- exp
+    - LINE_wContext_1
+        - spk: LINE_wContext
+        - pretrain: None
+        - +accent
+        - 初実行. wEmotionは次かな?
+    - LINE_wContext_2
+        - spk: LINE_wContext
+        - pretrain: None
+        - +accent+Emotion
+    - LINE_wContext_3
+        - spk: LINE_wContext_2
+        - pretrain: None
+        - +accent+before_Emotion
+    - LINE_wContextwProsody_1
+        - spk: LINE_wContextwProsody
+        - pretrain: None
+        - +accent
+        - batch_size=16: A100を持ってしてもメモリ溢れる...。すべての実験を16で統一します。
+    - LINE_wContext_4
+        - spk: LINE_wContext
+        - pretrain: None
+        - +accent
+        - batch_size=16, wGMM
+    - LINE_wContext_5
+        - spk: LINE_wContext
+        - pretrain: None
+        - +accent
+        - batch_size=16, wGMM
+        - global prosody: True, local prosody: False
+        - 2段階学習のためのpretrain. 250epoch
+        - jobID: 8242146
+    - LINE_wContextwProsody_2
+        - spk: LINE_wContextwProsody
+        - pretrain: None
+        - +accent
+        - batch_size=16, wGMM
+        - global prosody: True, local prosody: False, attention: False
+        - 2段階学習のためのpretrain. 250epoch
+        - jobID: 8242165
+    - LINE_wContext_6
+        - spk: LINE_wContext
+        - pretrain: LINE_wContext_5
+        - +accent
+        - batch_size=16, wGMM
+        - global prosody: True, local prosody: True
+        - 2段階学習後半戦. 250epoch
+        - jobID: 8243509
+    - LINE_wContextwProsody_3
+        - spk: LINE_wContextwProsody
+        - pretrain: LINE_wContextwProsody_2
+        - +accent
+        - batch_size=16, wGMM
+        - global prosody: True, local prosody: True, attention: False
+        - 2段階学習後半戦. 250epoch
+        - jobID: 8243518
+    - LINE_wContextwProsody_4
+        - spk: LINE_wContextwProsody
+        - pretrain: LINE_wContextwProsody_2
+        - +accent
+        - batch_size=16, wGMM
+        - global prosody: True, local prosody: True, attention: True, use_local_prosody_hist_idx:0
+        - 2段階学習後半戦. attentionを復活させてみた. 250epoch
+        - jobID: 8243521
+    - LINE_wContextwProsody_5
+        - spk: LINE_wContextwProsody
+        - pretrain: LINE_wContextwProsody_2
+        - +accent
+        - batch_size=16, wGMM
+        - global prosody: True, local prosody: True, attention: True, use_local_prosody_hist_idx: 1
+        - 2段階学習後半戦. attentionを復活させてみた. 250epoch
+        - ただし, attentionの際に用いるのは、直前ではなく、そのさらに一個前、つまり一個前の自分の発話
+        - jobID: 8243523
+    - LINE_wContextwProsody_6
+        - spk: LINE_wContextwProsody
+        - pretrain: LINE_wContextwProsody_2
+        - +accent
+        - batch_size=16, wGMM
+        - global prosody: True, local prosody: True, attention: True, use_local_prosody_hist_idx: 1
+        - 2段階学習後半戦. attentionを復活させてみた. 250epoch
+        - ただし, attentionの際に用いるのは、直前ではなく、そのさらに一個前、つまり一個前の自分の発話
+        - spk情報を新たに追加することにした. それによる影響を見るための比較実験
+        - jobID: 8270309
+    - LINE_wContextwProsody_7
+        - spk: LINE_wContextwProsody
+        - pretrain: None
+        - +accent
+        - batch_size=16, wGMM
+        - global prosody: True, local prosody: False, attention: False
+        - 2段階学習のためのpretrain. 250epoch.
+        - g_gruのinput dimを変える実装になっていて、これをpretrainに用いるとg_gruが無視されることが発覚.
+        - そこを修正したもので再実行.
+        - jobID: 8270747
+    - LINE_wContextwProsody_8
+        - spk: LINE_wContextwProsody
+        - pretrain: LINE_wContextwProsody_7
+        - +accent
+        - batch_size=16, wGMM
+        - global prosody: True, local prosody: True, attention: True, use_local_prosody_hist_idx: 1
+        - 2段階学習後半戦. attentionを復活させてみた. 250epoch
+        - 話者性を追加し, pretrainも修正したもの.
+        - jobID: 8271869
+    - LINE_wContext_7
+        - spk: LINE_wContext
+        - pretrain: None
+        - +accent
+        - batch_size=16, wGMM
+        - global prosody: True, local prosody: False
+        - 2段階学習のためのpretrain. 250epoch. emotionは当該のもの.
+        - jobID: 8351464
+    - LINE_wContext_8
+        - spk: LINE_wContext_2
+        - pretrain: None
+        - +accent
+        - batch_size=16, wGMM
+        - global prosody: True, local prosody: False
+        - 2段階学習のためのpretrain. 250epoch. emotionは一つ前
+        - jobID: 8351470
+    - LINE_wContext_9
+        - spk: LINE_wContext
+        - pretrain: LINE_wContext_7
+        - +accent
+        - batch_size=16, wGMM
+        - global prosody: True, local prosody: True
+        - 2段階学習のためのpretrain. 250epoch. emotionは当該のもの.
+        - jobID: 8360793
+    - LINE_wContext_10
+        - spk: LINE_wContext_2
+        - pretrain: LINE_wContext_8
+        - +accent
+        - batch_size=16, wGMM
+        - global prosody: True, local prosody: True
+        - 2段階学習のためのpretrain. 250epoch. emotionは一つ前
+        - jobID: 8360833
+    - LINE_wContextwProsody_9
+        - spk: LINE_wContextwProsody
+        - pretrain: None
+        - +accent
+        - batch_size=16, wGMM
+        - global prosody: True, local prosody: False, attention: False, use_local_prosody_hist_idx: 0
+        - 2段階学習前半戦. 当該発話の感情
+        - jobID: 8361107
+    - LINE_wContextwProsody_10: dialogue_infoが間違っていた！要修正.
+        - spk: LINE_wContextwProsody_2
+        - pretrain: None
+        - +accent
+        - batch_size=16, wGMM
+        - global prosody: True, local prosody: False, attention: False, use_local_prosody_hist_idx: 0
+        - 2段階学習前半戦. 当該発話1つ前の感情
+        - jobID: 8362557
+    - LINE_wContextwProsody_11
+        - spk: LINE_wContextwProsody
+        - pretrain: LINE_wContextwProsody_9
+        - +accent
+        - batch_size=16, wGMM
+        - global prosody: True, local prosody: True, attention: True, use_local_prosody_hist_idx: 0
+        - 2段階学習後半戦. 当該発話の感情
+        - jobID: 8387698
+    - LINE_wContextwProsody_12qs
+        - spk: LINE_wContextwProsody
+        - pretrain: LINE_wContextwProsody_9
+        - +accent
+        - batch_size=16, wGMM
+        - global prosody: True, local prosody: True, attention: True, use_local_prosody_hist_idx: 1
+        - 2段階学習後半戦. 当該発話の感情
+        - jobID: 8388025
+    - LINE_wContextwProsody_13: dialogue_infoが間違っていた！要修正.
+        - spk: LINE_wContextwProsody_2
+        - pretrain: LINE_wContextwProsody_10
+        - +accent
+        - batch_size=16, wGMM
+        - global prosody: True, local prosody: True, attention: True, use_local_prosody_hist_idx: 0
+        - 2段階学習後半戦. 当該発話1つ前の感情
+        - jobID: 8388744
+    - LINE_wContextwProsody_14: dialogue_infoが間違っていた！要修正.
+        - spk: LINE_wContextwProsody_2
+        - pretrain: LINE_wContextwProsody_10
+        - +accent
+        - batch_size=16, wGMM
+        - global prosody: True, local prosody: True, attention: True, use_local_prosody_hist_idx: 1
+        - 2段階学習後半戦. 当該発話1つ前の感情
+        - jobID: 8388939
+    - LINE_wContext_11
+        - spk: LINE_wContext
+        - pretrain: LINE_wContext_5
+        - +accent
+        - batch_size=16, wGMM
+        - global prosody: True, local prosody: True, num_gaussian=3
+        - 250epoch
+        - jobID: 8459923
+    - LINE_wContext_12
+        - spk: LINE_wContext_2
+        - pretrain: LINE_wContext_8
+        - +accent
+        - batch_size=16, wGMM
+        - global prosody: True, local prosody: True, num_gaussian=3
+        - 250epoch. emotionは一つ前
+        - jobID: 8459937
+    - LINE_wContextwProsody_15
+        - spk: LINE_wContextwProsody
+        - pretrain: LINE_wContextwProsody_7
+        - +accent
+        - batch_size=16, wGMM
+        - global prosody: True, local prosody: True, attention: True, num_gaussian: 3, use_local_prosody_hist_idx: 1
+        - 2段階学習後半戦. emotion labelはなし. ラベルが間違っていたので.
+        - jobID: 8459942
+    - LINE_wContextwProsody_16
+        - spk: LINE_wContextwProsody_2
+        - pretrain: None
+        - +accent
+        - batch_size=16, wGMM
+        - global prosody: True, local prosody: False, attention: False
+        - 2段階学習前半戦. 1つまえのemotion. ラベルが間違っていたので.
+        - jobID: 8460047
+    - LINE_wContextwProsody_17
+        - spk: LINE_wContextwProsody_2
+        - pretrain: LINE_wContextwProsody_16
+        - +accent
+        - batch_size=16, wGMM
+        - global prosody: True, local prosody: True, attention: True, num_gaussian: 3, use_local_prosody_hist_idx: 1
+        - 2段階学習後半戦. 1つまえのemotion. ラベルが間違っていたので.
+        - jobID: 8466021
+    - LINE_wContextwProsody_18
+        - spk: LINE_wContextwProsody_2
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_1
+        - +accent
+        - batch_size=16, wGMM
+        - global prosody: True, local prosody: False, attention: False
+        - 2段階学習前半戦. 1つまえのemotion. jsutでpretrainしてから.
+        - jobID: 8551463
+    - LINE_wContextwProsody_19
+        - spk: LINE_wContextwProsody_2
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_1
+        - +accent
+        - batch_size=16, wGMM
+        - global prosody: True, local prosody: False, attention: False
+        - 2段階学習前半戦. 1つまえのemotion. jsutでpretrainしてから.
+        - jobID: 8551478
+    - LINE_wContextwProsody_20
+        - spk: LINE_wContextwProsody_2
+        - pretrain: LINE_wContextwProsody_18
+        - +accent
+        - batch_size=16, wGMM
+        - global prosody: True, local prosody: True, attention: True, num_gaussian: 3, use_local_prosody_hist_idx: 1
+        - 2段階学習後半戦. 1つまえのemotion. jsutでpretrainしてから.
+        - jobID: 
+    - LINE_wContextwProsody_21
+        - spk: LINE_wContextwProsody_2
+        - pretrain: LINE_wContextwProsody_19
+        - +accent
+        - batch_size=16, wGMM
+        - global prosody: True, local prosody: True, attention: True, num_gaussian: 3, use_local_prosody_hist_idx: 1
+        - 2段階学習後半戦. 1つまえのemotion. jsutでpretrainしてから.
+        - jobID: 
+    ## 実験祭り
+    - 共通パラメタ
+        - accent_info: 1
+        - batch_size: 16
+        - 500epoch
+    - LINE_wContext_13_FS_GMM_CE
+        - spk: LINE_wContext
+        - pretrain: JSUT_3
+        - job_ID: 8573068
+    - LINE_wContext_14_FS_GMM_CE_EMO1
+        - spk: LINE_wContext
+        - pretrain: JSUT_3
+        - job_ID: 8573079
+    - LINE_wContext_15_FS_GMM_CE_EMO2
+        - spk: LINE_wContext_2
+        - pretrain: JSUT_3
+        - job_ID: 8573095
+    - LINE_wContext_16_FS_GMM_CE_g_p
+        - spk: LINE_wContext
+        - pretrain: JSUT_2
+        - job_ID: 8573086
+    - LINE_wContext_17_FS_GMM_CE_g_p_EMO1
+        - spk: LINE_wContext
+        - pretrain: JSUT_2
+        - job_ID: 8573092
+    - LINE_wContext_18_FS_GMM_CE_g_p_EMO2
+        - spk: LINE_wContext_2
+        - pretrain: JSUT_2
+        - job_ID: 8573094
+    - LINE_wContextwProsody_22_FS_GMM_CE_PCE
+        - spk: LINE_wContextwProsody_3
+        - pretrain: JSUT_3
+        - attention: False
+        - job_ID: 8573195
+    - LINE_wContextwProsody_23_FS_GMM_CE_PCE_EMO1
+        - spk: LINE_wContextwProsody_3
+        - pretrain: JSUT_3
+        - attention: False
+        - job_ID: 8573186
+    - LINE_wContextwProsody_24_FS_GMM_CE_PCE_EMO2
+        - spk: LINE_wContextwProsody_4
+        - pretrain: JSUT_3
+        - attention: False
+        - job_ID: 8573110
+    - LINE_wContextwProsody_25_FS_GMM_CE_PCE_g_p
+        - spk: LINE_wContextwProsody_3
+        - pretrain: JSUT_2
+        - attention: False
+        - job_ID: 8573197
+    - LINE_wContextwProsody_26_FS_GMM_CE_PCE_g_p_EMO1
+        - spk: LINE_wContextwProsody_3
+        - pretrain: JSUT_2
+        - attention: False 
+        - job_ID: 8573174
+    - LINE_wContextwProsody_27_FS_GMM_CE_PCE_g_p_EMO2
+        - spk: LINE_wContextwProsody_4
+        - pretrain: JSUT_2
+        - attention: False
+        - job_ID: 8573117
+    - LINE_wContextwProsody_28_FS_GMM_CE_PCE_P1
+        - spk: LINE_wContextwProsody_3
+        - pretrain: JSUT_3
+        - attention: 1つ前
+        - job_ID: 8573228
+    - LINE_wContextwProsody_29_FS_GMM_CE_PCE_P1_EMO1
+        - spk: LINE_wContextwProsody_3
+        - pretrain: JSUT_3
+        - attention: 1つ前
+        - job_ID: 8573155
+    - LINE_wContextwProsody_30_FS_GMM_CE_PCE_P1_EMO2
+        - spk: LINE_wContextwProsody_4
+        - pretrain: JSUT_3
+        - attention: 1つ前
+        - job_ID: 8573122
+    - LINE_wContextwProsody_31_FS_GMM_CE_PCE_P1_g_p
+        - spk: LINE_wContextwProsody_3
+        - pretrain: JSUT_2
+        - attention: 1つ前
+        - job_ID: 8573213
+    - LINE_wContextwProsody_32_FS_GMM_CE_PCE_P1_g_p_EMO1
+        - spk: LINE_wContextwProsody_3
+        - pretrain: JSUT_2
+        - attention: 1つ前
+        - job_ID: 8573165
+    - LINE_wContextwProsody_33_FS_GMM_CE_PCE_P1_g_p_EMO2
+        - spk: LINE_wContextwProsody_4
+        - pretrain: JSUT_2
+        - attention: 1つ前
+        - job_ID: 8573132
+    - LINE_wContextwProsody_34_FS_GMM_CE_PCE_P2
+        - spk: LINE_wContextwProsody_3
+        - pretrain: JSUT_3
+        - attention: 2つ前
+        - job_ID: 8573225
+    - LINE_wContextwProsody_35_FS_GMM_CE_PCE_P2_EMO1
+        - spk: LINE_wContextwProsody_3
+        - pretrain: JSUT_3
+        - attention: 2つ前
+        - job_ID: 8573153
+    - LINE_wContextwProsody_36_FS_GMM_CE_PCE_P2_EMO2
+        - spk: LINE_wContextwProsody_4
+        - pretrain: JSUT_3
+        - attention: 2つ前
+        - job_ID: 8573138
+    - LINE_wContextwProsody_37_FS_GMM_CE_PCE_P2_g_p
+        - spk: LINE_wContextwProsody_3
+        - pretrain: JSUT_2
+        - attention: 2つ前
+        - job_ID: 8573219
+    - LINE_wContextwProsody_38_FS_GMM_CE_PCE_P2_g_p_EMO1
+        - spk: LINE_wContextwProsody_3
+        - pretrain: JSUT_2
+        - attention: 2つ前
+        - job_ID: 8573144
+    - LINE_wContextwProsody_39_FS_GMM_CE_PCE_P2_g_p_EMO2
+        - spk: LINE_wContextwProsody_4
+        - pretrain: JSUT_2
+        - attention: 2つ前
+        - job_ID: 8573133
+
+    # 追加実行
+    - LINE_wContext_19_FS_CE_EMO1
+        - spk: LINE_wContext
+        - pretrain: JSUT_1
+        - job_ID: 8672897
+    - LINE_wContextwProsody_40_FS_CE_PCE_EMO1
+        - spk: LINE_wContextwProsody_3
+        - pretrain: JSUT_1
+        - job_ID: 8672942
+
+    # 新しい実行
+    - LINE_wContext_20_FS_GMM_CE
+        - spk: LINE_wContextwPEProsody_1
+        - pretrain: fastspeech2/LINE_44_JSUT_NICT_LINE_wo_Teacher_FS_GMM_spk_ind
+        - 大量データでGMMをpretrainしてどうなるのかを見る実験
+        - jobID: 8746504
+    - LINE_wContextwPEProsody_1_FS_GMM_CE_PEPCE
+        - spk: LINE_wContextwPEProsody_1
+        - pretrain: fastspeech2/LINE_44_JSUT_NICT_LINE_wo_Teacher_FS_GMM_spk_ind
+        - 大量データでGMMをpretrainしてどうなるのかを見る実験. PEPCE初出動
+        - jobID: 8750299
+    - LINE_wContextwPEProsody_2_FS_GMM_CE_PEPCE_P1
+        - spk: LINE_wContextwPEProsody_1
+        - pretrain: fastspeech2/LINE_44_JSUT_NICT_LINE_wo_Teacher_FS_GMM_spk_ind
+        - jobID: 8750305
+    - LINE_wContextwPEProsody_3_FS_GMM_CE_PEPCE_P2
+        - spk: LINE_wContextwPEProsody_1
+        - pretrain: fastspeech2/LINE_44_JSUT_NICT_LINE_wo_Teacher_FS_GMM_spk_ind
+        - jobID: 8750309
+    - LINE_wContext_21_FS_CE
+        - spk: LINE_wContextwPEProsody_1
+        - pretrain: fastspeech2/LINE_41_JSUT_NICT_LINE_wo_Teacher_FS
+        - 大量データでGMMをpretrainしてどうなるのかを見る実験, 比較用
+        - jobID: 8751187
+    - LINE_wContextwPEProsody_4_FS_CE_PEPCE
+        - spk: LINE_wContextwPEProsody_1
+        - pretrain: fastspeech2/LINE_41_JSUT_NICT_LINE_wo_Teacher_FS
+        - 大量データでGMMをpretrainしてどうなるのかを見る実験, 比較用
+        - jobID: 8751198
+
+    # 新しい実行2(multi-speaker対応後)
+    - LINE_wContext_22_FS_GMM_CE
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: fastspeech2/LINE_55_JSUT_NICT_LINE_wo_Teacher_FS_GMM_spk_ind
+        - jobID: 8852367
+    - LINE_wContextwPEProsody_5_FS_GMM_CE_PEPCE
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: fastspeech2/LINE_55_JSUT_NICT_LINE_wo_Teacher_FS_GMM_spk_ind
+        - 大量データでGMMをpretrainしてどうなるのかを見る実験. PEPCE初出動
+        - jobID: 8852368
+    - LINE_wContextwPEProsody_6_FS_GMM_CE_PEPCE_P1
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: fastspeech2/LINE_55_JSUT_NICT_LINE_wo_Teacher_FS_GMM_spk_ind
+        - jobID: 8852369
+    - LINE_wContextwPEProsody_7_FS_GMM_CE_PEPCE_P2
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: fastspeech2/LINE_55_JSUT_NICT_LINE_wo_Teacher_FS_GMM_spk_ind
+        - jobID: 8852370
+    - LINE_wContext_23_FS_CE
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: fastspeech2/LINE_53_JSUT_NICT_LINE_wo_Teacher_FS
+        - 大量データでGMMをpretrainしてどうなるのかを見る実験, 比較用
+        - jobID: 8852365
+    - LINE_wContextwPEProsody_8_FS_CE_PEPCE
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: fastspeech2/LINE_53_JSUT_NICT_LINE_wo_Teacher_FS
+        - 大量データでGMMをpretrainしてどうなるのかを見る実験, 比較用
+        - jobID: 8852366
+    - LINE_wContextwPEProsody_9_FS_GMM_CE_PEPCE_share-emb-false
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: fastspeech2/LINE_55_JSUT_NICT_LINE_wo_Teacher_FS_GMM_spk_ind
+        - 大量データでGMMをpretrainしてどうなるのかを見る実験. PEPCE初出動
+        - embeddingをshareしない
+        - jobID: 8853375
+    - LINE_wContextwPEProsody_10_FS_GMM_CE_PEPCE_P1_share-emb-false
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: fastspeech2/LINE_55_JSUT_NICT_LINE_wo_Teacher_FS_GMM_spk_ind
+        - embeddingをshareしない
+        - jobID: 8853377
+    - LINE_wContextwPEProsody_11_FS_GMM_CE_PEPCE_P2_share-emb-false
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: fastspeech2/LINE_55_JSUT_NICT_LINE_wo_Teacher_FS_GMM_spk_ind
+        - embeddingをshareしない
+        - jobID: 8853381
+    - LINE_wContextwPEProsody_12_FS_CE_PEPCE_share-emb-false
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: fastspeech2/LINE_53_JSUT_NICT_LINE_wo_Teacher_FS
+        - 大量データでGMMをpretrainしてどうなるのかを見る実験, 比較用
+        - embeddingをshareしない
+        - jobID: 8853382
+
+    # JSUT pretrainedでPEPCEを再実行する
+    - LINE_wContext_24_FS_CE_pretrain_JSUT_5
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: fastspeech2/JSUT_5
+        - jobID: 8857577
+    - LINE_wContextwPEProsody_13_FS_CE_PEPCE_share-emb-false_pretrain_JSUT_5
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: fastspeech2/JSUT_5
+        - embeddingをshareしない
+        - jobID: 8857584
+    - LINE_wContextwPEProsody_14_FS_CE_PEPCE_share-emb-false_pretrain_JSUT_5_bench_false
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: fastspeech2/JSUT_5
+        - embeddingをshareしない
+        - benchmark: falseにしてみる. 速ければこっちにする.
+        - jobID: 8857593
+    - LINE_wContextwPEProsody_23_FS_CE_PEPCE_share-emb-false_pretrain_JSUT_5_new_struct
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: fastspeech2/JSUT_5
+        - embeddingをshareしない
+        - benchmark: falseにしてみる. 速ければこっちにする.
+        - prosody encoderにおいて, attentionをcontext encoderのそれと共有するのをやめてみる.
+        - jobID: 8906748
+    - LINE_wContextwPEProsody_24_FS_CE_PEPCE_share-emb-false_pretrain_JSUT_5_new_struct2
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: fastspeech2/JSUT_5
+        - embeddingをshareしない
+        - benchmark: falseにしてみる. 速ければこっちにする.
+        - prosody encoderにおいて, attentionをcontext encoderのそれと共有するのをやめてみる.
+        - 追加で, GRUのバグを直したので、再度実行する
+        - jobID: 8942664
+
+    ## 以降はbenchmark: falseにする. こちらのほうが速い
+    # Emotion labelのPEPCEへの影響を調査する
+    - LINE_wContext_25_FS_CE_EMO1_pretrain_JSUT_5
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: fastspeech2/JSUT_5
+        - jobID: 8858001
+    - LINE_wContextwPEProsody_15_FS_CE_PEPCE_EMO1_share-emb-false_pretrain_JSUT_5
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: fastspeech2/JSUT_5
+        - embeddingをshareしない
+        - jobID: 8857986
+    - LINE_wContext_26_FS_CE_pretrain_LINE_53
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: fastspeech2/LINE_53_JSUT_NICT_LINE_wo_Teacher_FS
+        - jobID: 8857998
+    - LINE_wContextwPEProsody_16_FS_CE_PEPCE_share-emb-false_pretrain_LINE_53
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: fastspeech2/LINE_53_JSUT_NICT_LINE_wo_Teacher_FS
+        - embeddingをshareしない
+        - jobID: 8857991
+
+    # hist_lenのチューニング
+    - 共通のパラメタ
+        - EMO1, stats=None, share_emb-false, pretrain: JSUT
+    - LINE_wContext_27_FS_CE_hist_len_1
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: fastspeech2/JSUT_5
+        - jobID: 8860887
+    - LINE_wContext_28_FS_CE_hist_len_3
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: fastspeech2/JSUT_5
+        - jobID: 8860888
+    - LINE_wContext_29_FS_CE_hist_len_5
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: fastspeech2/JSUT_5
+        - jobID: 8860889
+    - LINE_wContext_30_FS_CE_hist_len_7
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: fastspeech2/JSUT_5
+        - jobID: 8860890
+    - LINE_wContext_31_FS_CE_hist_len_9
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: fastspeech2/JSUT_5
+        - jobID: 8860892
+    - LINE_wContext_32_FS_CE_hist_len_11
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: fastspeech2/JSUT_5
+        - jobID: 8860893
+    - LINE_wContextwPEProsody_17_FS_CE_PEPCE_hist_len_1
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: fastspeech2/JSUT_5
+        - jobID: 8860894
+    - LINE_wContextwPEProsody_18_FS_CE_PEPCE_hist_len_3
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: fastspeech2/JSUT_5
+        - jobID: 8860895
+    - LINE_wContextwPEProsody_19_FS_CE_PEPCE_hist_len_5
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: fastspeech2/JSUT_5
+        - jobID: 8860896
+    - LINE_wContextwPEProsody_20_FS_CE_PEPCE_hist_len_7
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: fastspeech2/JSUT_5
+        - jobID: 8860897
+    - LINE_wContextwPEProsody_21_FS_CE_PEPCE_hist_len_9
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: fastspeech2/JSUT_5
+        - jobID: 8860898
+    - LINE_wContextwPEProsody_22_FS_CE_PEPCE_hist_len_11
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: fastspeech2/JSUT_5
+        - jobID: 8860899
+
+    # Context Encoderがどれだけ動いているのか実験
+    - LINE_emotionprediction_1_CE
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: None
+        - eval_epoch_interval: 600
+            - 今回はevalは不要だし, むしろevalを除去するのに今までのコードの修正が必要なので面倒
+            - 単にepoch数より大きい値にすればevalしなくなるのでそうする
+    - LINE_emotionprediction_2_PEPCE
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: None
+        - eval_epoch_interval: 600
+    - LINE_emotionprediction_3_CE_PEPCE
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: None
+        - eval_epoch_interval: 600
+    - LINE_emotionprediction_4_PEPCE_small_chage
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: None
+        - eval_epoch_interval: 600
+        - prosody_model.pyの, 以下の部分をしたのに変更する
+            - `h_prosody_embs = torch.concat([h_pitch_embs, h_energy_embs], dim=-1)`
+            - `h_prosody_embs = h_pitch_embs + h_energy_embs`
+            - それに伴い以下も変える
+            - `gru_input_size = self.hidden_sise * 2  # type:ignore`
+            - `gru_input_size = self.hidden_sise  # type:ignore`
+    - LINE_emotionprediction_5_CE
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: None
+        - eval_epoch_interval: 600
+        - currentのtextを抜いたらどういうグラフになるか見てみる.
+            - `context_enc = torch.cat([enc_current, enc_past], dim=1)`
+            - `context_enc = enc_past`
+    - LINE_emotionprediction_6_CE
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: None
+        - eval_epoch_interval: 600
+        - ReLUが最後に入っていたのを修正
+    - LINE_emotionprediction_7_PEPCE
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: None
+        - eval_epoch_interval: 600
+        - ReLUが最後に入っていたのを修正
+    - LINE_emotionprediction_8_CE_PEPCE
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: None
+        - eval_epoch_interval: 600
+        - ReLUが最後に入っていたのを修正
+    - LINE_emotionprediction_9_CE_woCurrent
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: None
+        - eval_epoch_interval: 600
+        - ReLUが最後に入っていたのを修正
+    - LINE_emotionprediction_10_CE_PEPCE_woCurrent
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: None
+        - eval_epoch_interval: 600
+        - ReLUが最後に入っていたのを修正
+    
+    # 以下, emotionを1つ前のものを予測する
+    - LINE_emotionprediction_11_CE
+        - spk: LINE_wContextwPEProsody_3
+        - pretrain: None
+        - eval_epoch_interval: 600
+    - LINE_emotionprediction_12_PEPCE
+        - spk: LINE_wContextwPEProsody_3
+        - pretrain: None
+        - eval_epoch_interval: 600
+    - LINE_emotionprediction_13_CE_PEPCE
+        - spk: LINE_wContextwPEProsody_3
+        - pretrain: None
+        - eval_epoch_interval: 600
+    - LINE_emotionprediction_14_CE_woCurrent
+        - spk: LINE_wContextwPEProsody_3
+        - pretrain: None
+        - eval_epoch_interval: 600
+    - LINE_emotionprediction_15_CE_PEPCE_woCurrent
+        - spk: LINE_wContextwPEProsody_3
+        - pretrain: None
+        - eval_epoch_interval: 600
+    - LINE_emotionprediction_16_PEPCE_histlen_1
+        - spk: LINE_wContextwPEProsody_3
+        - pretrain: None
+        - eval_epoch_interval: 600
+        - pitch, energyの正解が入っているのに予測できないのはやばい.
+        - なので, ほんとにそれだけを与えてみたらどうなるのかをみる.
+    - LINE_emotionprediction_16_PEPCE_histlen_1_dropout_0
+        - spk: LINE_wContextwPEProsody_3
+        - pretrain: None
+        - eval_epoch_interval: 600
+        - embにする際にdropoutが強すぎる気がするので, 0.0にしてみて実験
+        - びっくりするほど変化なし. やめる.
+    - LINE_emotionprediction_17_PEPCE_histlen_1_woGRU
+        - spk: LINE_wContextwPEProsody_3
+        - pretrain: None
+        - eval_epoch_interval: 600
+        - PEPCEの中のGRUを亡き者にして、
+            - `history_prosody_enc = self.prosody_enc_linear(history_prosody_enc).squeeze(1)`
+            - ここをそのまま出力することにした.
+            - なので, 構造としてはほとんどlinearのみ
+    - LINE_emotionprediction_18_PEPCE_histlen_1_woGRU_small_params
+        - spk: LINE_wContextwPEProsody_3
+        - pretrain: None
+        - eval_epoch_interval: 600
+        - すべてのパラメタを半分にしてみた. 果たして.
+    - LINE_emotionprediction_19_PEPCE_histlen_1_woGRU_small_params_woConv1d
+        - spk: LINE_wContextwPEProsody_3
+        - pretrain: None
+        - eval_epoch_interval: 600
+        - Conv1dもなくしてみて, pitch, energyの2-dimのテンソルを直接GRUに流し込むようにした.
+    - LINE_emotionprediction_20_PEPCE_histlen_1_woGRU_small_params_wConv1d_revised
+        - spk: LINE_wContextwPEProsody_3
+        - pretrain: None
+        - eval_epoch_interval: 600
+        - Conv1dのviewのやり方を変えてみた
+    - LINE_emotionprediction_21_PEPCE_histlen_1_woGRU_small_params_wConv1d_revised_wSLA
+        - spk: LINE_wContextwPEProsody_3
+        - pretrain: None
+        - eval_epoch_interval: 600
+        - GRUでなくSLAでglobal prosody embを作ってみた
+    - LINE_emotionprediction_22_CE_histlen_1
+        - spk: LINE_wContextwPEProsody_3
+        - pretrain: None
+        - eval_epoch_interval: 600
+        - GRUを修正したので比較用にやり直し
+    - LINE_emotionprediction_23_PEPCE_histlen_1
+        - spk: LINE_wContextwPEProsody_3
+        - pretrain: None
+        - eval_epoch_interval: 600
+        - GRUを修正したので比較用にやり直し
+    - LINE_emotionprediction_24_CE_PEPCE_histlen_1
+        - spk: LINE_wContextwPEProsody_3
+        - pretrain: None
+        - eval_epoch_interval: 600
+        - GRUを修正したので比較用にやり直し
+    - LINE_emotionprediction_31_CE
+        - spk: LINE_wContextwPEProsody_3
+        - pretrain: None
+        - eval_epoch_interval: 600
+        - GRUを修正したので比較用にやり直し
+    - LINE_emotionprediction_32_PEPCE
+        - spk: LINE_wContextwPEProsody_3
+        - pretrain: None
+        - eval_epoch_interval: 600
+        - GRUを修正したので比較用にやり直し
+    - LINE_emotionprediction_33_CE_PEPCE
+        - spk: LINE_wContextwPEProsody_3
+        - pretrain: None
+        - eval_epoch_interval: 600
+        - GRUを修正したので比較用にやり直し
+    
+    # 修正したので, EMO1について動くのか確認
+    - LINE_emotionprediction_25_CE
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: None
+        - eval_epoch_interval: 600
+        - GRUを修正したのでやり直し
+    - LINE_emotionprediction_26_PEPCE
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: None
+        - eval_epoch_interval: 600
+        - GRUを修正したのでやり直し
+    - LINE_emotionprediction_27_CE_PEPCE
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: None
+        - eval_epoch_interval: 600
+        - GRUを修正したのでやり直し
+    - LINE_emotionprediction_28_CE_hist_len_1
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: None
+        - eval_epoch_interval: 600
+        - GRUを修正したのでやり直し
+    - LINE_emotionprediction_29_PEPCE_hist_len_1
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: None
+        - eval_epoch_interval: 600
+        - GRUを修正したのでやり直し
+    - LINE_emotionprediction_30_CE_PEPCE_hist_len_1
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: None
+        - eval_epoch_interval: 600
+        - GRUを修正したのでやり直し
+
+    # EmotionPredictionで新しいPEPCEの構造を探る
+    - LINE_emotionprediction_34_CE_wAttention_saito
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: None
+        - eval_epoch_interval: 600
+        - currentとhist_lenでattentionを取ってみる.
+        - 齋藤先生案. currentとpastでattentionを取ってそれを結果とする.
+    - LINE_emotionprediction_35_CE_wAttention_nishimura
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: None
+        - eval_epoch_interval: 600
+        - currentとhist_lenでattentionを取ってみる.
+        - 西邑案. 上の結果に, currentをcatしてlinear通して出力という, 元論文に近いやり方.
+
+    - LINE_emotionprediction_36_CE_PEPCE_wAttention_nishimura
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: None
+        - eval_epoch_interval: 600
+        - currentとhist_lenでattentionを取ってみる.
+        - 西邑案. 上の結果に, currentをcatしてlinear通して出力という, 元論文に近いやり方.
+        - PEPCEでも, queryをcurrentにすることでよりcurrentにとって有用な情報をPEPCEから取り出す構造へ.
+    - LINE_emotionprediction_37_CE_PEPCE_wAttention_saito
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: None
+        - eval_epoch_interval: 600
+        - currentとhist_lenでattentionを取ってみる.
+        - 上のやつの先生ver.
+    
+    # Melを利用したPEProsodyを試す
+    - LINE_emotionprediction_38_CE_PEPCE
+        - spk: LINE_wContextwPEProsody_4
+        - pretrain: None
+        - eval_epoch_interval: 600
+        - vs. LINE_emotionprediction_36_CE_PEPCE_wAttention_nishimura
+        - melを使ったPEProsodyの初挑戦
+    - LINE_emotionprediction_39_CE_PEPCE_new_struct
+        - spk: LINE_wContextwPEProsody_4
+        - pretrain: None
+        - eval_epoch_interval: 600
+        - vs. LINE_emotionprediction_36_CE_PEPCE_wAttention_nishimura
+        - pitch embeddingのように, melにもconv1dをかけてみた
+    - LINE_emotionprediction_40_CE_PEPCE_new_struct_withCEpretrain
+        - spk: LINE_wContextwPEProsody_4
+        - pretrain: LINE_emotionprediction_35_CE_wAttention_nishimura
+        - eval_epoch_interval: 600
+        - CEでpretrainしてからなら？
+    - LINE_emotionprediction_41_CE_PEPCE_new_struct_withCEpretrain_2
+        - spk: LINE_wContextwPEProsody_4
+        - pretrain: LINE_emotionprediction_35_CE_wAttention_nishimura
+        - eval_epoch_interval: 600
+        - CEでpretrainしてからなら？
+        - lrをresetしなかったver.
+
+    # EMO2に切り替える
+    - LINE_emotionprediction_42_CE
+        - spk: LINE_wContextwPEProsody_3
+        - pretrain: None
+        - eval_epoch_interval: 600
+        - acc出したやつはないので再実行
+    - LINE_emotionprediction_43_CE_PEPCE
+        - spk: LINE_wContextwPEProsody_3
+        - pretrain: None
+        - eval_epoch_interval: 600
+        - acc出したやつはないので再実行
+    - LINE_emotionprediction_44_CE_PEPCE_mel
+        - spk: LINE_wContextwPEProsody_5
+        - pretrain: None
+        - eval_epoch_interval: 600
+    - LINE_emotionprediction_45_CE_PEPCE_mel_woAttention
+        - spk: LINE_wContextwPEProsody_5
+        - pretrain: None
+        - eval_epoch_interval: 600
+        - jobID: 8962347
+    - LINE_emotionprediction_46_CE_PEPCE_mel_kernel_9_drop_0
+        - spk: LINE_wContextwPEProsody_5
+        - pretrain: None
+        - eval_epoch_interval: 600
+        - 以下同じ.
+        - jobID: 8962353
+    - LINE_emotionprediction_47_CE_PEPCE_mel_kernel_9_drop_2
+        - jobID: 8962358
+    - LINE_emotionprediction_48_CE_PEPCE_mel_kernel_9_drop_5
+        - jobID: 8962363
+    - LINE_emotionprediction_49_CE_PEPCE_mel_kernel_15_drop_0
+        - jobID: 8962366
+    - LINE_emotionprediction_50_CE_PEPCE_mel_kernel_15_drop_2
+        - jobID: 8962368
+    - LINE_emotionprediction_51_CE_PEPCE_mel_kernel_15_drop_5
+        - jobID: 8962571
+    - LINE_emotionprediction_52_CE_PEPCE_mel_kernel_31_drop_0
+        - jobID: 8962578
+    - LINE_emotionprediction_53_CE_PEPCE_mel_kernel_31_drop_2
+        - jobID: 8962582
+    - LINE_emotionprediction_54_CE_PEPCE_mel_kernel_31_drop_5
+        - jobID: 8962588
+    - LINE_emotionprediction_55_CE_PEPCE_mel_kernel_63_drop_0
+        - jobID: 8962591
+    - LINE_emotionprediction_56_CE_PEPCE_mel_kernel_63_drop_2
+        - jobID: 8962594
+    - LINE_emotionprediction_57_CE_PEPCE_mel_kernel_63_drop_5
+        - jobID: 8962596
+    - LINE_emotionprediction_58_CE_bidirectional_false
+        - spk: LINE_wContextwPEProsody_3
+        - pretrain: None
+        - eval_epoch_interval: 600
+        - jobID: 8963370
+    - LINE_emotionprediction_59_CE_PEPCE_bidirectional_false
+        - spk: LINE_wContextwPEProsody_3
+        - pretrain: None
+        - eval_epoch_interval: 600
+        - jobID: 8963374
+    - LINE_emotionprediction_60_CE_PEPCE_mel_bidirectional_false
+        - spk: LINE_wContextwPEProsody_5
+        - pretrain: None
+        - eval_epoch_interval: 600
+        - jobID: 8963381
+    - LINE_emotionprediction_61_CE_bidirectional_false_reverse
+        - spk: LINE_wContextwPEProsody_3
+        - pretrain: None
+        - eval_epoch_interval: 600
+        - cokllate_fnにて, 逆順にembが入るようにした.
+        - jobID: 8963443
+    - LINE_emotionprediction_62_CE_PEPCE_bidirectional_false_reverse
+        - spk: LINE_wContextwPEProsody_3
+        - pretrain: None
+        - eval_epoch_interval: 600
+        - jobID: 8963439
+    - LINE_emotionprediction_62_CE_PEPCE_mel_bidirectional_false_reverse
+        - spk: LINE_wContextwPEProsody_5
+        - pretrain: None
+        - eval_epoch_interval: 600
+        - jobID: 8963434
+
+    # 一瞬TTSに戻る
+    - LINE_wContextwPEProsody_25_FS_CE_PEPCE_share-emb-false_pretrain_JSUT_5_new_struct3
+        - spk: LINE_wContextwPEProsody_4
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - attention機能を付けたのと, melにしたのと2つ追加して再度チャレンジ
+        - jobID: 8963576
+    - LINE_wContextwPEProsody_26_FS_CE_pretrain_JSUT_5_new_struct
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - attention機能を付けたのでCEももう一度
+        - jobID: 8963600
+    - LINE_wContextwPEProsody_31_FS_PEPCE_pretrain_JSUT_5_new_struct
+        - spk: LINE_wContextwPEProsody_4
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - FS+PEPCEを試す
+        - jobID: 8969154
+    
+    # GRUdebug, attention付き, MelでPEPCE
+    - LINE_wContextwPEProsody_27_FS_GMM_CE
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: fastspeech2/LINE_65_JSUT_NICT_LINE_wo_Teacher_FS_GMM
+        - jobID: 8969161
+    - LINE_wContextwPEProsody_28_FS_GMM_CE_PEPCE
+        - spk: LINE_wContextwPEProsody_4
+        - pretrain: fastspeech2/LINE_65_JSUT_NICT_LINE_wo_Teacher_FS_GMM
+        - jobID: 8969158
+    - LINE_wContextwPEProsody_29_FS_GMM_CE_PEPCE_P1
+        - spk: LINE_wContextwPEProsody_4
+        - pretrain: fastspeech2/LINE_65_JSUT_NICT_LINE_wo_Teacher_FS_GMM
+        - jobID: 8969157
+    - LINE_wContextwPEProsody_30_FS_GMM_CE_PEPCE_P2
+        - spk: LINE_wContextwPEProsody_4
+        - pretrain: fastspeech2/LINE_65_JSUT_NICT_LINE_wo_Teacher_FS_GMM
+        - jobID: 8969156
+    - LINE_wContextwPEProsody_32_FS_GMM_PEPCE
+        - spk: LINE_wContextwPEProsody_4
+        - pretrain: fastspeech2/LINE_65_JSUT_NICT_LINE_wo_Teacher_FS_GMM
+        - jobID: 8969160
+
+    # EmotionPredictionに戻って, hist_len調査
+    - LINE_emotionprediction_63_CE_hist_len_1
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: None
+    - LINE_emotionprediction_64_CE_hist_len_2
+    - LINE_emotionprediction_65_CE_hist_len_3
+    - LINE_emotionprediction_66_CE_hist_len_4
+    - LINE_emotionprediction_67_CE_hist_len_5
+    - LINE_emotionprediction_68_CE_hist_len_6
+    - LINE_emotionprediction_69_CE_hist_len_7
+    - LINE_emotionprediction_70_CE_hist_len_8
+    - LINE_emotionprediction_71_CE_hist_len_9
+    - LINE_emotionprediction_72_CE_hist_len_10
+
+    - LINE_emotionprediction_73_CE_EMO2_hist_len_1
+        - spk: LINE_wContextwPEProsody_3
+        - pretrain: None
+    - LINE_emotionprediction_74_CE_EMO2_hist_len_2
+    - LINE_emotionprediction_75_CE_EMO2_hist_len_3
+    - LINE_emotionprediction_76_CE_EMO2_hist_len_4
+    - LINE_emotionprediction_77_CE_EMO2_hist_len_5
+    - LINE_emotionprediction_78_CE_EMO2_hist_len_6
+    - LINE_emotionprediction_79_CE_EMO2_hist_len_7
+    - LINE_emotionprediction_80_CE_EMO2_hist_len_8
+    - LINE_emotionprediction_81_CE_EMO2_hist_len_9
+    - LINE_emotionprediction_82_CE_EMO2_hist_len_10
+
+    # hist_len3=3がよさそうなので、それでやる
+    - LINE_wContextwPEProsody_33_FS_CE_hist_len_3
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - jobID: 8969265
+    - LINE_wContextwPEProsody_34_FS_PEPCE_hist_len_3
+        - spk: LINE_wContextwPEProsody_4
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - jobID: 8969262
+    - LINE_wContextwPEProsody_35_FS_CE_PEPCE_hist_len_3
+        - spk: LINE_wContextwPEProsody_4
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - jobID: 8969251
+
+    # hist_len=10, 3のPEPCE, debugしたので再実行
+    - LINE_wContextwPEProsody_36_FS_CE
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - jobID: 8971793
+    - LINE_wContextwPEProsody_37_FS_PEPCE
+        - spk: LINE_wContextwPEProsody_4
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - jobID: 8971780
+    - LINE_wContextwPEProsody_38_FS_CE_PEPCE
+        - spk: LINE_wContextwPEProsody_4
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - jobID: 8971792
+    - LINE_wContextwPEProsody_39_FS_CE_hist_len_3
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - jobID: 8971800
+    - LINE_wContextwPEProsody_40_FS_PEPCE_hist_len_3
+        - spk: LINE_wContextwPEProsody_4
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - jobID: 8971782
+    - LINE_wContextwPEProsody_41_FS_CE_PEPCE_hist_len_3
+        - spk: LINE_wContextwPEProsody_4
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - jobID: 8971787
+    
+    # 新しい取り組み, current prosody embでpretrainをする.
+    - LINE_wContextwPEProsody_42_FS_PEPCE_w_Current
+        - spk: LINE_wContextwPEProsody_4
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - Current prosody embで条件づける.
+        - jobID: 8981264
+    - JSUT_NICT_LINE_1_FS_PEPCE_w_Current
+        - spk: JSUT_NICT_LINE_wo_Teacher_wContextwPEProsody_1
+        - pretrain: None
+        - Current prosody embで条件づける.
+        - jobID: 8981944
+    - LINE_wContextwPEProsody_43_FS_AfterwoPEPCE
+        - spk: LINE_wContextwPEProsody_4
+        - pretrain: LINE_wContextwPEProsody_42_FS_PEPCE_w_Current
+        - LINE_wContextwPEProsody_42_FS_PEPCE_w_Currentはfixして, prosody embを獲得しに行く話.
+        - jobID: 8982865
+
+    - LINE_wContextwPEProsody_44_FS_CE_AfterwoPEPCE
+        - spk: LINE_wContextwPEProsody_4
+        - pretrain: LINE_wContextwPEProsody_42_FS_PEPCE_w_Current
+        - speaker embまでもfixしたver. ちゃんとみんな調べる. CEとか.
+        - jobID: 8999596
+    - LINE_wContextwPEProsody_45_FS_PEPCE_AfterwoPEPCE
+        - spk: LINE_wContextwPEProsody_4
+        - pretrain: LINE_wContextwPEProsody_42_FS_PEPCE_w_Current
+        - speaker embまでもfixしたver. ちゃんとみんな調べる. CEとか.
+        - jobID: 8999618
+    - LINE_wContextwPEProsody_46_FS_CE_PEPCE_AfterwoPEPCE
+        - spk: LINE_wContextwPEProsody_4
+        - pretrain: LINE_wContextwPEProsody_42_FS_PEPCE_w_Current
+        - speaker embまでもfixしたver. ちゃんとみんな調べる. CEとか.
+        - jobID: 8999643
+
+    - LINE_wContextwPEProsody_47_FS_CE_woAttention_AfterwoPEPCE
+        - spk: LINE_wContextwPEProsody_4
+        - pretrain: LINE_wContextwPEProsody_42_FS_PEPCE_w_Current
+        - speaker embまでもfixしたver. ちゃんとみんな調べる. CEとか.
+        - current_attention: False
+        - jobID: 8999704
+    - LINE_wContextwPEProsody_48_FS_PEPCE_woAttention_AfterwoPEPCE
+        - spk: LINE_wContextwPEProsody_4
+        - pretrain: LINE_wContextwPEProsody_42_FS_PEPCE_w_Current
+        - speaker embまでもfixしたver. ちゃんとみんな調べる. CEとか.
+        - current_attention: False
+        - jobID: 8999690
+    - LINE_wContextwPEProsody_49_FS_CE_PEPCE_woAttention_AfterwoPEPCE
+        - spk: LINE_wContextwPEProsody_4
+        - pretrain: LINE_wContextwPEProsody_42_FS_PEPCE_w_Current
+        - speaker embまでもfixしたver. ちゃんとみんな調べる. CEとか.
+        - current_attention: False
+        - jobID: 8999671
+    
+    # without attentionのも実験しておく. PEPCE debug後
+    - LINE_wContextwPEProsody_50_FS_CE_woAttention
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - jobID: 8999730
+    - LINE_wContextwPEProsody_51_FS_PEPCE_woAttention
+        - spk: LINE_wContextwPEProsody_4
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - attentionはないので,LINE_wContextwPEProsody_37_FS_PEPCE とまったく同じ
+        - jobID: 8999747
+    - LINE_wContextwPEProsody_52_FS_CE_PEPCE_woAttention
+        - spk: LINE_wContextwPEProsody_4
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - jobID: 8999764
+    
+    # wGRUとして、元論文同様の方式を実験
+    - LINE_wContextwPEProsody_53_FS_CE_wGRU_AfterwoPEPCE
+        - spk: LINE_wContextwPEProsody_4
+        - pretrain: LINE_wContextwPEProsody_42_FS_PEPCE_w_Current
+        - current_attention: False, past_global_gru: True
+        - jobID: 9006722
+    - LINE_wContextwPEProsody_54_FS_PEPCE_wGRU_AfterwoPEPCE
+        - spk: LINE_wContextwPEProsody_4
+        - pretrain: LINE_wContextwPEProsody_42_FS_PEPCE_w_Current
+        - current_attention: False, past_global_gru: True
+        - jobID: 9006736
+    - LINE_wContextwPEProsody_55_FS_CE_PEPCE_wGRU_AfterwoPEPCE
+        - spk: LINE_wContextwPEProsody_4
+        - pretrain: LINE_wContextwPEProsody_42_FS_PEPCE_w_Current
+        - current_attention: False, past_global_gru: True
+        - jobID: 9006738
+
+    - LINE_wContextwPEProsody_56_FS_CE_wGRU
+        - spk: LINE_wContextwPEProsody_2
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - current_attention: False, past_global_gru: True
+        - jobID: 9006763
+    - LINE_wContextwPEProsody_57_FS_PEPCE_wGRU
+        - spk: LINE_wContextwPEProsody_4
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - current_attention: False, past_global_gru: True
+        - jobID: 9006754
+    - LINE_wContextwPEProsody_58_FS_CE_PEPCE_wGRU
+        - spk: LINE_wContextwPEProsody_4
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - current_attention: False, past_global_gru: True
+        - jobID: 9006756
+    - (LINE_wContextwPEProsody_59_FS_CE_wGRU)
+        - spk: LINE_wContextwPEProsody_4
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - current_attention: False, past_global_gru: True
+        - データセットに違いはないはずだけど、少し不安なのでやっておいてみる
+        - jobID: 9006796
+
+    # 大量データでtrainしたPEを使ってみる
+    - LINE_wContextwPEProsody_61_FS_PEPCE_wPretrainedPE
+        - spk: LINE_wContextwPEProsody_4
+        - pretrain: JSUT_NICT_LINE_wo_Teacher_wContextwPEProsody_1_sr22050_JSUT_NICT_LINE_1_FS_PEPCE_w_Current/latest_wJSUT_5.pth
+        - current_attention: True, past_global_gru: False
+        - jobID: 9006873
+    - LINE_wContextwPEProsody_62_FS_PEPCE_wGRU_wPretrainedPE
+        - spk: LINE_wContextwPEProsody_4
+        - pretrain: JSUT_NICT_LINE_wo_Teacher_wContextwPEProsody_1_sr22050_JSUT_NICT_LINE_1_FS_PEPCE_w_Current/latest_wJSUT_5.pth
+        - current_attention: True, past_global_gru: True
+        - jobID: 9006879
+    - LINE_wContextwPEProsody_63_FS_CE_PEPCE_wPretrainedPE
+        - spk: LINE_wContextwPEProsody_4
+        - pretrain: JSUT_NICT_LINE_wo_Teacher_wContextwPEProsody_1_sr22050_JSUT_NICT_LINE_1_FS_PEPCE_w_Current/latest_wJSUT_5.pth
+        - current_attention: True, past_global_gru: False
+        - jobID: 9006884
+    - LINE_wContextwPEProsody_64_FS_CE_PEPCE_wGRU_wPretrainedPE
+        - spk: LINE_wContextwPEProsody_4
+        - pretrain: JSUT_NICT_LINE_wo_Teacher_wContextwPEProsody_1_sr22050_JSUT_NICT_LINE_1_FS_PEPCE_w_Current/latest_wJSUT_5.pth
+        - current_attention: False, past_global_gru: True
+        - jobID: 9006889
+    - LINE_wContextwPEProsody_65_FS_CE_PEPCE_woAttn_wPretrainedPE
+        - spk: LINE_wContextwPEProsody_4
+        - pretrain: JSUT_NICT_LINE_wo_Teacher_wContextwPEProsody_1_sr22050_JSUT_NICT_LINE_1_FS_PEPCE_w_Current/latest_wJSUT_5.pth
+        - current_attention: False, past_global_gru: False
+        - jobID: 9006891
+
+    # PE固定してみる
+    - LINE_wContextwPEProsody_66_FS_PEPCE_PEfixed_AfterwoPEPCE
+        - spk: LINE_wContextwPEProsody_4
+        - pretrain: LINE_wContextwPEProsody_42_FS_PEPCE_w_Current
+        - jobID: 9007034
+    - LINE_wContextwPEProsody_67_FS_CE_PEPCE_PEfixed_AfterwoPEPCE
+        - spk: LINE_wContextwPEProsody_4
+        - pretrain: LINE_wContextwPEProsody_42_FS_PEPCE_w_Current
+        - jobID: 9007038
+    - LINE_wContextwPEProsody_68_FS_PEPCE_wGRU_PEfixed_AfterwoPEPCE
+        - spk: LINE_wContextwPEProsody_4
+        - pretrain: LINE_wContextwPEProsody_42_FS_PEPCE_w_Current
+        - jobID: 9007866
+    - LINE_wContextwPEProsody_69_FS_CE_PEPCE_woAttn_PEfixed_AfterwoPEPCE
+        - spk: LINE_wContextwPEProsody_4
+        - pretrain: LINE_wContextwPEProsody_42_FS_PEPCE_w_Current
+        - jobID: 9007854
+    - LINE_wContextwPEProsody_70_FS_CE_PEPCE_wGRU_PEfixed_AfterwoPEPCE
+        - spk: LINE_wContextwPEProsody_4
+        - pretrain: LINE_wContextwPEProsody_42_FS_PEPCE_w_Current
+        - jobID: 9007859
+
+    # segment-level
+    - LINE_wContextwPEProsody_71_FS_PEPCE_w_Current
+        - spk: LINE_wContextwPEProsody_6
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - jobID: 9110469
+    - LINE_wContextwPEProsody_72_FS_PEPCE_w_Current
+        - spk: LINE_wContextwPEProsody_6
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - mel embeddingを，prosody extractorと同じとりかたにしてみた．
+        - jobID: 9130290
+    - LINE_wContextwPEProsody_73_FS_PEPCE_w_Current
+        - spk: LINE_wContextwPEProsody_4
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - mel embeddingを，prosody extractorと同じとりかたにしてみた．
+        - これはutterance level
+        - jobID: 9135939
+
+    ## CLを1からやり直し. INTERSPEECH用
+    ### stage 1
+    #### utterance-level
+    - LINE_wContextwPEProsody_74_CL_stage1
+        - spk: LINE_wContextwPEProsody_4
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - mel embeddingを，prosody extractorと同じとりかたにしてみた．
+        - これはutterance level
+        - jobID: 9171380
+    #### segment-level
+    - LINE_wContextwPEProsody_75_CL_stage1_seg
+        - spk: LINE_wContextwPEProsody_7
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - mel embeddingを，prosody extractorと同じとりかたにしてみた．
+        - これはsegment level
+        - jobID: 9171374
+    ### stage 2
+    #### utterance-level
+    - LINE_wContextwPEProsody_76_CL_stage2_TMCCE_GRU: done
+        - spk: LINE_wContextwPEProsody_4
+        - pretrain: LINE_wContextwPEProsody_74_CL_stage1
+        - jobID: 9182185
+    - LINE_wContextwPEProsody_77_CL_stage2_TMCCE_Attn: done
+        - spk: LINE_wContextwPEProsody_4
+        - pretrain: LINE_wContextwPEProsody_74_CL_stage1
+        - jobID: 9182232
+    - LINE_wContextwPEProsody_78_CL_stage2_SMCCE_GRU: done
+        - spk: LINE_wContextwPEProsody_4
+        - pretrain: LINE_wContextwPEProsody_74_CL_stage1
+        - jobID: 9182246
+    - LINE_wContextwPEProsody_79_CL_stage2_SMCCE_Attn: done
+        - spk: LINE_wContextwPEProsody_4
+        - pretrain: LINE_wContextwPEProsody_74_CL_stage1
+        - jobID: 9202555
+    - LINE_wContextwPEProsody_80_CL_stage2_CMCCE_GRU: done
+        - spk: LINE_wContextwPEProsody_4
+        - pretrain: LINE_wContextwPEProsody_74_CL_stage1
+        - jobID: 9182263
+    - LINE_wContextwPEProsody_81_CL_stage2_CMCCE_Attn: done
+        - spk: LINE_wContextwPEProsody_4
+        - pretrain: LINE_wContextwPEProsody_74_CL_stage1
+        - jobID: 9202845
+    #### segment-level
+    - LINE_wContextwPEProsody_82_CL_stage2_TMCCE_GRU_seg: done
+        - spk: LINE_wContextwPEProsody_7
+        - pretrain: LINE_wContextwPEProsody_75_CL_stage1_seg
+        - jobID: 9182611
+    - LINE_wContextwPEProsody_83_CL_stage2_TMCCE_Attn_seg: done
+        - spk: LINE_wContextwPEProsody_7
+        - pretrain: LINE_wContextwPEProsody_75_CL_stage1_seg
+        - jobID: 9182833
+    - LINE_wContextwPEProsody_84_CL_stage2_SMCCE_GRU_seg: done
+        - spk: LINE_wContextwPEProsody_7
+        - pretrain: LINE_wContextwPEProsody_75_CL_stage1_seg
+        - jobID: 9183803
+    - LINE_wContextwPEProsody_85_CL_stage2_SMCCE_Attn_seg: done
+        - spk: LINE_wContextwPEProsody_7
+        - pretrain: LINE_wContextwPEProsody_75_CL_stage1_seg
+        - jobID: 9183971
+    - LINE_wContextwPEProsody_86_CL_stage2_CMCCE_GRU_seg: done
+        - spk: LINE_wContextwPEProsody_7
+        - pretrain: LINE_wContextwPEProsody_75_CL_stage1_seg
+        - jobID: 9199309
+    - LINE_wContextwPEProsody_87_CL_stage2_CMCCE_Attn_seg: done
+        - spk: LINE_wContextwPEProsody_7
+        - pretrain: LINE_wContextwPEProsody_75_CL_stage1_seg
+        - jobID: 9199454
+
+    ## JTもやり直してみる
+    - LINE_wContextwPEProsody_88_JT_TMCCE_GRU_seg
+        - spk: LINE_wContextwPEProsody_7
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - 従来法にsegを導入したもの
+        - jobID: 9241953
+    - LINE_wContextwPEProsody_89_JT_CMCCE_Attn_seg
+        - spk: LINE_wContextwPEProsody_7
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - 提案法のJT ver
+        - jobID: 9241956
+    - LINE_wContextwPEProsody_90_JT_TMCCE_GRU_seg
+        - spk: LINE_wContextwPEProsody_7
+        - pretrain: LINE_wContextwPEProsody_88_JT_TMCCE_GRU_seg
+        - 従来法にsegを導入したもの
+        - 追加で500epoch
+        - jobID: 9272969
+    - LINE_wContextwPEProsody_91_JT_CMCCE_Attn_seg
+        - spk: LINE_wContextwPEProsody_7
+        - pretrain: LINE_wContextwPEProsody_89_JT_CMCCE_Attn_seg
+        - 提案法のJT ver
+        - 追加で500epoch
+        - jobID: 9272979
+    
+    ### 比較対象も正しい比較のためにさらに訓練
+    - LINE_wContextwPEProsody_92_CL_stage2_TMCCE_GRU_seg
+        - spk: LINE_wContextwPEProsody_7
+        - pretrain: LINE_wContextwPEProsody_82_CL_stage2_TMCCE_GRU_seg
+        - jobID: 9273255
+    - LINE_wContextwPEProsody_93_CL_stage2_CMCCE_Attn_seg
+        - spk: LINE_wContextwPEProsody_7
+        - pretrain: LINE_wContextwPEProsody_87_CL_stage2_CMCCE_Attn_seg
+        - jobID: 9273514
+    
+    ### まだ下がりそうなので追加
+    - LINE_wContextwPEProsody_94_JT_TMCCE_GRU_seg
+        - spk: LINE_wContextwPEProsody_7
+        - pretrain: LINE_wContextwPEProsody_90_JT_TMCCE_GRU_seg
+        - 従来法にsegを導入したもの
+        - 追加で500epoch
+        - jobID: 9292658
+    - LINE_wContextwPEProsody_95_JT_CMCCE_Attn_seg
+        - spk: LINE_wContextwPEProsody_7
+        - pretrain: LINE_wContextwPEProsody_91_JT_CMCCE_Attn_seg
+        - 提案法のJT ver
+        - 追加で500epoch
+        - jobID: 9292659
+
+    ### stage 1も下がりそうなので，おなじだけ回す
+    - LINE_wContextwPEProsody_96_CL_stage1
+        - spk: LINE_wContextwPEProsody_4
+        - pretrain: LINE_wContextwPEProsody_74_CL_stage1
+        - mel embeddingを，prosody extractorと同じとりかたにしてみた．
+        - これはutterance level
+        - 追加1000epoch
+        - jobID: 9292665
+    - LINE_wContextwPEProsody_97_CL_stage1_seg
+        - spk: LINE_wContextwPEProsody_7
+        - pretrain: LINE_wContextwPEProsody_75_CL_stage1_seg
+        - mel embeddingを，prosody extractorと同じとりかたにしてみた．
+        - これはsegment level
+        - 追加1000epoch
+        - jobID: 9292675
+    - LINE_wContextwPEProsody_98_CL_stage2_TMCCE_GRU_seg
+        - spk: LINE_wContextwPEProsody_7
+        - pretrain: LINE_wContextwPEProsody_97_CL_stage1_seg
+        - 今までと同様．pretrainをもう少しちゃんとやった場合
+        - jobID: 9323252
+    - LINE_wContextwPEProsody_99_CL_stage2_CMCCE_Attn_seg
+        - spk: LINE_wContextwPEProsody_7
+        - pretrain: LINE_wContextwPEProsody_97_CL_stage1_seg
+        - 今までと同様．pretrainをもう少しちゃんとやった場合
+        - jobID: 9323312
+    - LINE_wContextwPEProsody_100_CL_stage2_CMCCE_Attn_seg_PEnotReset
+        - spk: LINE_wContextwPEProsody_7
+        - pretrain: LINE_wContextwPEProsody_97_CL_stage1_seg
+        - PEをresetしないで重みを引き継いだ場合．
+        - jobID: 9323620
+
+    ## 新しく，wavLMのembを使ってみる試み
+    ### stage1
+    - LINE_wContextwPEProsody_101_CL_stage1
+        - spk: LINE_wContextwPEProsody_8
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - prosodyをWavLMにしてみた初トライ
+        - jobID: 9340825
+    - LINE_wContextwPEProsody_102_CL_stage1_seg
+        - spk: LINE_wContextwPEProsody_9
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - prosodyをWavLMにしてみた初トライ+seg
+        - jobID: 9341531
+    ### stage2
+    - LINE_wContextwPEProsody_103_CL_stage2_TMCCE_GRU
+        - spk: LINE_wContextwPEProsody_8
+        - pretrain: LINE_wContextwPEProsody_101_CL_stage1
+        - jobID: 9346294
+    - LINE_wContextwPEProsody_104_CL_stage2_CMCCE_Attn
+        - spk: LINE_wContextwPEProsody_8
+        - pretrain: LINE_wContextwPEProsody_101_CL_stage1
+        - jobID: 9346299
+    - LINE_wContextwPEProsody_105_CL_stage2_TMCCE_GRU_seg
+        - spk: LINE_wContextwPEProsody_9
+        - pretrain: LINE_wContextwPEProsody_102_CL_stage1_seg
+        - jobID: 9346310
+    - LINE_wContextwPEProsody_106_CL_stage2_CMCCE_Attn_seg
+        - spk: LINE_wContextwPEProsody_9
+        - pretrain: LINE_wContextwPEProsody_102_CL_stage1_seg
+        - jobID: 9346323
+    ### JTも念のため
+    - LINE_wContextwPEProsody_107_JT_TMCCE_GRU
+        - spk: LINE_wContextwPEProsody_8
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - jobID: 9348301
+    - LINE_wContextwPEProsody_108_JT_CMCCE_Attn
+        - spk: LINE_wContextwPEProsody_8
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - jobID: 9348304
+    - LINE_wContextwPEProsody_109_JT_TMCCE_GRU_seg
+        - spk: LINE_wContextwPEProsody_9
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - jobID: 9348307
+    - LINE_wContextwPEProsody_110_JT_CMCCE_Attn_seg
+        - spk: LINE_wContextwPEProsody_9
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - jobID: 9348309
+
+    ### interspeechに向けて，JT/utter/WavLMを追加訓練
+    - LINE_wContextwPEProsody_111_JT_TMCCE_Attn
+        - spk: LINE_wContextwPEProsody_8
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - jobID: 9362250
+    - LINE_wContextwPEProsody_112_JT_SMCCE_GRU
+        - spk: LINE_wContextwPEProsody_8
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - jobID: 9362257
+    - LINE_wContextwPEProsody_113_JT_SMCCE_Attn
+        - spk: LINE_wContextwPEProsody_8
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - jobID: 9362295
+    - LINE_wContextwPEProsody_114_JT_CMCCE_GRU
+        - spk: LINE_wContextwPEProsody_8
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - jobID: 9362296
+
+    ### JT/utter/Wav2vec2
+    - LINE_wContextwPEProsody_115_JT_SMCCE_GRU
+        - spk: LINE_wContextwPEProsody_10
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - jobID: 9377598
+    - LINE_wContextwPEProsody_116_JT_SMCCE_Attn
+        - spk: LINE_wContextwPEProsody_10
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - jobID: 9377606
+    - LINE_wContextwPEProsody_117_JT_CMCCE_GRU
+        - spk: LINE_wContextwPEProsody_10
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - jobID: 9377608
+    - LINE_wContextwPEProsody_118_JT_CMCCE_Attn
+        - spk: LINE_wContextwPEProsody_10
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - jobID: 9377615
+
+    ## いろいろSSLモデル試してみる
+    - LINE_wContextwPEProsody_119_JT_CMCCE_Attn
+        - spk: LINE_wContextwPEProsody_11
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - jobID: 9385152
+    - LINE_wContextwPEProsody_120_JT_CMCCE_Attn
+        - spk: LINE_wContextwPEProsody_12
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - jobID: 9385188
+    - LINE_wContextwPEProsody_121_JT_CMCCE_Attn
+        - spk: LINE_wContextwPEProsody_13
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - jobID: 9385212
+    
+    ### おニューなSSLモデルで実験
+    - LINE_wContextwPEProsody_122_JT_SMCCE_GRU
+        - spk: LINE_wContextwPEProsody_11
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - jobID: 9391780
+    - LINE_wContextwPEProsody_123_JT_SMCCE_Attn
+        - spk: LINE_wContextwPEProsody_11
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - jobID: 9391787
+    - LINE_wContextwPEProsody_124_JT_CMCCE_GRU
+        - spk: LINE_wContextwPEProsody_11
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - jobID: 9391818
+    - LINE_wContextwPEProsody_125_JT_CMCCE_Attn
+        - spk: LINE_wContextwPEProsody_11
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - jobID: 9391828
+    
+    #### おニューだけど，concatにしてみる
+    - LINE_wContextwPEProsody_126_JT_CMCCE_GRU
+        - spk: LINE_wContextwPEProsody_11
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - last_concat = True
+        - jobID: 9391837
+    - LINE_wContextwPEProsody_127_JT_CMCCE_Attn
+        - spk: LINE_wContextwPEProsody_11
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - last_concat = True
+        - jobID: 9391841
+    
+    #### situation textなしだとどうなるか見てみる
+    - LINE_wContextwPEProsody_128_JT_TMCCE_GRU
+        - spk: LINE_wContextwPEProsody_11
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - last_concat = True
+        - use_situation_text = 0
+    - LINE_wContextwPEProsody_129_JT_CMCCE_Attn
+        - spk: LINE_wContextwPEProsody_11
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - last_concat = True
+        - use_situation_text = 0
+        - jobID: 9453769
+
+    #### Current Melで条件づけるやつ
+    - LINE_wContextwPEProsody_130_JT_TMCCE_GRU
+        - spk: LINE_wContextwPEProsody_11
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - last_concat = True
+        - use_situation_text = 0
+        - FastSpeech2wContextswPEProsodywCurrentMel
+        - beta = 1.0
+    - LINE_wContextwPEProsody_131_JT_TMCCE_GRU
+        - spk: LINE_wContextwPEProsody_11
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - last_concat = True
+        - use_situation_text = 0
+        - FastSpeech2wContextswPEProsodywCurrentMel
+        - beta = 0.1
+    - LINE_wContextwPEProsody_132_JT_TMCCE_GRU
+        - spk: LINE_wContextwPEProsody_11
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - last_concat = True
+        - use_situation_text = 0
+        - FastSpeech2wContextswPEProsodywCurrentMel
+        - beta = 0.01
+    - LINE_wContextwPEProsody_133_JT_CMCCE_Attn
+        - spk: LINE_wContextwPEProsody_11
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - last_concat = True
+        - use_situation_text = 0
+        - FastSpeech2wContextswPEProsodywCurrentMel
+        - beta = 1.0
+    - LINE_wContextwPEProsody_134_JT_CMCCE_Attn
+        - spk: LINE_wContextwPEProsody_11
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - last_concat = True
+        - use_situation_text = 0
+        - FastSpeech2wContextswPEProsodywCurrentMel
+        - beta = 0.1
+    - LINE_wContextwPEProsody_135_JT_CMCCE_Attn
+        - spk: LINE_wContextwPEProsody_11
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - last_concat = True
+        - use_situation_text = 0
+        - FastSpeech2wContextswPEProsodywCurrentMel
+        - beta = 0.01
+    
+    ##### 追加でTMとCM
+    - LINE_wContextwPEProsody_136_JT_TMCCE_Attn
+        - spk: LINE_wContextwPEProsody_11
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - last_concat = True
+        - use_situation_text = 0
+        - FastSpeech2wContextswPEProsodywCurrentMel
+        - beta = 1.0
+    - LINE_wContextwPEProsody_137_JT_TMCCE_Attn
+        - spk: LINE_wContextwPEProsody_11
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - last_concat = True
+        - use_situation_text = 0
+        - FastSpeech2wContextswPEProsodywCurrentMel
+        - beta = 0.1
+    - LINE_wContextwPEProsody_138_JT_TMCCE_Attn
+        - spk: LINE_wContextwPEProsody_11
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - last_concat = True
+        - use_situation_text = 0
+        - FastSpeech2wContextswPEProsodywCurrentMel
+        - beta = 0.01
+    - LINE_wContextwPEProsody_139_JT_CMCCE_GRU
+        - spk: LINE_wContextwPEProsody_11
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - last_concat = True
+        - use_situation_text = 0
+        - FastSpeech2wContextswPEProsodywCurrentMel
+        - beta = 1.0
+    - LINE_wContextwPEProsody_140_JT_CMCCE_GRU
+        - spk: LINE_wContextwPEProsody_11
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - last_concat = True
+        - use_situation_text = 0
+        - FastSpeech2wContextswPEProsodywCurrentMel
+        - beta = 0.1
+    - LINE_wContextwPEProsody_141_JT_CMCCE_GRU
+        - spk: LINE_wContextwPEProsody_11
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - last_concat = True
+        - use_situation_text = 0
+        - FastSpeech2wContextswPEProsodywCurrentMel
+        - beta = 0.01
+    
+    #### situation textなしだとどうなるか見てみる2
+    - LINE_wContextwPEProsody_142_JT_TMCCE_Attn
+        - spk: LINE_wContextwPEProsody_11
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - last_concat = True
+        - use_situation_text = 0
+        - FastSpeech2wContextswPEProsody
+        - jobID: 9453771
+
+    #### hist_len=1のCM+Attn+Meltarget
+    - LINE_wContextwPEProsody_143_JT_CMCCE_Attn_Meltarget_histlen_1
+        - spk: LINE_wContextwPEProsody_11
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - last_concat = True
+        - use_situation_text = 0
+        - FastSpeech2wContextswPEProsodywCurrentMel
+        - beta = 0.1
+        - hist_len = 1
+        - jobID: 9453779
+    #### prosodyのみhist_len=1
+    - LINE_wContextwPEProsody_144_JT_CMCCE_Attn_Meltarget_prosodyhistlen_1
+        - spk: LINE_wContextwPEProsody_11
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - last_concat = True
+        - use_situation_text = 0
+        - FastSpeech2wContextswPEProsodywCurrentMel
+        - beta = 0.1
+        - use_hist_num: 10
+        - use_prosody_hist_num: 1
+        - jobID: 9455145
+    
+    #### mutial_infomationの導入
+    - LINE_wContextwPEProsody_145_JT_CMCCE_Attn_Meltarget_MI
+        - branch: only_for_mutual_infomation
+        - spk: LINE_wContextwPEProsody_11
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - last_concat = True
+        - use_situation_text = 0
+        - FastSpeech2wContextswPEProsodywCurrentMel
+        - beta = 0.1
+        - mi_s: 0.001
+        - mi_e: 0.01
+        - max_step: 70000
+        - use_hist_num: 10
+        - lr_schedulerとmiの係数をじわじわ増やしていくやつ
+        - jobID: 9507845
+    - LINE_wContextwPEProsody_146_JT_CMCCE_Attn_Meltarget_MI
+        - branch: only_for_mutual_infomation
+        - spk: LINE_wContextwPEProsody_11
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - last_concat = True
+        - use_situation_text = 0
+        - FastSpeech2wContextswPEProsodywCurrentMel
+        - beta = 0.1
+        - mi_s: 0.001
+        - mi_e: 0.01
+        - max_step: 70000
+        - use_hist_num: 10
+        - lr_schedulerだけじわじわ増やしていく
+        - jobID: 9507846
+    - LINE_wContextwPEProsody_147_JT_CMCCE_Attn_Meltarget_MI
+        - branch: only_for_mutual_infomation
+        - spk: LINE_wContextwPEProsody_11
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - last_concat = True
+        - use_situation_text = 0
+        - FastSpeech2wContextswPEProsodywCurrentMel
+        - beta = 0.1
+        - mi_s: 0.001
+        - mi_e: 0.01
+        - max_step: 70000
+        - use_hist_num: 10
+        - miの係数だけじわじわ増やしていく
+        - jobID: 9507848
+    - LINE_wContextwPEProsody_148_JT_CMCCE_Attn_Meltarget_MI
+        - branch: only_for_mutual_infomation
+        - spk: LINE_wContextwPEProsody_11
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - last_concat = True
+        - use_situation_text = 0
+        - FastSpeech2wContextswPEProsodywCurrentMel
+        - beta = 0.1
+        - mi_s: 0.001
+        - mi_e: 0.01
+        - max_step: 70000
+        - use_hist_num: 10
+        - scheduling系は何もしない
+        - jobID: 9507849
+    - LINE_wContextwPEProsody_149_JT_CMCCE_Attn_Meltarget_MI
+        - branch: only_for_mutual_infomation
+        - spk: LINE_wContextwPEProsody_11
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - last_concat = True
+        - use_situation_text = 0
+        - FastSpeech2wContextswPEProsodywCurrentMel
+        - beta = 0.1
+        - mi_s: 0.001
+        - mi_e: 0.01
+        - max_step: 70000
+        - use_hist_num: 10
+        - lr_schedulerとmiの係数をじわじわ増やしていくやつ
+        - t_embとp_embの役割を逆にしてみる
+        - jobID: 9508337
+    - LINE_wContextwPEProsody_150_JT_CMCCE_Attn_Meltarget_MI
+        - branch: only_for_mutual_infomation
+        - spk: LINE_wContextwPEProsody_11
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - last_concat = True
+        - use_situation_text = 0
+        - FastSpeech2wContextswPEProsodywCurrentMel
+        - beta = 0.1
+        - mi_s: -0.001
+        - mi_e: -0.01
+        - max_step: 70000
+        - use_hist_num: 10
+        - lr_schedulerとmiの係数をじわじわ増やしていくやつ
+        - 最大化のほうをやってみる
+        - jobID: 9513312
+    - LINE_wContextwPEProsody_161_JT_CMCCE_Attn_Meltarget_MI
+        - branch: only_for_mutual_infomation
+        - spk: LINE_wContextwPEProsody_11
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - last_concat = True
+        - use_situation_text = 0
+        - FastSpeech2wContextswPEProsodywCurrentMel
+        - beta = 0.1
+        - mi_s: 0.001
+        - mi_e: 0.01
+        - max_step: 70000
+        - use_hist_num: 10
+        - lr_schedulerとmiの係数をじわじわ増やしていくやつ
+        - 先輩アドバイス: 全体の最適化の時はCLUBに勾配を渡さないことにする
+            - 具体的には，全体の訓練の直前でrequire_grad = Falseにしてしまう
+        - jobID: 9521382
+    - LINE_wContextwPEProsody_162_JT_CMCCE_Attn_Meltarget_MI
+        - branch: only_for_mutual_infomation
+        - spk: LINE_wContextwPEProsody_11
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - last_concat = True
+        - use_situation_text = 0
+        - FastSpeech2wContextswPEProsodywCurrentMel
+        - beta = 0.1
+        - mi_s: 0.0001
+        - mi_e: 0.001
+        - max_step: 70000
+        - use_hist_num: 10
+        - lr_schedulerとmiの係数をじわじわ増やしていくやつ
+        - 先輩アドバイス: 全体の最適化の時はCLUBに勾配を渡さないことにする
+            - 具体的には，全体の訓練の直前でrequire_grad = Falseにしてしまう
+        - さらにアドバイス: miが負になったらもうCLUBの更新はやめた方がよさそう
+            - epochごとのavg_lossで評価
+        - jobID: 9522500
+    - LINE_wContextwPEProsody_163_JT_CMCCE_Attn_Meltarget_MI
+        - branch: only_for_mutual_infomation
+        - spk: LINE_wContextwPEProsody_11
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - last_concat = True
+        - use_situation_text = 0
+        - FastSpeech2wContextswPEProsodywCurrentMel
+        - beta = 0.1
+        - mi_s: 0.00001
+        - mi_e: 0.0001
+        - max_step: 70000
+        - use_hist_num: 10
+        - lr_schedulerとmiの係数をじわじわ増やしていくやつ
+        - 先輩アドバイス: 全体の最適化の時はCLUBに勾配を渡さないことにする
+            - 具体的には，全体の訓練の直前でrequire_grad = Falseにしてしまう
+        - さらにアドバイス: miが負になったらもうCLUBの更新はやめた方がよさそう
+            - epochごとのavg_lossで評価
+        - jobID: 9522506
+    - LINE_wContextwPEProsody_164_JT_CMCCE_Attn_Meltarget_MI
+        - branch: only_for_mutual_infomation
+        - spk: LINE_wContextwPEProsody_11
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - last_concat = True
+        - use_situation_text = 0
+        - FastSpeech2wContextswPEProsodywCurrentMel
+        - beta = 0.1
+        - mi_s: 0.000001
+        - mi_e: 0.00001
+        - max_step: 70000
+        - use_hist_num: 10
+        - lr_schedulerとmiの係数をじわじわ増やしていくやつ
+        - 先輩アドバイス: 全体の最適化の時はCLUBに勾配を渡さないことにする
+            - 具体的には，全体の訓練の直前でrequire_grad = Falseにしてしまう
+        - さらにアドバイス: miが負になったらもうCLUBの更新はやめた方がよさそう
+            - epochごとのavg_lossで評価
+        - jobID: 9522508
+    - LINE_wContextwPEProsody_165_JT_CMCCE_Attn_Meltarget_MI
+        - branch: only_for_mutual_infomation
+        - spk: LINE_wContextwPEProsody_11
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - last_concat = True
+        - use_situation_text = 0
+        - FastSpeech2wContextswPEProsodywCurrentMel
+        - beta = 0.1
+        - mi_s: 0.0001
+        - mi_e: 0.001
+        - max_step: 70000
+        - use_hist_num: 10
+        - lr_schedulerとmiの係数をじわじわ増やしていくやつ
+        - 負に行ったらヤバイけど，行かなければ大丈夫だと思うので，モデル全体の最適化の時もgrad = Trueにしてみる.
+        - jobID: 9523198
+
+    ### INTERSPEECH用の基本手法たち
+    #### SSL実験しなおし
+    - どれもSM+GRUで比較
+    - LINE_wContextwPEProsody_151_wavlm
+        - spk: LINE_wContextwPEProsody_8
+        - jobID: 9513557
+    - LINE_wContextwPEProsody_152_wav2vec2_facebook
+        - spk: LINE_wContextwPEProsody_10
+        - jobID: 9515029
+    - LINE_wContextwPEProsody_153_wav2vec2_jonatasgrosman
+        - spk: LINE_wContextwPEProsody_11
+        - jobID: 9515027
+    - LINE_wContextwPEProsody_154_wav2vec2_NTQAI
+        - spk: LINE_wContextwPEProsody_12
+        - jobID: 9515026
+    - LINE_wContextwPEProsody_155_wav2vec2_Bagus
+        - spk: LINE_wContextwPEProsody_13
+        - jobID: 9515030
+    #### vs Baseline
+    - baseline: LINE_wContextwPEProsody_128_JT_TMCCE_GRU
+    - 基本の共通の設定
+        - spk: LINE_wContextwPEProsody_11
+        - pretrain: fastspeech2/jsut_sr22050_JSUT_5
+        - last_concat = True
+        - use_situation_text = 0
+        - hist_len = 10
+    - LINE_wContextwPEProsody_156_Attn
+        - jobID: 9521033
+    - LINE_wContextwPEProsody_157_seg
+        - spk: LINE_wContextwPEProsody_14
+        - jobID: 9521254
+    - LINE_wContextwPEProsody_158_SM_woSSL
+        - spk: LINE_wContextwPEProsody_4
+        - jobID: 9521279
+    - LINE_wContextwPEProsody_159_SM_wSSL
+        - jobID: 9521285
+    - LINE_wContextwPEProsody_160_Meltarget
+        - jobID: 9521321
+
+    #### vs SMたち
+    - LINE_wContextwPEProsody_166_SM_woSSL_seg
+        - spk: LINE_wContextwPEProsody_7
+        - jobID: 9523921
+    - LINE_wContextwPEProsody_167_SM_woSSL_Attn
+        - spk: LINE_wContextwPEProsody_4
+        - jobID: 9523923
+    - LINE_wContextwPEProsody_168_SM_woSSL_Meltarget_beta_1
+        - spk: LINE_wContextwPEProsody_4
+        - jobID: 9523926
+    - LINE_wContextwPEProsody_169_SM_woSSL_Meltarget_beta_0_1
+        - spk: LINE_wContextwPEProsody_4
+        - jobID: 9523928
+    - LINE_wContextwPEProsody_170_SM_woSSL_Meltarget_beta_0_01
+        - spk: LINE_wContextwPEProsody_4
+        - jobID: 9523931
+    - LINE_wContextwPEProsody_171_SM_wSSL_seg
+        - spk: LINE_wContextwPEProsody_14
+        - jobID: 9523868
+    - LINE_wContextwPEProsody_172_SM_wSSL_Attn
+        - jobID: 9523870
+    - LINE_wContextwPEProsody_173_SM_wSSL_Meltarget_beta_1
+        - jobID: 9523872
+    - LINE_wContextwPEProsody_174_SM_wSSL_Meltarget_beta_0_1
+        - jobID: 9523913
+    - LINE_wContextwPEProsody_175_SM_wSSL_Meltarget_beta_0_01
+        - jobID: 9523916
+
+    #### 2個載せ
+    - LINE_wContextwPEProsody_176_SM_woSSL_seg_Attn
+        - spk: LINE_wContextwPEProsody_7
+        - jobID: 9524991
+    - LINE_wContextwPEProsody_177_SM_woSSL_seg_Meltarget_beta_1
+        - spk: LINE_wContextwPEProsody_7
+        - jobID: 9525012
+    - LINE_wContextwPEProsody_178_SM_woSSL_seg_Meltarget_beta_0_1
+        - spk: LINE_wContextwPEProsody_7
+        - jobID: 9525015
+    - LINE_wContextwPEProsody_179_SM_woSSL_seg_Meltarget_beta_0_01
+        - spk: LINE_wContextwPEProsody_7
+        - jobID: 9525068
+    - LINE_wContextwPEProsody_180_SM_woSSL_Attn_Meltarget_beta_1
+        - spk: LINE_wContextwPEProsody_4
+        - jobID: 9525072
+    - LINE_wContextwPEProsody_181_SM_woSSL_Attn_Meltarget_beta_0_1
+        - spk: LINE_wContextwPEProsody_4
+        - jobID: 9525074
+    - LINE_wContextwPEProsody_182_SM_woSSL_Attn_Meltarget_beta_0_01
+        - spk: LINE_wContextwPEProsody_4
+        - jobID: 9525076
+
+    - LINE_wContextwPEProsody_183_SM_wSSL_seg_Attn
+        - spk: LINE_wContextwPEProsody_14
+        - jobID: 9525084
+    - LINE_wContextwPEProsody_184_SM_wSSL_seg_Meltarget_beta_1
+        - spk: LINE_wContextwPEProsody_14
+        - jobID: 9525172
+    - LINE_wContextwPEProsody_185_SM_wSSL_seg_Meltarget_beta_0_1
+        - spk: LINE_wContextwPEProsody_14
+        - jobID: 9525174
+    - LINE_wContextwPEProsody_186_SM_wSSL_seg_Meltarget_beta_0_01
+        - spk: LINE_wContextwPEProsody_14
+        - jobID: 9525257
+    - LINE_wContextwPEProsody_187_SM_wSSL_Attn_Meltarget_beta_1
+        - jobID: 9525332
+    - LINE_wContextwPEProsody_188_SM_wSSL_Attn_Meltarget_beta_0_1
+        - jobID: 9525333
+    - LINE_wContextwPEProsody_189_SM_wSSL_Attn_Meltarget_beta_0_01
+        - jobID: 9525336
+    #### 3個載せ
+    - LINE_wContextwPEProsody_190_SM_woSSL_seg_Attn_Meltarget_beta_1
+        - spk: LINE_wContextwPEProsody_7
+        - jobID: 9525351
+    - LINE_wContextwPEProsody_191_SM_woSSL_seg_Attn_Meltarget_beta_0_1
+        - spk: LINE_wContextwPEProsody_7
+        - jobID: 9525352
+    - LINE_wContextwPEProsody_192_SM_woSSL_seg_Attn_Meltarget_beta_0_01
+        - spk: LINE_wContextwPEProsody_7
+        - jobID: 9525354
+
+    - LINE_wContextwPEProsody_193_SM_wSSL_seg_Attn_Meltarget_beta_1
+        - spk: LINE_wContextwPEProsody_14
+        - jobID: 9525344
+    - LINE_wContextwPEProsody_194_SM_wSSL_seg_Attn_Meltarget_beta_0_1
+        - spk: LINE_wContextwPEProsody_14
+        - jobID: 9525346
+    - LINE_wContextwPEProsody_195_SM_wSSL_seg_Attn_Meltarget_beta_0_01
+        - spk: LINE_wContextwPEProsody_14
+        - jobID: 9525348
